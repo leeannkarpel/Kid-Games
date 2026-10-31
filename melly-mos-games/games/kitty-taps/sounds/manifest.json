@@ -1,0 +1,30 @@
+{
+  "game": "kitty-taps",
+  "note": "Meow sound effects from ElevenLabs sound generation. Regenerate with: python3 tools/generate_sounds.py",
+  "sounds": [
+    { "file": "meow.mp3", "en": "Meow!", "es": "¡Miau!", "duration": 1.2,
+      "prompt": "A single friendly house cat meow, clear and close, cute, no background noise" },
+    { "file": "kitten-mew.mp3", "en": "Mew!", "es": "¡Miu!", "duration": 1.0,
+      "prompt": "A tiny baby kitten giving one small high squeaky mew, adorable, close up, no background noise" },
+    { "file": "question-meow.mp3", "en": "Mrrow?", "es": "¿Miau?", "duration": 1.2,
+      "prompt": "A curious cat making a short questioning meow that rises in pitch at the end, like asking a question, close up, no background noise" },
+    { "file": "trill.mp3", "en": "Brrrp!", "es": "¡Brrrp!", "duration": 1.0,
+      "prompt": "A happy cat chirping trill, a rolling brrrp greeting sound, friendly, close up, no background noise" },
+    { "file": "long-meow.mp3", "en": "Meeeooow!", "es": "¡Miaaau!", "duration": 2.0,
+      "prompt": "A cat making one long drawn out meeeeooow, silly and dramatic but friendly, close up, no background noise" },
+    { "file": "purr-meow.mp3", "en": "Purrr… meow!", "es": "Rrrr… ¡miau!", "duration": 2.0,
+      "prompt": "A happy cat with a loud rumbly purr right next to the microphone, then a clear sweet meow, close up, no background noise" },
+    { "file": "double-meow.mp3", "en": "Meow meow!", "es": "¡Miau miau!", "duration": 1.6,
+      "prompt": "A cat meowing twice quickly, meow meow, cheerful, close up, no background noise" },
+    { "file": "big-meow.mp3", "en": "MEOW!", "es": "¡MIAU!", "duration": 1.3,
+      "prompt": "A big fluffy grown cat with a low deep chunky meow, friendly not angry, close up, no background noise" },
+    { "file": "sleepy-meow.mp3", "en": "Mmmeow…", "es": "Mmmiau…", "duration": 1.8,
+      "prompt": "A sleepy cat doing a slow yawning meow, soft and drowsy, close up, no background noise" },
+    { "file": "mrrp.mp3", "en": "Mrrp!", "es": "¡Mrrp!", "duration": 0.8,
+      "prompt": "A cat making a short cute mrrp chirp sound, quick and happy, close up, no background noise" },
+    { "file": "squeaky-meow.mp3", "en": "Mee!", "es": "¡Mii!", "duration": 0.9,
+      "prompt": "A small cat with a funny squeaky little high pitched meow, cute and silly, close up, no background noise" },
+    { "file": "chatty-meow.mp3", "en": "Meow-wow-wow!", "es": "¡Miau-au-au!", "duration": 1.8,
+      "prompt": "A talkative cat making a chatty wobbly meow-wow-wow sound like it is talking, playful, close up, no background noise" }
+  ]
+}

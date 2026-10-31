@@ -65,6 +65,14 @@ const GAMES = [
       await p.mouse.click(box[0], box[1]); await wait(2500);
       await click(p, '[data-test="en"]'); await wait(3500);
   } },
+  { site: "melly-mos-games", slug: "kitty-taps", run: async p => {
+      await click(p, "#play"); await wait(3500);
+      const [w, h] = await p.evaluate(() => [innerWidth, innerHeight]);
+      await p.mouse.click(w * .3, h * .45); await wait(1500);
+      await p.mouse.click(w * .7, h * .6); await wait(1500);
+      await p.mouse.click(w * .7, h * .6); await wait(1500);
+      await click(p, '[data-test="en"]'); await wait(3500);
+  } },
   { site: "melly-mos-games", slug: "dance-like-me", run: async p => {
       await click(p, "#startBtn"); await wait(9000);
       await click(p, "#stopBtn"); await wait(1500);

@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<title>Melly Mo’s Kitty Taps</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chewy&family=Baloo+2:wght@600;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --plum:#5b2a6e; --plum-deep:#3d1a4b; --sun:#ffc93c; --night:#1b0f3a; --night-2:#2d1660;
+  --panel-bg:#fff8ee; --panel-text:#3d1a4b; --panel-muted:#7a5a86; --panel-line:#e6d4ea;
+  --font:"Baloo 2", "Arial Rounded MT Bold", "Trebuchet MS", system-ui, sans-serif;
+  color-scheme: light;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){ --panel-bg:#2a1533; --panel-text:#fdf0ff; --panel-muted:#cbb1d4; --panel-line:#4d2f59; color-scheme:dark; }
+}
+:root[data-theme="dark"]{ --panel-bg:#2a1533; --panel-text:#fdf0ff; --panel-muted:#cbb1d4; --panel-line:#4d2f59; color-scheme:dark; }
+*,*::before,*::after{ box-sizing:border-box; }
+[hidden]{ display:none !important; }
+html,body{ height:100%; margin:0; }
+html{ scroll-padding-top:env(safe-area-inset-top,0px); background:var(--night); }
+body{
+  font-family:var(--font); color:#fff; overflow:hidden; background:radial-gradient(120% 90% at 50% 100%, var(--night-2), var(--night));
+  -webkit-user-select:none; user-select:none; -webkit-touch-callout:none;
+  touch-action:none; overscroll-behavior:none; -webkit-tap-highlight-color:transparent;
+}
+canvas{ position:fixed; inset:0; width:100vw; height:100%; display:block; touch-action:none; }
+.top{ position:fixed; z-index:5; top:calc(env(safe-area-inset-top,0px) + 8px); left:max(12px, env(safe-area-inset-left,0px)); right:max(12px, env(safe-area-inset-right,0px));
+  display:flex; justify-content:space-between; align-items:center; pointer-events:none; }
+.title{ margin:0; font-weight:800; font-size:clamp(1rem, 3.4vw, 1.4rem); line-height:1.1; opacity:.75; display:flex; align-items:center; gap:.35em; }
+.top > *{ pointer-events:auto; }
+.title{ pointer-events:none; }
+
+.gear:focus-visible, .btn:focus-visible, select:focus-visible{ outline:4px solid #fff; outline-offset:3px; }
+.hint{ position:fixed; z-index:3; left:50%; top:46%; transform:translate(-50%,-50%); text-align:center; pointer-events:none; transition:opacity .6s; }
+.hint .hand{ font-size:clamp(3.5rem, 16vw, 6rem); display:inline-block; animation:tapme 1.4s ease-in-out infinite; }
+.hint .txt{ display:block; font-size:clamp(1.3rem, 5vw, 2rem); font-weight:800; opacity:.9; }
+.hint.off{ opacity:0; }
+@keyframes tapme{ 0%,100%{ transform:translateY(0) scale(1); } 45%{ transform:translateY(14px) scale(.92); } }
+
+/* grown-up gear */
+.gear{ all:unset; position:relative; width:48px; height:48px; flex:none; border-radius:50%; display:grid; place-items:center; cursor:pointer;
+  background:rgba(255,255,255,.14); color:#fff; font-size:24px; }
+.gear::after{ content:""; position:absolute; inset:-4px; border-radius:50%; background:conic-gradient(var(--sun) calc(var(--p,0) * 1turn), transparent 0);
+  -webkit-mask:radial-gradient(circle, transparent 25px, #000 26px); mask:radial-gradient(circle, transparent 25px, #000 26px); }
+.gear-tip{ position:absolute; right:0; top:54px; white-space:nowrap; background:#fff; color:var(--plum-deep); font-size:.95rem; font-weight:600; padding:6px 12px; border-radius:12px; }
+
+/* start */
+.start{ position:fixed; inset:0; z-index:20; display:grid; place-items:center; padding:24px; background:radial-gradient(circle at 50% 40%, rgba(255,201,60,.25), transparent 60%), rgba(27,15,58,.88); }
+.start-card{ text-align:center; max-width:30rem; }
+.start-card .big{ font-size:clamp(3rem, 14vw, 5.5rem); line-height:1; letter-spacing:.05em; }
+.start-card h2{ margin:.2em 0 .1em; font-size:clamp(1.8rem, 7vw, 2.8rem); line-height:1.05; font-weight:800; }
+.start-card p{ margin:0 0 1.1em; font-size:1.15rem; font-weight:600; opacity:.9; }
+.play{ all:unset; cursor:pointer; display:inline-grid; place-items:center; width:min(52vw, 220px); aspect-ratio:1; border-radius:50%;
+  background:var(--sun); color:var(--plum-deep); font-size:clamp(2rem, 9vw, 3rem); font-weight:800; box-shadow:0 8px 0 #c98f00, 0 0 0 10px rgba(255,201,60,.3);
+  animation:breathe 1.8s ease-in-out infinite; }
+.play:focus-visible{ outline:5px solid #fff; outline-offset:8px; }
+@keyframes breathe{ 50%{ transform:scale(1.06); } }
+@media (max-height:520px){ .start-card .big{ font-size:2.6rem; } .start-card h2{ font-size:1.6rem; } .start-card p{ margin-bottom:.5em; } .play{ width:120px; font-size:1.8rem; } .gear{ width:44px; height:44px; } }
+
+/* grown-up panel */
+.sheet-wrap{ position:fixed; inset:0; z-index:30; display:grid; place-items:center; padding:16px; background:rgba(10,4,20,.6); touch-action:auto; }
+.sheet{ width:min(100%, 30rem); max-height:100%; overflow:auto; background:var(--panel-bg); color:var(--panel-text); border-radius:24px; padding:20px 20px 18px;
+  box-shadow:0 20px 50px rgba(0,0,0,.4); -webkit-user-select:text; user-select:text; touch-action:pan-y; }
+.sheet h2{ margin:0 0 4px; font-size:1.5rem; line-height:1.1; }
+.sheet .note{ margin:0 0 14px; color:var(--panel-muted); font-size:1rem; line-height:1.35; font-weight:600; }
+.field{ margin:0 0 14px; border:0; padding:0; }
+.field > legend, .field > label{ display:block; font-weight:800; font-size:1.05rem; margin-bottom:6px; padding:0; }
+.seg{ display:grid; grid-template-columns:repeat(3,1fr); gap:6px; }
+.seg button, .btn{ all:unset; cursor:pointer; text-align:center; min-height:46px; border-radius:14px; padding:4px 10px; display:grid; place-items:center;
+  border:2px solid var(--panel-line); font-weight:800; font-size:1rem; color:var(--panel-text); }
+.seg button[aria-pressed="true"]{ background:var(--plum); border-color:var(--plum); color:#fff; }
+.row{ display:flex; gap:8px; align-items:center; }
+select{ flex:1; min-width:0; font:600 16px/1.2 var(--font); min-height:46px; border-radius:14px; border:2px solid var(--panel-line); background:var(--panel-bg); color:var(--panel-text); padding:4px 10px; }
+.btn.primary{ background:var(--sun); border-color:var(--sun); color:#3d1a4b; width:100%; box-sizing:border-box; margin-top:4px; font-size:1.15rem; }
+.toggle{ display:flex; align-items:center; gap:10px; font-weight:800; font-size:1.05rem; min-height:46px; cursor:pointer; }
+.toggle input{ width:26px; height:26px; accent-color:var(--plum); }
+.nosound{ position:fixed; left:50%; top:calc(env(safe-area-inset-top,0px) + 64px); transform:translateX(-50%); z-index:15; width:min(92vw, 28rem);
+  background:#fff; color:var(--plum-deep); border-radius:16px; padding:10px 14px; font-weight:600; font-size:1rem; line-height:1.35; text-align:center; }
+.start-card h2{ font-family:"Chewy", var(--font); font-weight:400; letter-spacing:.02em; }
+</style>
+</head>
+<body>
+<canvas id="cv" aria-label="Tap anywhere to make kitties that meow" role="img"></canvas>
+
+<header class="top">
+  <h1 class="title"><span aria-hidden="true">🐱</span><span>Melly Mo’s Kitty Taps</span></h1>
+  <div style="position:relative">
+    <button class="gear" id="gear" aria-label="Grown-up settings (press and hold)">⚙︎</button>
+    <div class="gear-tip" id="gearTip" hidden>Grown-ups: press and hold</div>
+  </div>
+</header>
+
+<div class="hint" id="hint" aria-hidden="true"><span class="hand">👆</span><span class="txt" id="hintTxt">Tap anywhere!</span></div>
+
+<div class="start" id="start">
+  <div class="start-card">
+    <div class="big" aria-hidden="true">😺🐾😸</div>
+    <h2>Melly Mo’s Kitty Taps</h2>
+    <p>Tap to make a kitty. Every kitty meows!</p>
+    <button class="play" id="play" aria-label="Play">Play</button>
+  </div>
+</div>
+
+<div class="nosound" id="nosound" role="status" hidden>No sound came out. Check that the phone isn’t on silent and the volume is up, then tap again.</div>
+
+<div class="sheet-wrap" id="sheetWrap" hidden>
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+    <h2 id="sheetTitle">Grown-up settings</h2>
+    <p class="note">Pick the language and voices. Changes are saved on this device.</p>
+    <fieldset class="field">
+      <legend>Language</legend>
+      <div class="seg" id="langSeg">
+        <button type="button" data-lang="en">English</button>
+        <button type="button" data-lang="es">Español</button>
+        <button type="button" data-lang="both">Both</button>
+      </div>
+    </fieldset>
+    <div class="field">
+      <label for="enVoice">English voice</label>
+      <div class="row"><select id="enVoice"></select><button class="btn" type="button" data-test="en" aria-label="Test English voice">▶︎ Test</button></div>
+    </div>
+    <div class="field">
+      <label for="esVoice">Spanish voice</label>
+      <div class="row"><select id="esVoice"></select><button class="btn" type="button" data-test="es" aria-label="Test Spanish voice">▶︎ Test</button></div>
+    </div>
+    <label class="toggle"><input type="checkbox" id="meowWords"> Show the meow words</label>
+    <label class="toggle"><input type="checkbox" id="sfx"> Meows and sound effects</label>
+    <a class="btn" href="/" style="width:100%;margin-bottom:8px">Back to all games</a>
+    <button class="btn primary" type="button" id="done">Done</button>
+  </div>
+</div>
+
+<script src="/voice-clips.js"></script>
+<script>
+(() => {
+"use strict";
+/* ================= settings ================= */
+const LS_KEY = "mellymo-settings";
+function loadSettings(){
+  let s; try{ s = JSON.parse(localStorage.getItem(LS_KEY) || "{}") || {}; }catch(e){ s = {}; }
+  // One-time move to the recorded voice: "" used to mean "Automatic" (the old default), not a deliberate choice.
+  // A specific device voice someone picked is kept.
+  if (!s.recVoice){ if (s.enVoice === "") delete s.enVoice; if (s.esVoice === "") delete s.esVoice; s.recVoice = 1; }
+  return s;
+}
+const REC = window.VoiceClips ? VoiceClips.RECORDED : "recorded";
+const settings = Object.assign({ lang:"en", enVoice:REC, esVoice:REC, sfx:true, meowWords:true }, loadSettings());
+function saveSettings(){ try{ localStorage.setItem(LS_KEY, JSON.stringify(settings)); }catch(e){} }
+const reduceMotion = (() => { try{ return matchMedia("(prefers-reduced-motion: reduce)").matches; }catch(e){ return false; } })();
+
+/* ================= speech ================= */
+let voices = [];
+const langOf = v => (v.lang || "").replace("_","-").toLowerCase();
+function loadVoices(){ try{ voices = (window.speechSynthesis && speechSynthesis.getVoices()) || []; }catch(e){ voices = []; } fillVoiceSelects(); }
+function voiceFor(lang){
+  const pref = settings[lang === "en" ? "enVoice" : "esVoice"];
+  let v = voices.find(x => x.voiceURI === pref);
+  if (v) return v;
+  const list = voices.filter(x => langOf(x).startsWith(lang));
+  const first = lang === "en" ? "en-us" : "es-es", second = lang === "en" ? "en-gb" : "es-mx";
+  return list.find(x => langOf(x) === first) || list.find(x => langOf(x) === second) || list[0] || null;
+}
+let speakToken = 0, spokeOnce = false, silentTimer = null, speaking = false;
+/* recorded voice clips (voice/manifest.json), device voice for anything without a clip */
+const vo = window.VoiceClips ? VoiceClips.create({ base:"/games/kitty-taps/voice/" }) : null;
+window.__vo = vo;
+const isRec = lang => !!vo && settings[lang === "en" ? "enVoice" : "esVoice"] === REC;
+// The whole line if it was recorded, else its sentences: "Blue! Red! Yellow!" plays three clips.
+function clipParts(text, lang){
+  if (vo.has(text, lang)) return [text];
+  return text.replace(/([!?.])\s+/g, "$1\n").split("\n");
+}
+function sayDevice(text, lang, tok){
+  return new Promise(res => {
+    if (tok !== speakToken) return res();
+    try{
+      if (!window.speechSynthesis) return res();
+      const u = new SpeechSynthesisUtterance(text);
+      const v = voiceFor(lang);
+      if (v){ u.voice = v; u.lang = v.lang; } else { u.lang = lang === "en" ? "en-US" : "es-ES"; }
+      u.rate = 0.85; u.pitch = 1.1;
+      let done = false;
+      const fin = () => { if (done) return; done = true; clearTimeout(safety); res(); };
+      const safety = setTimeout(fin, 6000);
+      u.onstart = () => { spokeOnce = true; hideNoSound(); };
+      u.onend = fin; u.onerror = fin;
+      speechSynthesis.speak(u);
+    }catch(e){ res(); }
+  });
+}
+function speakRecorded(parts, tok){
+  vo.ready.then(() => {
+    let i = 0;
+    const next = () => {
+      if (tok !== speakToken) return;
+      if (i >= parts.length){ speaking = false; return; }
+      const p = parts[i++];
+      const after = () => { if (tok === speakToken) setTimeout(next, 200); };
+      if (!isRec(p.lang)) { sayDevice(p.text, p.lang, tok).then(after); return; }
+      const pieces = clipParts(p.text, p.lang);
+      vo.play(pieces, { lang:p.lang, fallback: q => sayDevice(q.text, q.lang, tok),
+        onstart: () => { if (pieces.some(t => vo.has(t, p.lang))){ spokeOnce = true; hideNoSound(); } } }).then(after);
+    };
+    next();
+  });
+}
+function speak(parts){
+  if (!parts.length) return;
+  const tok = ++speakToken;
+  if (parts.some(p => isRec(p.lang))){
+    try{ vo.stop(); if (window.speechSynthesis) speechSynthesis.cancel(); }catch(e){}
+    speaking = true;
+    speakRecorded(parts, tok);
+    if (!spokeOnce){ clearTimeout(silentTimer); silentTimer = setTimeout(() => { if (!spokeOnce) showNoSound(); }, 6000); }
+    return;
+  }
+  if (vo) vo.stop();
+  try{ if (!window.speechSynthesis) { showNoSound(); return; } speechSynthesis.cancel(); }catch(e){ return; }
+  let i = 0; speaking = true;
+  const next = () => {
+    if (tok !== speakToken) return;
+    if (i >= parts.length){ speaking = false; return; }
+    const p = parts[i++];
+    try{
+      const u = new SpeechSynthesisUtterance(p.text);
+      const v = voiceFor(p.lang);
+      if (v){ u.voice = v; u.lang = v.lang; } else { u.lang = p.lang === "en" ? "en-US" : "es-ES"; }
+      u.rate = 0.85; u.pitch = 1.1;
+      let done = false;
+      const fin = () => { if (done) return; done = true; clearTimeout(safety); setTimeout(next, 200); };
+      const safety = setTimeout(fin, 6000);
+      u.onstart = () => { spokeOnce = true; hideNoSound(); };
+      u.onend = fin; u.onerror = fin;
+      speechSynthesis.speak(u);
+    }catch(e){ speaking = false; }
+  };
+  next();
+  if (!spokeOnce){ clearTimeout(silentTimer); silentTimer = setTimeout(() => { if (!spokeOnce) showNoSound(); }, 1800); }
+}
+function lines(en, es){
+  const m = settings.lang, out = [];
+  if (m !== "es" && en) out.push({ lang:"en", text:en });
+  if (m !== "en" && es) out.push({ lang:"es", text:es });
+  return out;
+}
+const noSoundEl = document.getElementById("nosound");
+let noSoundHide = null;
+function showNoSound(){ noSoundEl.hidden = false; clearTimeout(noSoundHide); noSoundHide = setTimeout(hideNoSound, 7000); }
+function hideNoSound(){ noSoundEl.hidden = true; }
+try{ if (window.speechSynthesis) speechSynthesis.onvoiceschanged = loadVoices; }catch(e){}
+
+/* ================= sound ================= */
+let ac = null, master = null;
+function audio(){
+  if (!settings.sfx) return null;
+  try{
+    if (!ac){
+      ac = new (window.AudioContext || window.webkitAudioContext)();
+      master = ac.createDynamicsCompressor(); master.connect(ac.destination);
+    }
+    if (ac.state === "suspended") ac.resume();
+    return ac;
+  }catch(e){ return null; }
+}
+function osc(f, type, vol, attack, decay, when = 0, slideTo = 0){
+  const a = audio(); if (!a) return;
+  try{
+    const t = a.currentTime + when, o = a.createOscillator(), g = a.createGain();
+    o.type = type; o.frequency.setValueAtTime(f, t);
+    if (slideTo) o.frequency.exponentialRampToValueAtTime(slideTo, t + Math.min(decay, .2));
+    g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(vol, t + attack); g.gain.exponentialRampToValueAtTime(.0001, t + attack + decay);
+    o.connect(g).connect(master); o.start(t); o.stop(t + attack + decay + .05);
+  }catch(e){}
+}
+function popSound(){ osc(520, "sine", .08, .005, .12, 0, 900); }
+
+/* ================= meows ================= */
+// Real meows from ElevenLabs sound generation: sounds/manifest.json lists each file and its word.
+const SOUND_DIR = "/games/kitty-taps/sounds/";
+let MEOWS = [];
+const meowBuf = {}, meowLoading = {};
+const meowsReady = fetch(SOUND_DIR + "manifest.json")
+  .then(r => r.ok ? r.json() : { sounds:[] })
+  .then(m => { MEOWS = (m.sounds || []).map(x => ({ file:x.file, en:x.en, es:x.es })); })
+  .catch(() => {});
+function loadMeow(m){
+  if (meowBuf[m.file]) return Promise.resolve(meowBuf[m.file]);
+  if (meowLoading[m.file]) return meowLoading[m.file];
+  const a = audio(); if (!a) return Promise.resolve(null);
+  meowLoading[m.file] = fetch(SOUND_DIR + m.file)
+    .then(r => { if (!r.ok) throw new Error("missing"); return r.arrayBuffer(); })
+    .then(b => new Promise((res, rej) => a.decodeAudioData(b, res, rej)))
+    .then(buf => { meowBuf[m.file] = buf; return buf; })
+    .catch(() => { delete meowLoading[m.file]; return null; });
+  return meowLoading[m.file];
+}
+function preloadMeows(){ meowsReady.then(() => MEOWS.forEach(loadMeow)); }
+// A shuffled bag, so every kitty gets a different meow until they've all been heard.
+let bag = [], lastMeow = null;
+function nextMeow(){
+  if (!MEOWS.length) return null;
+  if (!bag.length){
+    bag = MEOWS.slice();
+    for (let i = bag.length - 1; i > 0; i--){ const j = Math.floor(Math.random() * (i + 1)); [bag[i], bag[j]] = [bag[j], bag[i]]; }
+    if (bag.length > 1 && bag[bag.length - 1] === lastMeow) bag.unshift(bag.pop());
+  }
+  lastMeow = bag.pop();
+  return lastMeow;
+}
+const playing = [];
+// Plays a meow; returns how long it lasts in seconds (for the kitty's mouth).
+function playMeow(m, rate){
+  if (!m || !settings.sfx) return 1;
+  const a = audio(), buf = meowBuf[m.file];
+  if (a && buf){
+    try{
+      while (playing.length >= 3){ const old = playing.shift(); try{ old.stop(); }catch(e){} }
+      const src = a.createBufferSource(), g = a.createGain();
+      src.buffer = buf; src.playbackRate.value = rate; g.gain.value = .95;
+      src.connect(g).connect(master); src.start();
+      playing.push(src);
+      src.onended = () => { const i = playing.indexOf(src); if (i >= 0) playing.splice(i, 1); };
+      spokeOnce = true; hideNoSound();
+      return buf.duration / rate;
+    }catch(e){}
+  }
+  // Not decoded yet (very first tap on a slow connection): play it straight from the file.
+  loadMeow(m);
+  try{
+    const el = new Audio(SOUND_DIR + m.file);
+    el.playbackRate = rate; el.setAttribute("playsinline", "");
+    const pr = el.play(); if (pr && pr.catch) pr.catch(() => {});
+  }catch(e){}
+  return 1.2;
+}
+
+/* ================= kitties ================= */
+const COATS = [
+  { fur:"#ffa94d", belly:"#ffe3c2", stripe:"#d9731f", eye:"#7ed957", glow:"#ff9f1c" },  // orange tabby
+  { fur:"#b3b5c9", belly:"#ecedf5", stripe:"#7f8199", eye:"#ffd84d", glow:"#c3c6ff" },  // gray tabby
+  { fur:"#3d3548", belly:"#5f5470", eye:"#ffe14d", glow:"#b56bff" },                    // black
+  { fur:"#fffaf3", belly:"#ffffff", eye:"#5ec8ff", glow:"#ffffff" },                    // white
+  { fur:"#fff3e3", belly:"#ffffff", eye:"#7ed957", glow:"#ffb86b", patches:["#ff9f45", "#3d3548"] }, // calico
+  { fur:"#ff9ed2", belly:"#ffd9ee", eye:"#4da6ff", glow:"#ff7ad9" },                    // pink
+  { fur:"#c49bff", belly:"#ecdcff", eye:"#ffe14d", glow:"#b56bff" },                    // purple
+  { fur:"#f3d9a4", belly:"#fff4dc", stripe:"#c99a52", eye:"#4ee06a", glow:"#ffe14d" },  // cream tabby
+  { fur:"#8fd3ff", belly:"#dff3ff", eye:"#ff9ed2", glow:"#4da6ff" },                    // sky blue
+];
+const LINE = "#2a1238";
+let lastCoat = -1;
+function nextCoat(){
+  let i; do { i = Math.floor(Math.random() * COATS.length); } while (i === lastCoat);
+  lastCoat = i; return COATS[i];
+}
+
+const cv = document.getElementById("cv"), ctx = cv.getContext("2d");
+let W = 0, H = 0, DPR = 1;
+const sky = [];
+function resize(){
+  DPR = Math.min(2, window.devicePixelRatio || 1);
+  W = window.innerWidth; H = window.innerHeight;
+  cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR);
+  ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  sky.length = 0;
+  const n = Math.round(W * H / 9000);
+  for (let i = 0; i < n; i++) sky.push({ x:Math.random()*W, y:Math.random()*H, r:Math.random()*1.4+.4, ph:Math.random()*6.28 });
+}
+window.addEventListener("resize", resize);
+
+const rnd = (a, b) => a + Math.random() * (b - a);
+const kitties = [], parts = [];
+const MAX_KITTIES = reduceMotion ? 6 : 9, MAX_PARTS = reduceMotion ? 120 : 400, KITTY_LIFE = 9;
+let t = 0;
+function add(p){ if (parts.length >= MAX_PARTS) parts.shift(); parts.push(p); }
+
+function meowKitty(k){
+  const m = nextMeow();
+  // Little kitties meow a bit higher, big kitties a bit lower.
+  const rate = 1.12 - (k.s - minSize()) / Math.max(1, maxSize() - minSize()) * .22;
+  const dur = playMeow(m, rate);
+  k.meowAt = t; k.meowDur = Math.max(.5, Math.min(2.4, dur));
+  if (m && settings.meowWords){
+    const word = settings.lang === "es" ? m.es : m.en, sub = settings.lang === "both" ? m.es : "";
+    add({ k:"word", x:k.x, y:k.y - k.s * 1.25, vy:-46, life:0, max:1.9, c:k.coat.glow, text:word, sub, size:Math.max(26, k.s * .55) });
+  }
+}
+function minSize(){ return Math.max(34, Math.min(W, H) * .085); }
+function maxSize(){ return Math.max(48, Math.min(W, H) * .14); }
+function makeKitty(x, y){
+  const s = rnd(minSize(), maxSize());
+  // keep the whole kitty (ears to paws) on screen
+  x = Math.max(s * 1.25, Math.min(W - s * 1.25, x));
+  y = Math.max(s * 1.3 + 56, Math.min(H - s * 2.1, y));
+  const k = { x, y, s, coat:nextCoat(), born:t, life:0, hop:0, hopV:0, tailPh:rnd(0, 6.28), blinkAt:t + rnd(1, 3),
+    tilt:rnd(-.12, .12), leaving:-1, meowAt:-9, meowDur:1, look:rnd(-1, 1) };
+  kitties.push(k);
+  let alive = kitties.filter(q => q.leaving < 0);
+  while (alive.length > MAX_KITTIES){ alive[0].leaving = t; alive = alive.slice(1); }
+  popSound();
+  add({ k:"ring", x, y:y + s * .4, r:s * .6, vr:s * 4, life:0, max:.55, c:k.coat.glow, w:4 });
+  sparkles(x, y + s * .4, k.coat.glow, reduceMotion ? 4 : 12, s);
+  meowKitty(k);
+  return k;
+}
+function petKitty(k){
+  k.life = 0; k.leaving = -1;
+  k.hopV = -k.s * 7;
+  hearts(k.x, k.y - k.s * .6, reduceMotion ? 2 : 5);
+  meowKitty(k);
+}
+function kittyAt(x, y){
+  for (let i = kitties.length - 1; i >= 0; i--){
+    const k = kitties[i];
+    if (k.leaving >= 0) continue;
+    const dx = (x - k.x) / (k.s * 1.15), dy = (y - (k.y + k.s * .55 + k.hop)) / (k.s * 1.6);
+    if (dx * dx + dy * dy < 1) return k;
+  }
+  return null;
+}
+function sparkles(x, y, c, n, s){
+  for (let i = 0; i < n; i++){
+    const a = rnd(0, Math.PI * 2), sp = rnd(s * 2, s * 6);
+    add({ k:"spark", x, y, vx:Math.cos(a) * sp, vy:Math.sin(a) * sp - s, g:s * 6, s:rnd(2, 4.5), life:0, max:rnd(.5, .9), c:Math.random() < .3 ? "#fff" : c });
+  }
+}
+function hearts(x, y, n){
+  for (let i = 0; i < n; i++) add({ k:"heart", x:x + rnd(-30, 30), y, vx:rnd(-30, 30), vy:rnd(-150, -80), s:rnd(10, 18), life:0, max:rnd(1.1, 1.6), c:Math.random() < .5 ? "#ff7ad9" : "#ff4d5e", ph:rnd(0, 6) });
+}
+let pawSide = 1;
+function pawPrint(x, y, ang, c){
+  pawSide = -pawSide;
+  add({ k:"paw", x:x + Math.cos(ang + Math.PI / 2) * 9 * pawSide, y:y + Math.sin(ang + Math.PI / 2) * 9 * pawSide, a:ang + Math.PI / 2, s:rnd(11, 14), life:0, max:2.6, c });
+}
+
+/* ---- drawing ---- */
+function ell(x, y, rx, ry){ ctx.beginPath(); ctx.ellipse(x, y, Math.max(.1, rx), Math.max(.1, ry), 0, 0, 6.283); }
+function drawKitty(k){
+  const R = k.s, c = k.coat, age = t - k.born;
+  // pop in with a springy bounce, and shrink away when leaving
+  let sc = 1;
+  if (age < .45 && !reduceMotion){ const x = age / .45 - 1; sc = 1 + 2.7 * x * x * x + 1.7 * x * x; }
+  else if (age < .45) sc = Math.min(1, age / .2);
+  let alpha = 1;
+  if (k.leaving >= 0){ const f = Math.min(1, (t - k.leaving) / .6); sc *= 1 - f * .6; alpha = 1 - f; }
+  const meowP = (t - k.meowAt) / k.meowDur, meowing = meowP >= 0 && meowP < 1;
+  const breathe = reduceMotion ? 0 : Math.sin(t * 2.4 + k.tailPh) * .015;
+  ctx.save();
+  ctx.globalAlpha = Math.max(0, alpha);
+  ctx.translate(k.x, k.y + k.hop + R * .55);
+  ctx.scale(sc, sc * (1 + breathe));
+  ctx.translate(0, -R * .55);
+  ctx.lineJoin = "round"; ctx.lineCap = "round"; ctx.lineWidth = Math.max(2.5, R * .07); ctx.strokeStyle = LINE;
+
+  // tail
+  const sw = reduceMotion ? 0 : Math.sin(t * (meowing ? 7 : 2.2) + k.tailPh) * R * .3;
+  ctx.beginPath(); ctx.moveTo(R * .5, R * 1.55);
+  ctx.bezierCurveTo(R * 1.25, R * 1.6, R * 1.35 + sw * .3, R * 1.0, R * 1.05 + sw, R * .55);
+  ctx.lineWidth = R * .26 + Math.max(2.5, R * .07) * 2; ctx.stroke();
+  ctx.lineWidth = R * .26; ctx.strokeStyle = c.fur; ctx.stroke();
+  ctx.lineWidth = Math.max(2.5, R * .07); ctx.strokeStyle = LINE;
+
+  // body
+  ctx.shadowColor = c.glow; ctx.shadowBlur = R * .5;
+  ell(0, R * 1.3, R * .78, R * .62); ctx.fillStyle = c.fur; ctx.fill();
+  ctx.shadowBlur = 0; ctx.stroke();
+  ell(0, R * 1.42, R * .44, R * .42); ctx.fillStyle = c.belly; ctx.fill();
+  // paws
+  for (const sx of [-1, 1]){ ell(sx * R * .34, R * 1.86, R * .22, R * .14); ctx.fillStyle = c.belly; ctx.fill(); ctx.stroke(); }
+
+  // head (tilts up a little while meowing)
+  ctx.save();
+  ctx.rotate(k.tilt + (meowing ? Math.sin(meowP * Math.PI) * -.08 : 0));
+  // ears
+  for (const sx of [-1, 1]){
+    ctx.beginPath(); ctx.moveTo(sx * R * .92, -R * .25); ctx.lineTo(sx * R * .78, -R * 1.15); ctx.lineTo(sx * R * .2, -R * .78); ctx.closePath();
+    ctx.fillStyle = c.fur; ctx.fill(); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(sx * R * .8, -R * .42); ctx.lineTo(sx * R * .74, -R * .95); ctx.lineTo(sx * R * .38, -R * .74); ctx.closePath();
+    ctx.fillStyle = "#ff9ec4"; ctx.fill();
+  }
+  ctx.shadowColor = c.glow; ctx.shadowBlur = R * .5;
+  ell(0, 0, R, R * .84); ctx.fillStyle = c.fur; ctx.fill(); ctx.shadowBlur = 0;
+  if (c.patches){
+    ctx.save(); ell(0, 0, R, R * .84); ctx.clip();
+    ell(-R * .62, -R * .45, R * .55, R * .45); ctx.fillStyle = c.patches[0]; ctx.fill();
+    ell(R * .7, -R * .2, R * .42, R * .5); ctx.fillStyle = c.patches[1]; ctx.fill();
+    ctx.restore();
+  }
+  if (c.stripe){
+    ctx.save(); ctx.strokeStyle = c.stripe; ctx.lineWidth = R * .09;
+    for (const sx of [-.22, 0, .22]){ ctx.beginPath(); ctx.moveTo(sx * R, -R * .8); ctx.lineTo(sx * R * .8, -R * .52); ctx.stroke(); }
+    ctx.restore();
+  }
+  ell(0, 0, R, R * .84); ctx.stroke();
+  // muzzle
+  ell(0, R * .36, R * .36, R * .24); ctx.fillStyle = c.belly; ctx.globalAlpha *= .9; ctx.fill(); ctx.globalAlpha = Math.max(0, alpha);
+  // eyes
+  const blinking = t > k.blinkAt && t < k.blinkAt + .14;
+  if (t > k.blinkAt + .14) k.blinkAt = t + rnd(2, 5);
+  const happy = meowing || t - k.born < .3 || k.hopV < 0;
+  const look = Math.sin(t * .7 + k.look * 3) * R * .04;
+  for (const sx of [-1, 1]){
+    const ex = sx * R * .4, ey = -R * .08;
+    if (blinking || happy){
+      ctx.beginPath(); ctx.arc(ex, ey + R * .06, R * .14, Math.PI * 1.1, Math.PI * 1.9); ctx.lineWidth = R * .08; ctx.stroke(); ctx.lineWidth = Math.max(2.5, R * .07);
+    } else {
+      ell(ex, ey, R * .17, R * .21); ctx.fillStyle = c.eye; ctx.fill();
+      ell(ex + look, ey + R * .02, R * .08, R * .17); ctx.fillStyle = "#120a18"; ctx.fill();
+      ell(ex + look + R * .06, ey - R * .08, R * .045, R * .045); ctx.fillStyle = "#fff"; ctx.fill();
+      ell(ex, ey, R * .17, R * .21); ctx.lineWidth = R * .045; ctx.stroke(); ctx.lineWidth = Math.max(2.5, R * .07);
+    }
+  }
+  // cheeks
+  for (const sx of [-1, 1]){ ell(sx * R * .62, R * .28, R * .13, R * .08); ctx.fillStyle = "rgba(255,110,170,.45)"; ctx.fill(); }
+  // nose
+  ctx.beginPath(); ctx.moveTo(-R * .09, R * .2); ctx.lineTo(R * .09, R * .2); ctx.lineTo(0, R * .3); ctx.closePath();
+  ctx.fillStyle = "#ff7aa8"; ctx.fill(); ctx.lineWidth = R * .04; ctx.stroke();
+  // mouth: open while meowing, a little "w" otherwise
+  ctx.lineWidth = R * .055;
+  if (meowing){
+    const open = Math.pow(Math.sin(meowP * Math.PI), .6) * (.75 + .25 * Math.sin(t * 22));
+    ell(0, R * .44, R * .13, R * (.05 + .14 * open)); ctx.fillStyle = "#4a1030"; ctx.fill(); ctx.stroke();
+    ell(0, R * (.48 + .08 * open), R * .07, R * .05 * open + .1); ctx.fillStyle = "#ff7aa8"; ctx.fill();
+  } else {
+    ctx.beginPath(); ctx.moveTo(0, R * .3); ctx.quadraticCurveTo(0, R * .42, -R * .12, R * .4);
+    ctx.moveTo(0, R * .3); ctx.quadraticCurveTo(0, R * .42, R * .12, R * .4); ctx.stroke();
+  }
+  // whiskers
+  ctx.lineWidth = Math.max(1.5, R * .035); ctx.strokeStyle = c.fur === "#3d3548" ? "#e9dcf5" : LINE;
+  for (const sx of [-1, 1]){
+    ctx.beginPath();
+    ctx.moveTo(sx * R * .5, R * .26); ctx.lineTo(sx * R * 1.15, R * .14);
+    ctx.moveTo(sx * R * .5, R * .36); ctx.lineTo(sx * R * 1.15, R * .42);
+    ctx.stroke();
+  }
+  ctx.restore();
+  ctx.restore();
+}
+function heartPath(s){
+  ctx.beginPath(); ctx.moveTo(0, s * .35);
+  ctx.bezierCurveTo(-s * 1.1, -s * .35, -s * .45, -s * 1, 0, -s * .45);
+  ctx.bezierCurveTo(s * .45, -s * 1, s * 1.1, -s * .35, 0, s * .35);
+  ctx.closePath();
+}
+function drawPaw(s){
+  ell(0, s * .35, s * .55, s * .45); ctx.fill();
+  for (const [px, py] of [[-.62, -.15], [-.24, -.55], [.24, -.55], [.62, -.15]]){ ell(px * s, py * s, s * .22, s * .25); ctx.fill(); }
+}
+
+let last = performance.now();
+const bodyFont = () => getComputedStyle(document.body).fontFamily;
+function frame(now){
+  const dt = Math.min(.05, (now - last) / 1000); last = now; t += dt;
+  ctx.clearRect(0, 0, W, H);
+  for (const s of sky){
+    ctx.globalAlpha = reduceMotion ? .5 : .35 + .35 * Math.sin(t * 1.3 + s.ph);
+    ctx.fillStyle = "#fff"; ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, 6.283); ctx.fill();
+  }
+  ctx.globalAlpha = 1;
+  // paw prints sit underneath the kitties
+  for (let i = parts.length - 1; i >= 0; i--){
+    const p = parts[i]; if (p.k !== "paw") continue;
+    p.life += dt;
+    if (p.life >= p.max){ parts.splice(i, 1); continue; }
+    ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.a);
+    ctx.globalAlpha = Math.min(1, (1 - p.life / p.max) * 1.6) * .9; ctx.fillStyle = p.c; ctx.shadowColor = p.c; ctx.shadowBlur = 10;
+    drawPaw(p.s); ctx.restore();
+  }
+  for (let i = kitties.length - 1; i >= 0; i--){
+    const k = kitties[i];
+    k.life += dt;
+    if (k.leaving < 0 && k.life > KITTY_LIFE) k.leaving = t;
+    if (k.leaving >= 0 && t - k.leaving > .6){ kitties.splice(i, 1); continue; }
+    if (k.hopV || k.hop){ k.hopV += k.s * 40 * dt; k.hop += k.hopV * dt; if (k.hop > 0){ k.hop = 0; k.hopV = 0; } }
+  }
+  for (const k of kitties) drawKitty(k);
+  for (let i = parts.length - 1; i >= 0; i--){
+    const p = parts[i]; if (p.k === "paw") continue;
+    p.life += dt;
+    if (p.life >= p.max){ parts.splice(i, 1); continue; }
+    const f = 1 - p.life / p.max;
+    if (p.vx !== undefined){ p.x += p.vx * dt; }
+    if (p.vy !== undefined){ p.y += p.vy * dt; }
+    if (p.g) p.vy += p.g * dt;
+    ctx.save();
+    if (p.k === "ring"){
+      p.r += p.vr * dt;
+      ctx.globalAlpha = f; ctx.strokeStyle = p.c; ctx.lineWidth = p.w; ctx.shadowColor = p.c; ctx.shadowBlur = 18;
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, 6.283); ctx.stroke();
+    } else if (p.k === "spark"){
+      ctx.globalAlpha = f; ctx.fillStyle = p.c; ctx.shadowColor = p.c; ctx.shadowBlur = 12;
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.s, 0, 6.283); ctx.fill();
+    } else if (p.k === "heart"){
+      p.x += Math.sin(t * 4 + p.ph) * 20 * dt;
+      ctx.translate(p.x, p.y); ctx.globalAlpha = Math.min(1, f * 1.6); ctx.fillStyle = p.c; ctx.shadowColor = p.c; ctx.shadowBlur = 12;
+      heartPath(p.s); ctx.fill();
+    } else if (p.k === "word"){
+      const pop = Math.min(1, p.life / .18);
+      ctx.globalAlpha = Math.min(1, f * 2.2);
+      ctx.translate(p.x, p.y); ctx.scale(.6 + .4 * pop, .6 + .4 * pop);
+      ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.lineJoin = "round";
+      ctx.font = p.size + "px Chewy, " + bodyFont();
+      ctx.lineWidth = 6; ctx.strokeStyle = LINE; ctx.strokeText(p.text, 0, 0);
+      ctx.fillStyle = "#fff"; ctx.shadowColor = p.c; ctx.shadowBlur = 16; ctx.fillText(p.text, 0, 0);
+      if (p.sub){
+        ctx.font = (p.size * .7) + "px Chewy, " + bodyFont();
+        ctx.shadowBlur = 0; ctx.strokeText(p.sub, 0, p.size * .85); ctx.fillStyle = p.c; ctx.fillText(p.sub, 0, p.size * .85);
+      }
+    }
+    ctx.restore();
+  }
+  requestAnimationFrame(frame);
+}
+
+/* ================= input ================= */
+let started = false;
+const pointers = new Map();
+const hint = document.getElementById("hint");
+let idleTimer = null;
+function poke(){
+  hint.classList.add("off");
+  clearTimeout(idleTimer);
+  idleTimer = setTimeout(() => hint.classList.remove("off"), 7000);
+}
+cv.addEventListener("pointerdown", e => {
+  if (!started) return;
+  e.preventDefault(); poke(); audio();
+  const x = e.clientX, y = e.clientY;
+  const hit = kittyAt(x, y);
+  const k = hit || makeKitty(x, y);
+  if (hit) petKitty(hit);
+  pointers.set(e.pointerId, { x, y, sx:x, sy:y, c:k.coat.glow, moved:false });
+  try{ cv.setPointerCapture(e.pointerId); }catch(err){}
+});
+cv.addEventListener("pointermove", e => {
+  const pt = pointers.get(e.pointerId); if (!pt) return;
+  e.preventDefault();
+  const d = Math.hypot(e.clientX - pt.x, e.clientY - pt.y);
+  if (d < 30) return;
+  const ang = Math.atan2(e.clientY - pt.y, e.clientX - pt.x);
+  pt.x = e.clientX; pt.y = e.clientY;
+  pawPrint(pt.x, pt.y, ang, pt.c);
+});
+["pointerup","pointercancel","lostpointercapture"].forEach(type => cv.addEventListener(type, e => pointers.delete(e.pointerId)));
+
+/* ================= start ================= */
+function hintText(){ document.getElementById("hintTxt").textContent = settings.lang === "es" ? "¡Toca donde quieras!" : "Tap anywhere!"; }
+document.getElementById("play").addEventListener("click", () => {
+  // Let the meows play like the voice does, even with the ringer switch off (newer iPhones).
+  try{ if (navigator.audioSession) navigator.audioSession.type = "playback"; }catch(e){}
+  started = true; audio(); preloadMeows();
+  document.getElementById("start").hidden = true;
+  speak(lines("Tap anywhere to make kitties!", "¡Toca para hacer gatitos!"));
+  poke();
+  // a first kitty says hello once the voice has had a moment
+  setTimeout(() => { if (!kitties.length) Promise.all(MEOWS.slice(0, 1).map(loadMeow)).then(() => makeKitty(W / 2, H * .5)); }, 2600);
+});
+
+/* ================= grown-up panel ================= */
+const gear = document.getElementById("gear"), gearTip = document.getElementById("gearTip");
+const sheetWrap = document.getElementById("sheetWrap");
+let holdRaf = 0, holdStart = 0, tipTimer = null;
+function holdTick(){
+  const p = Math.min(1, (performance.now() - holdStart) / 900);
+  gear.style.setProperty("--p", p);
+  if (p >= 1){ endHold(); openSheet(); return; }
+  holdRaf = requestAnimationFrame(holdTick);
+}
+function endHold(){ cancelAnimationFrame(holdRaf); holdRaf = 0; gear.style.setProperty("--p", 0); }
+gear.addEventListener("pointerdown", e => { e.preventDefault(); holdStart = performance.now(); cancelAnimationFrame(holdRaf); holdRaf = requestAnimationFrame(holdTick); });
+["pointerup","pointerleave","pointercancel"].forEach(t => gear.addEventListener(t, () => {
+  if (holdRaf){ endHold(); gearTip.hidden = false; clearTimeout(tipTimer); tipTimer = setTimeout(() => gearTip.hidden = true, 2200); }
+}));
+gear.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " "){ e.preventDefault(); openSheet(); } });
+function openSheet(){ gearTip.hidden = true; loadVoices(); syncSheet(); sheetWrap.hidden = false; document.getElementById("done").focus(); }
+function closeSheet(){ sheetWrap.hidden = true; gear.focus(); }
+document.getElementById("done").addEventListener("click", closeSheet);
+sheetWrap.addEventListener("click", e => { if (e.target === sheetWrap) closeSheet(); });
+document.addEventListener("keydown", e => { if (e.key === "Escape" && !sheetWrap.hidden) closeSheet(); });
+function syncSheet(){
+  for (const b of document.querySelectorAll("#langSeg button")) b.setAttribute("aria-pressed", String(b.dataset.lang === settings.lang));
+  document.getElementById("sfx").checked = !!settings.sfx;
+  document.getElementById("meowWords").checked = !!settings.meowWords;
+}
+document.getElementById("langSeg").addEventListener("click", e => {
+  const b = e.target.closest("button"); if (!b) return;
+  settings.lang = b.dataset.lang; saveSettings(); syncSheet(); hintText();
+  speak(lines("English", "Español"));
+});
+document.getElementById("sfx").addEventListener("change", e => {
+  settings.sfx = e.target.checked; saveSettings();
+  if (settings.sfx){ preloadMeows(); meowsReady.then(() => { const m = nextMeow(); if (m) loadMeow(m).then(() => playMeow(m, 1)); }); }
+});
+document.getElementById("meowWords").addEventListener("change", e => { settings.meowWords = e.target.checked; saveSettings(); });
+function fillVoiceSelects(){
+  for (const lang of ["en","es"]){
+    const sel = document.getElementById(lang + "Voice"); if (!sel) continue;
+    const list = voices.filter(v => langOf(v).startsWith(lang));
+    const key = lang + "Voice";
+    sel.innerHTML = "";
+    if (vo){ const r = document.createElement("option"); r.value = REC; r.textContent = VoiceClips.LABEL; sel.appendChild(r); }
+    const auto = document.createElement("option"); auto.value = ""; auto.textContent = list.length ? "Automatic" : "No " + (lang === "en" ? "English" : "Spanish") + " voices on this device";
+    sel.appendChild(auto);
+    for (const v of list){ const o = document.createElement("option"); o.value = v.voiceURI; o.textContent = v.name + " (" + v.lang + ")"; sel.appendChild(o); }
+    sel.value = vo && settings[key] === REC ? REC : list.some(v => v.voiceURI === settings[key]) ? settings[key] : "";
+  }
+}
+for (const lang of ["en","es"]){
+  document.getElementById(lang + "Voice").addEventListener("change", e => { settings[lang + "Voice"] = e.target.value; saveSettings(); testVoice(lang); });
+}
+function testVoice(lang){ speak([ lang === "en" ? { lang:"en", text:"Tap anywhere to make kitties!" } : { lang:"es", text:"¡Toca para hacer gatitos!" } ]); }
+document.querySelectorAll("[data-test]").forEach(b => b.addEventListener("click", () => testVoice(b.dataset.test)));
+
+/* ================= init ================= */
+document.addEventListener("contextmenu", e => { if (!e.target.closest(".sheet")) e.preventDefault(); });
+document.addEventListener("gesturestart", e => e.preventDefault());
+document.addEventListener("touchmove", e => { if (!e.target.closest(".sheet")) e.preventDefault(); }, { passive:false });
+resize(); hintText(); loadVoices();
+if (vo) vo.ready.then(() => {
+  vo.prefetch(["Tap anywhere to make kitties!", "English"], "en");
+  vo.prefetch(["¡Toca para hacer gatitos!", "Español"], "es");
+});
+requestAnimationFrame(t0 => { last = t0; requestAnimationFrame(frame); });
+})();
+</script>
+</body>
+</html>
