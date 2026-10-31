@@ -6,7 +6,7 @@ There's no build step: the folders hold plain static files.
 | Site | Live at | Folder |
 |---|---|---|
 | Mr. Mo's Games | https://mrmos.games | [`mr-mos-games/`](mr-mos-games) |
-| Melly Mo's Games | https://melly-mos-games.vercel.app | [`melly-mos-games/`](melly-mos-games) |
+| Melly Mo's Games | https://mellymos.games | [`melly-mos-games/`](melly-mos-games) |
 
 Each game lives at `<site>/games/<slug>/index.html`, and each site's home page lists its games in the `GAMES` array in `<site>/index.html`.
 
