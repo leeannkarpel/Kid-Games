@@ -291,10 +291,10 @@ button:focus-visible,select:focus-visible,input:focus-visible{outline:4px solid 
   </main>
 
   <nav class="controls" aria-label="Songs">
-    <button class="song" data-i="0" aria-label="Song: Bouncy Kitty Party">🐱</button>
-    <button class="song" data-i="1" aria-label="Song: Jungle Wiggle">🐒</button>
-    <button class="song" data-i="2" aria-label="Song: Disco Kitty">🪩</button>
-    <button class="song" data-i="3" aria-label="Song: Marching Band Stomp">🥁</button>
+    <button class="song" data-i="0" aria-label="Song: Bubble Pop Party">🫧</button>
+    <button class="song" data-i="1" aria-label="Song: Robot Boogie">🤖</button>
+    <button class="song" data-i="2" aria-label="Song: Sunshine Steel Drums">🌴</button>
+    <button class="song" data-i="3" aria-label="Song: Rocket Rock">🎸</button>
     <button class="stopbtn" id="stopBtn" aria-label="Stop the game" disabled><span class="sq"></span>Stop</button>
   </nav>
 
@@ -329,7 +329,7 @@ button:focus-visible,select:focus-visible,input:focus-visible{outline:4px solid 
 
 <script src="/voice-clips.js"></script>
 <script>
-/* ---------- Music: the Dance Like Me songs, which can stop suddenly and pick up where they left off ---------- */
+/* ---------- Music: Kitty Says' songs, which can stop suddenly and pick up where they left off ---------- */
 const Music = (() => {
   let ctx, master, bus, noise, src = null, srcGain = null, song = null, offset = 0, startedAt = 0, token = 0, on = false;
   const api = {};
@@ -460,13 +460,13 @@ const Music = (() => {
   return api;
 })();
 
-/* Songs: the ElevenLabs Music tracks from Dance Like Me (one copy on the site, shared by both games) */
-const MUSIC_DIR = '/games/dance-like-me/music/';
+/* Songs: Kitty Says' own ElevenLabs Music tracks (instrumental, 90s each; BPM measured from the audio) */
+const MUSIC_DIR = '/games/kitty-says/music/';
 const SONGS = [
-  { name: 'Bouncy Kitty Party',  bpm: 120.00, file: MUSIC_DIR + 'bouncy-kitty-party.mp3' },
-  { name: 'Jungle Wiggle',       bpm: 110.00, file: MUSIC_DIR + 'jungle-wiggle.mp3' },
-  { name: 'Disco Kitty',         bpm: 117.98, file: MUSIC_DIR + 'disco-kitty.mp3' },
-  { name: 'Marching Band Stomp', bpm: 111.99, file: MUSIC_DIR + 'marching-band-stomp.mp3' }
+  { name: 'Bubble Pop Party',     bpm: 124.03, file: MUSIC_DIR + 'bubble-pop-party.mp3' },
+  { name: 'Robot Boogie',         bpm: 114.85, file: MUSIC_DIR + 'robot-boogie.mp3' },
+  { name: 'Sunshine Steel Drums', bpm: 117.99, file: MUSIC_DIR + 'sunshine-steel-drums.mp3' },
+  { name: 'Rocket Rock',          bpm: 128.00, file: MUSIC_DIR + 'rocket-rock.mp3' }
 ];
 
 const MOVES = [
