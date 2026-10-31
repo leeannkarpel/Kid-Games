@@ -70,6 +70,12 @@ const GAMES = [
       await click(p, "#stopBtn"); await wait(1500);
       await click(p, "#testVoice"); await wait(3000);
   } },
+  { site: "melly-mos-games", slug: "kitty-says", run: async p => {
+      await click(p, "#startBtn"); await wait(16000);
+      await click(p, '.song[data-i="2"]'); await wait(2000);
+      await click(p, "#stopBtn"); await wait(3000);
+      await click(p, "#testVoice"); await wait(3000);
+  } },
 ];
 
 const SIZES = [["portrait", 390, 844], ["landscape", 844, 390]];

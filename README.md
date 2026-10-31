@@ -40,7 +40,7 @@ Voices used:
 | Bone Builder and Bingo English lines | Emma | `oClOrzqamOXmtcB8iqTj` |
 | All Spanish lines | Kate 7 | `U9tZtg3uJtVgXPkvosWR` |
 | Animal Peekaboo and Light-Up Taps English lines | Tilly | `4gnXtzQIIeGuC5hxActn` |
-| Dance Like Me | Lulu Lollipop | `ocZQ262SsZb9RIxcQBOj` |
+| Dance Like Me, Kitty Says | Lulu Lollipop | `ocZQ262SsZb9RIxcQBOj` |
 
 The clips use the `eleven_v4` model.
 

@@ -1,0 +1,168 @@
+{
+  "game": "kitty-says",
+  "model": "eleven_v4",
+  "lines": [
+    {
+      "text": "Hi! I am kitty!",
+      "lang": "en",
+      "voice_id": "ocZQ262SsZb9RIxcQBOj",
+      "file": "hi-i-am-kitty.mp3"
+    },
+    {
+      "text": "Let's play Kitty Says! Do what Kitty says. When the music stops, freeze!",
+      "lang": "en",
+      "voice_id": "ocZQ262SsZb9RIxcQBOj",
+      "file": "lets-play-kitty-says-do-what-kitty-says-when-the.mp3"
+    },
+    {
+      "text": "Kitty says, clap your hands!",
+      "lang": "en",
+      "voice_id": "ocZQ262SsZb9RIxcQBOj",
+      "file": "kitty-says-clap-your-hands.mp3"
+    },
+    {
+      "text": "Kitty says, wave hello!",
+      "lang": "en",
+      "voice_id": "ocZQ262SsZb9RIxcQBOj",
+      "file": "kitty-says-wave-hello.mp3"
+    },
+    {
+      "text": "Kitty says, jump, jump, jump!",
+      "lang": "en",
+      "voice_id": "ocZQ262SsZb9RIxcQBOj",
+      "file": "kitty-says-jump-jump-jump.mp3"
+    },
+    {
+      "text": "Kitty says, spin around!",
+      "lang": "en",
+      "voice_id": "ocZQ262SsZb9RIxcQBOj",
+      "file": "kitty-says-spin-around.mp3"
+    },
+    {
+      "text": "Kitty says, stomp your feet!",
+      "lang": "en",
+      "voice_id": "ocZQ262SsZb9RIxcQBOj",
+      "file": "kitty-says-stomp-your-feet.mp3"
+    },
+    {
+      "text": "Kitty says, reach up high!",
+      "lang": "en",
+      "voice_id": "ocZQ262SsZb9RIxcQBOj",
+      "file": "kitty-says-reach-up-high.mp3"
+    },
+    {
+      "text": "Kitty says, wiggle, wiggle!",
+      "lang": "en",
+      "voice_id": "ocZQ262SsZb9RIxcQBOj",
+      "file": "kitty-says-wiggle-wiggle.mp3"
+    },
+    {
+      "text": "Kitty says, nod your head!",
+      "lang": "en",
+      "voice_id": "ocZQ262SsZb9RIxcQBOj",
+      "file": "kitty-says-nod-your-head.mp3"
+    },
+    {
+      "text": "Clap your hands!",
+      "lang": "en",
+      "voice_id": "ocZQ262SsZb9RIxcQBOj",
+      "file": "clap-your-hands.mp3"
+    },
+    {
+      "text": "Wave hello!",
+      "lang": "en",
+      "voice_id": "ocZQ262SsZb9RIxcQBOj",
+      "file": "wave-hello.mp3"
+    },
+    {
+      "text": "Jump, jump, jump!",
+      "lang": "en",
+      "voice_id": "ocZQ262SsZb9RIxcQBOj",
+      "file": "jump-jump-jump.mp3"
+    },
+    {
+      "text": "Spin around!",
+      "lang": "en",
+      "voice_id": "ocZQ262SsZb9RIxcQBOj",
+      "file": "spin-around.mp3"
+    },
+    {
+      "text": "Stomp your feet!",
+      "lang": "en",
+      "voice_id": "ocZQ262SsZb9RIxcQBOj",
+      "file": "stomp-your-feet.mp3"
+    },
+    {
+      "text": "Reach up high!",
+      "lang": "en",
+      "voice_id": "ocZQ262SsZb9RIxcQBOj",
+      "file": "reach-up-high.mp3"
+    },
+    {
+      "text": "Wiggle, wiggle!",
+      "lang": "en",
+      "voice_id": "ocZQ262SsZb9RIxcQBOj",
+      "file": "wiggle-wiggle.mp3"
+    },
+    {
+      "text": "Nod your head!",
+      "lang": "en",
+      "voice_id": "ocZQ262SsZb9RIxcQBOj",
+      "file": "nod-your-head.mp3"
+    },
+    {
+      "text": "Freeze!",
+      "lang": "en",
+      "voice_id": "ocZQ262SsZb9RIxcQBOj",
+      "file": "freeze.mp3"
+    },
+    {
+      "text": "Everybody freeze!",
+      "lang": "en",
+      "voice_id": "ocZQ262SsZb9RIxcQBOj",
+      "file": "everybody-freeze.mp3"
+    },
+    {
+      "text": "Good freezing!",
+      "lang": "en",
+      "voice_id": "ocZQ262SsZb9RIxcQBOj",
+      "file": "good-freezing.mp3"
+    },
+    {
+      "text": "Wow! You are a statue!",
+      "lang": "en",
+      "voice_id": "ocZQ262SsZb9RIxcQBOj",
+      "file": "wow-you-are-a-statue.mp3"
+    },
+    {
+      "text": "Brrr! Frozen like ice!",
+      "lang": "en",
+      "voice_id": "ocZQ262SsZb9RIxcQBOj",
+      "file": "brrr-frozen-like-ice.mp3"
+    },
+    {
+      "text": "Hee hee! Kitty didn't say! Good listening!",
+      "lang": "en",
+      "voice_id": "ocZQ262SsZb9RIxcQBOj",
+      "file": "hee-hee-kitty-didnt-say-good-listening.mp3"
+    },
+    {
+      "text": "Oops! Kitty didn't say it! Silly kitty!",
+      "lang": "en",
+      "voice_id": "ocZQ262SsZb9RIxcQBOj",
+      "file": "oops-kitty-didnt-say-it-silly-kitty.mp3"
+    },
+    {
+      "text": "Yay! Great job, Melly!",
+      "lang": "en",
+      "voice_id": "ocZQ262SsZb9RIxcQBOj",
+      "file": "yay-great-job-melly.mp3"
+    },
+    {
+      "text": "Meow! You are a super listener!",
+      "lang": "en",
+      "voice_id": "ocZQ262SsZb9RIxcQBOj",
+      "file": "meow-you-are-a-super-listener.mp3"
+    }
+  ]
+}

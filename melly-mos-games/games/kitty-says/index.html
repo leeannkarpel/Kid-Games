@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<title>Melly Mo’s Kitty Says</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&display=swap">
+<style>
+/* Layout: one full-height screen: title bar, a big stage with the kitty, songs + stop below. Same living-room disco look as Dance Like Me. */
+:root{
+  --plum:#2d1640; --plum-2:#4a2366; --berry:#ee4d86; --sun:#ffcf3f; --mint:#3fd0b0;
+  --sky:#5fb2ff; --cream:#fff5e6; --ink:#2a1433; --ice:#bfe9ff;
+  --fur:#f7a04a; --fur-dark:#d97a2b; --belly:#ffeccf; --pink:#ff9fba;
+  --display:'Baloo 2','Arial Rounded MT Bold','Trebuchet MS',system-ui,sans-serif;
+  color-scheme:dark;
+}
+[hidden]{display:none!important}
+html,body{height:100%}
+body{margin:0;background:var(--plum);color:var(--cream);font-family:var(--display);overflow:hidden;
+  -webkit-user-select:none;user-select:none;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+button{font-family:inherit;color:inherit;cursor:pointer;border:0}
+button:focus-visible,select:focus-visible,input:focus-visible{outline:4px solid var(--sun);outline-offset:3px}
+.app{height:100%;box-sizing:border-box;display:flex;flex-direction:column;gap:10px;
+  padding-block:10px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.top{display:flex;align-items:center;gap:12px}
+.top h1{margin:0;font-size:clamp(24px,5vw,38px);font-weight:800;line-height:1;color:var(--sun);letter-spacing:.01em;flex:1;text-wrap:balance}
+.top h1 small{display:block;font-size:.42em;color:var(--pink);font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.gear{width:44px;height:44px;border-radius:50%;background:var(--plum-2);font-size:22px;opacity:.75}
+.gear:hover{opacity:1}
+
+.stage{flex:1;min-height:0;position:relative;border-radius:28px;overflow:hidden;
+  background:radial-gradient(120% 90% at 50% 15%,#6a2f8c 0%,var(--plum-2) 45%,#241034 100%)}
+.rug{position:absolute;left:50%;bottom:-6%;width:min(95%,640px);aspect-ratio:3/1;transform:translateX(-50%);border-radius:50%;
+  background:repeating-radial-gradient(ellipse at center,var(--berry) 0 14px,#f36d9b 14px 28px,var(--sun) 28px 36px,#f36d9b 36px 50px)}
+.ball{position:absolute;top:-4px;right:18px;width:62px;height:62px;border-radius:50%;
+  background:repeating-linear-gradient(90deg,#d9d2ea 0 9px,#9c90b8 9px 11px),#d9d2ea;
+  box-shadow:inset -10px -10px 0 rgba(0,0,0,.25),0 0 30px rgba(255,255,255,.3)}
+.ball::before{content:"";position:absolute;inset:0;border-radius:50%;background:repeating-linear-gradient(0deg,transparent 0 9px,rgba(60,40,90,.6) 9px 11px)}
+.ball::after{content:"";position:absolute;left:50%;top:-40px;width:3px;height:40px;background:#9c90b8}
+.light{position:absolute;width:45%;aspect-ratio:1;border-radius:50%;filter:blur(40px);opacity:.0;transition:opacity .6s}
+.light.a{background:var(--berry);left:-10%;top:10%}
+.light.b{background:var(--sky);right:-10%;top:5%}
+.light.c{background:var(--mint);left:30%;top:40%}
+.stage.playing .light{opacity:.55;animation:drift 4s ease-in-out infinite alternate}
+.stage.playing .light.b{animation-duration:5s}
+.stage.playing .light.c{animation-duration:3.3s}
+.stage.playing .ball{animation:spinball 3s linear infinite}
+@keyframes drift{from{transform:translate(0,0) scale(1)}to{transform:translate(30%,15%) scale(1.25)}}
+@keyframes spinball{to{background-position:44px 0}}
+
+.catwrap{position:absolute;left:50%;bottom:4%;height:min(78%,520px);aspect-ratio:200/270;transform:translateX(-50%);max-width:92%}
+.poker{width:100%;height:100%;cursor:pointer}
+.poker.poke{animation:poke .6s ease-out}
+@keyframes poke{0%{transform:scale(1)}30%{transform:scale(1.12,.9)}60%{transform:scale(.95,1.08)}100%{transform:scale(1)}}
+.cat{width:100%;height:100%;overflow:visible;display:block}
+.cat g{transform-box:view-box}
+.cat .whole{transform-origin:100px 255px}
+.cat .head{transform-origin:100px 140px}
+.cat .armL{transform-origin:63px 158px}
+.cat .armR{transform-origin:137px 158px}
+.cat .legL{transform-origin:85px 208px}
+.cat .legR{transform-origin:115px 208px}
+.cat .tail{transform-origin:140px 212px}
+.cat .eyes{transform-origin:100px 88px;animation:blink 4.2s infinite}
+@keyframes blink{0%,92%,100%{transform:scaleY(1)}95%{transform:scaleY(.1)}}
+/* idle */
+.cat.idle .whole{animation:breathe 3s ease-in-out infinite}
+.cat.idle .tail{animation:wag 2.4s ease-in-out infinite}
+.cat.idle .head{animation:tilt 5s ease-in-out infinite}
+@keyframes breathe{0%,100%{transform:scale(1,1)}50%{transform:scale(1.015,1.03)}}
+@keyframes wag{0%,100%{transform:rotate(-12deg)}50%{transform:rotate(14deg)}}
+@keyframes tilt{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(8deg)}}
+
+.notes{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.note{position:absolute;bottom:20%;font-size:clamp(26px,5vw,44px);font-weight:800;animation:floatup 3s ease-out forwards}
+@keyframes floatup{0%{transform:translateY(0) rotate(-10deg);opacity:0}15%{opacity:1}100%{transform:translateY(-260px) rotate(15deg);opacity:0}}
+
+.overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center;padding:16px;box-sizing:border-box}
+.bigbtn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+  width:clamp(170px,42vw,250px);aspect-ratio:1;border-radius:50%;background:var(--sun);color:var(--ink);
+  font-size:clamp(26px,6vw,38px);font-weight:800;line-height:1;box-shadow:0 10px 0 #c99a12,0 18px 40px rgba(0,0,0,.4);
+  animation:pulse 1.6s ease-in-out infinite}
+.bigbtn:active{transform:translateY(6px);box-shadow:0 4px 0 #c99a12}
+.bigbtn .paw{width:46%;height:auto}
+@keyframes pulse{0%,100%{scale:1}50%{scale:1.06}}
+
+.panel{position:fixed;inset:0;background:rgba(20,8,30,.7);display:flex;align-items:center;justify-content:center;z-index:20;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.panel .box{color-scheme:light;background:var(--cream);color:var(--ink);border-radius:22px;padding:22px;width:min(420px,100%);box-sizing:border-box;display:flex;flex-direction:column;gap:14px}
+.panel h2{margin:0;font-size:24px}
+.panel label{display:flex;flex-direction:column;gap:6px;font-weight:700;font-size:15px}
+.panel label.row{flex-direction:row;align-items:center;gap:10px}
+.panel select{font:inherit;font-size:15px;padding:10px;border-radius:12px;border:2px solid #d8c9e6;background:#fff;color:var(--ink);max-width:100%}
+.panel input[type=checkbox]{width:24px;height:24px;accent-color:var(--berry)}
+.panel .btns{display:flex;gap:10px;flex-wrap:wrap}
+.panel .btns button{flex:1;padding:12px 16px;border-radius:14px;font-size:17px;font-weight:800;background:var(--plum-2);color:var(--cream)}
+.panel .btns button.alt{background:#eadff3;color:var(--ink)}
+.panel p{margin:0;font-size:13px;color:#6b5878}
+
+@media (prefers-reduced-motion:reduce){.bigbtn{animation:none}.stage.playing .light{animation:none}}
+
+.panel .back{display:block;text-align:center;padding:12px;border-radius:14px;border:2px solid #d8c9e6;color:var(--ink);font-weight:800;text-decoration:none}
+</style>
+<style>:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}*,*::before,*::after{box-sizing:border-box}img{max-width:100%}</style>
+</head>
+<body>
+
+<style>
+/* Kitty Says: bubble at the top, kitty center stage, songs + stop below */
+.prompt{position:absolute;top:14px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:12px;
+  background:var(--cream);color:var(--ink);border-radius:28px;padding:8px 24px 8px 10px;box-shadow:0 6px 0 rgba(0,0,0,.25);
+  font-weight:800;white-space:nowrap;max-width:calc(100% - 32px);box-sizing:border-box;cursor:pointer;text-align:left;line-height:1}
+.prompt .ic{flex:none;width:clamp(44px,10vw,66px);height:clamp(44px,10vw,66px);border-radius:50%;background:var(--sun);display:flex;align-items:center;justify-content:center;font-size:clamp(24px,5.5vw,36px)}
+.prompt .txt{display:flex;flex-direction:column;gap:2px;min-width:0}
+.prompt .says{font-size:clamp(14px,3.4vw,20px);color:var(--berry);letter-spacing:.04em;text-transform:uppercase}
+.prompt .word{font-size:clamp(26px,6vw,44px);overflow:hidden;text-overflow:ellipsis}
+.prompt.trick .ic{background:#e8ddf0}
+.prompt.ice{background:var(--ice)}
+.prompt.ice .ic{background:#fff}
+.prompt.ice .says{color:#2b6c9e}
+.prompt.pop{animation:zoom .45s cubic-bezier(.3,1.6,.6,1)}
+@keyframes zoom{from{transform:translateX(-50%) scale(.4);opacity:0}to{transform:translateX(-50%) scale(1);opacity:1}}
+
+.stars{position:absolute;left:14px;bottom:12px;display:flex;align-items:center;gap:6px;padding:6px 14px;border-radius:999px;
+  background:rgba(0,0,0,.28);font-size:clamp(20px,4.5vw,28px);font-weight:800;color:var(--sun)}
+.stars.pop{animation:starpop .5s cubic-bezier(.3,1.6,.6,1)}
+@keyframes starpop{0%{transform:scale(1)}40%{transform:scale(1.35)}100%{transform:scale(1)}}
+
+/* frozen: everything stops mid-move and goes icy */
+.icefx{position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .25s;
+  background:radial-gradient(120% 90% at 50% 20%,rgba(191,233,255,.55),rgba(95,178,255,.35) 60%,rgba(40,90,160,.5))}
+.stage.frozen .icefx{opacity:1}
+.cat.frozen g{animation-play-state:paused!important}
+.cat.frozen{filter:drop-shadow(0 0 14px #dff4ff) saturate(.55) brightness(1.08)}
+.flake{position:absolute;top:-40px;font-size:clamp(22px,5vw,36px);pointer-events:none;animation:fall 2.6s linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(260deg)}}
+
+/* trick: kitty covers her mouth and shakes her head (she didn't say "Kitty says"!) */
+.cat.trick .armL{transform:rotate(-139deg)}
+.cat.trick .armR{transform:rotate(139deg)}
+.cat.trick .head{animation:shakeno .9s ease-in-out infinite}
+.cat.trick .whole{animation:giggle .35s ease-in-out infinite}
+@keyframes shakeno{0%,100%{transform:rotate(0)}25%{transform:rotate(-11deg)}75%{transform:rotate(11deg)}}
+@keyframes giggle{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+/* waiting on a trick: kitty just stands still and grins */
+.cat.still .tail{animation:wag 2.4s ease-in-out infinite}
+
+.controls{display:flex;align-items:center;justify-content:center;gap:clamp(8px,2.5vw,18px)}
+.song{width:clamp(54px,14vw,78px);aspect-ratio:1;border-radius:50%;font-size:clamp(22px,6vw,34px);font-weight:800;color:var(--ink);
+  box-shadow:0 6px 0 rgba(0,0,0,.3);transition:transform .15s;display:flex;align-items:center;justify-content:center}
+.song[data-i="0"]{background:var(--berry)}.song[data-i="1"]{background:var(--mint)}.song[data-i="2"]{background:var(--sky)}.song[data-i="3"]{background:var(--sun)}
+.song.on{transform:scale(1.15);outline:5px solid var(--cream);outline-offset:3px}
+.song:active{transform:translateY(4px)}
+.stopbtn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;width:clamp(62px,16vw,86px);aspect-ratio:1;border-radius:22px;
+  background:var(--cream);color:var(--ink);font-size:clamp(15px,3.5vw,19px);font-weight:800;box-shadow:0 6px 0 rgba(0,0,0,.35)}
+.stopbtn .sq{width:38%;aspect-ratio:1;border-radius:5px;background:#d33a4a}
+.stopbtn:disabled{opacity:.35;cursor:default}
+.stopbtn:not(:disabled):active{transform:translateY(4px)}
+.start h2{margin:0;font-size:clamp(22px,5vw,30px);color:var(--cream);text-wrap:balance;text-shadow:0 3px 0 rgba(0,0,0,.35)}
+.star{position:absolute;left:50%;top:45%;font-size:clamp(30px,6vw,48px);color:var(--sun);pointer-events:none;animation:burst 1.3s ease-out forwards}
+@keyframes burst{0%{transform:translate(-50%,-50%) scale(.2);opacity:1}100%{transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy))) scale(1.2) rotate(180deg);opacity:0}}
+@media (max-height:500px){.prompt{top:8px;padding:5px 18px 5px 6px}.rug{width:min(62%,420px)}.catwrap{height:88%;bottom:3%}}
+@media (max-height:500px) and (min-aspect-ratio:3/2){.catwrap{left:70%}.prompt{left:35%;max-width:calc(70% - 120px)}}
+@media (prefers-reduced-motion:reduce){.flake{display:none}}
+</style>
+
+<style>
+/* moves — timings are whole beats so sound effects land on the motion */
+.cat{--beat:.5s}
+.cat[class*="mv-"] .tail{animation:wag var(--beat) ease-in-out infinite}
+.cat.mv-clap .armL{animation:clapL var(--beat) ease-in-out infinite}
+.cat.mv-clap .armR{animation:clapR var(--beat) ease-in-out infinite}
+.cat.mv-clap .whole{animation:bob var(--beat) ease-in-out infinite}
+@keyframes clapL{0%,100%{transform:rotate(-56deg)}50%{transform:rotate(30deg)}}
+@keyframes clapR{0%,100%{transform:rotate(56deg)}50%{transform:rotate(-30deg)}}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+
+.cat.mv-wave .armR{animation:wave var(--beat) ease-in-out infinite}
+.cat.mv-wave .armL{transform:rotate(10deg)}
+.cat.mv-wave .head{animation:tilt calc(var(--beat)*2) ease-in-out infinite}
+@keyframes wave{0%,100%{transform:rotate(-150deg)}50%{transform:rotate(-112deg)}}
+
+.cat.mv-jump .whole{animation:jump calc(var(--beat)*2) ease-out infinite}
+.cat.mv-jump .armL{animation:jumpL calc(var(--beat)*2) ease-out infinite}
+.cat.mv-jump .armR{animation:jumpR calc(var(--beat)*2) ease-out infinite}
+@keyframes jump{0%{transform:translateY(0) scale(1.08,.9)}12%{transform:translateY(0) scale(.95,1.06)}45%{transform:translateY(-60px) scale(.96,1.05)}80%{transform:translateY(0) scale(1,1)}90%{transform:translateY(0) scale(1.07,.92)}100%{transform:translateY(0) scale(1.08,.9)}}
+@keyframes jumpL{0%,85%,100%{transform:rotate(25deg)}45%{transform:rotate(150deg)}}
+@keyframes jumpR{0%,85%,100%{transform:rotate(-25deg)}45%{transform:rotate(-150deg)}}
+
+.cat.mv-spin .whole{animation:turn calc(var(--beat)*4) ease-in-out infinite}
+.cat.mv-spin .armL{transform:rotate(80deg)}
+.cat.mv-spin .armR{transform:rotate(-80deg)}
+@keyframes turn{0%{transform:scaleX(1) translateY(0)}25%{transform:scaleX(.05) translateY(-10px)}50%{transform:scaleX(-1) translateY(0)}75%{transform:scaleX(.05) translateY(-10px)}100%{transform:scaleX(1) translateY(0)}}
+
+.cat.mv-stomp .legL{animation:stomp calc(var(--beat)*2) ease-in infinite calc(var(--beat)*-1)}
+.cat.mv-stomp .legR{animation:stomp calc(var(--beat)*2) ease-in infinite}
+.cat.mv-stomp .whole{animation:shake var(--beat) ease-out infinite}
+.cat.mv-stomp .armL{animation:pumpL var(--beat) ease-in-out infinite}
+.cat.mv-stomp .armR{animation:pumpR var(--beat) ease-in-out infinite}
+@keyframes stomp{0%,100%{transform:translateY(0)}25%{transform:translateY(-26px)}45%{transform:translateY(0)}}
+@keyframes shake{0%{transform:translateY(4px)}30%{transform:translateY(-3px)}100%{transform:translateY(0)}}
+@keyframes pumpL{0%,100%{transform:rotate(45deg)}50%{transform:rotate(15deg)}}
+@keyframes pumpR{0%,100%{transform:rotate(-15deg)}50%{transform:rotate(-45deg)}}
+
+.cat.mv-reach .armL{animation:reachL calc(var(--beat)*4) ease-in-out infinite}
+.cat.mv-reach .armR{animation:reachR calc(var(--beat)*4) ease-in-out infinite}
+.cat.mv-reach .whole{animation:stretch calc(var(--beat)*4) ease-in-out infinite}
+@keyframes reachL{0%,100%{transform:rotate(25deg)}40%,60%{transform:rotate(168deg)}}
+@keyframes reachR{0%,100%{transform:rotate(-25deg)}40%,60%{transform:rotate(-168deg)}}
+@keyframes stretch{0%,100%{transform:scale(1,1)}40%,60%{transform:scale(.96,1.1) translateY(-14px)}}
+
+.cat.mv-wiggle .whole{animation:wig var(--beat) ease-in-out infinite}
+.cat.mv-wiggle .tail{animation:wag calc(var(--beat)/2) ease-in-out infinite}
+.cat.mv-wiggle .armL{animation:outL calc(var(--beat)/2) ease-in-out infinite}
+.cat.mv-wiggle .armR{animation:outR calc(var(--beat)/2) ease-in-out infinite}
+.cat.mv-wiggle .head{animation:tilt var(--beat) ease-in-out infinite reverse}
+@keyframes wig{0%,100%{transform:rotate(-10deg)}50%{transform:rotate(10deg)}}
+@keyframes outL{0%,100%{transform:rotate(60deg)}50%{transform:rotate(85deg)}}
+@keyframes outR{0%,100%{transform:rotate(-85deg)}50%{transform:rotate(-60deg)}}
+
+.cat.mv-nod .head{animation:nod var(--beat) ease-in-out infinite}
+.cat.mv-nod .whole{animation:bob var(--beat) ease-in-out infinite}
+@keyframes nod{0%,100%{transform:translateY(9px) scale(1,.94)}50%{transform:translateY(-5px) scale(1,1.02)}}
+</style>
+
+<div class="app">
+  <header class="top">
+    <h1><small>Melly Mo's Games</small>Kitty Says</h1>
+    <button id="gear" class="gear" aria-label="Grown-up settings">⚙</button>
+  </header>
+
+  <main class="stage" id="stage">
+    <div class="light a"></div><div class="light b"></div><div class="light c"></div>
+    <div class="ball"></div>
+    <div class="rug"></div>
+    <div class="notes" id="notes"></div>
+    <div class="catwrap"><div class="poker" id="poker"><svg class="cat idle" id="cat" viewBox="0 0 200 270" role="img" aria-label="Kitty">
+  <g class="whole">
+    <g class="tail"><path d="M136 208 C 172 204, 186 168, 174 136 C 170 124, 182 116, 187 128 C 200 168, 184 218, 140 224 Z" fill="var(--fur)" stroke="var(--ink)" stroke-width="4" stroke-linejoin="round"/>
+      <path d="M180 140 l9 -3 M183 158 l10 0 M180 178 l10 4" stroke="var(--fur-dark)" stroke-width="5" stroke-linecap="round"/></g>
+    <g class="legL"><rect x="71" y="204" width="28" height="44" rx="14" fill="var(--fur)" stroke="var(--ink)" stroke-width="4"/>
+      <ellipse cx="82" cy="249" rx="18" ry="10" fill="var(--belly)" stroke="var(--ink)" stroke-width="4"/></g>
+    <g class="legR"><rect x="101" y="204" width="28" height="44" rx="14" fill="var(--fur)" stroke="var(--ink)" stroke-width="4"/>
+      <ellipse cx="118" cy="249" rx="18" ry="10" fill="var(--belly)" stroke="var(--ink)" stroke-width="4"/></g>
+    <g class="body"><ellipse cx="100" cy="188" rx="45" ry="47" fill="var(--fur)" stroke="var(--ink)" stroke-width="4"/>
+      <ellipse cx="100" cy="196" rx="27" ry="31" fill="var(--belly)"/>
+      <path d="M60 172 q8 3 12 -1 M58 192 q8 3 12 -1 M140 172 q-8 3 -12 -1 M142 192 q-8 3 -12 -1" stroke="var(--fur-dark)" stroke-width="5" fill="none" stroke-linecap="round"/></g>
+    <g class="head">
+      <path d="M48 82 L56 20 L98 52 Z" fill="var(--fur)" stroke="var(--ink)" stroke-width="4" stroke-linejoin="round"/>
+      <path d="M152 82 L144 20 L102 52 Z" fill="var(--fur)" stroke="var(--ink)" stroke-width="4" stroke-linejoin="round"/>
+      <path d="M60 64 L63 34 L84 52 Z M140 64 L137 34 L116 52 Z" fill="var(--pink)"/>
+      <ellipse cx="100" cy="92" rx="63" ry="53" fill="var(--fur)" stroke="var(--ink)" stroke-width="4"/>
+      <path d="M100 42 v16 M86 45 l3 13 M114 45 l-3 13" stroke="var(--fur-dark)" stroke-width="5" stroke-linecap="round"/>
+      <g class="eyes">
+        <ellipse cx="78" cy="88" rx="9.5" ry="12.5" fill="var(--ink)"/><circle cx="81.5" cy="83" r="3.8" fill="#fff"/>
+        <ellipse cx="122" cy="88" rx="9.5" ry="12.5" fill="var(--ink)"/><circle cx="125.5" cy="83" r="3.8" fill="#fff"/>
+      </g>
+      <ellipse cx="62" cy="109" rx="10" ry="6.5" fill="var(--pink)" opacity=".8"/>
+      <ellipse cx="138" cy="109" rx="10" ry="6.5" fill="var(--pink)" opacity=".8"/>
+      <path d="M93 103 L107 103 L100 111 Z" fill="var(--pink)" stroke="var(--ink)" stroke-width="3" stroke-linejoin="round"/>
+      <path d="M100 111 Q100 121 90 120 M100 111 Q100 121 110 120" stroke="var(--ink)" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+      <path d="M48 100 L28 96 M48 108 L27 110 M152 100 L172 96 M152 108 L173 110" stroke="var(--ink)" stroke-width="2.5" stroke-linecap="round"/>
+    </g>
+    <g class="armL"><rect x="52" y="150" width="22" height="52" rx="11" fill="var(--fur)" stroke="var(--ink)" stroke-width="4"/>
+      <circle cx="63" cy="204" r="12.5" fill="var(--belly)" stroke="var(--ink)" stroke-width="4"/></g>
+    <g class="armR"><rect x="126" y="150" width="22" height="52" rx="11" fill="var(--fur)" stroke="var(--ink)" stroke-width="4"/>
+      <circle cx="137" cy="204" r="12.5" fill="var(--belly)" stroke="var(--ink)" stroke-width="4"/></g>
+  </g>
+</svg></div></div>
+    <div class="icefx"></div>
+    <button class="prompt" id="prompt" hidden aria-label="Hear it again"><span class="ic" id="pIcon"></span><span class="txt"><span class="says" id="pSays"></span><span class="word" id="pWord"></span></span></button>
+    <div class="stars" id="stars" hidden aria-label="Freezes"><span>⭐</span><span id="starCount">0</span></div>
+    <div class="overlay start" id="start">
+      <h2 id="startMsg">Do what Kitty says! When the music stops, freeze!</h2>
+      <button class="bigbtn" id="startBtn" aria-label="Start Kitty Says">
+        <svg class="paw" viewBox="0 0 100 100" aria-hidden="true"><g fill="var(--ink)"><ellipse cx="50" cy="66" rx="24" ry="20"/><circle cx="22" cy="40" r="10"/><circle cx="39" cy="24" r="10"/><circle cx="61" cy="24" r="10"/><circle cx="78" cy="40" r="10"/></g></svg>
+        Play!
+      </button>
+    </div>
+  </main>
+
+  <nav class="controls" aria-label="Songs">
+    <button class="song" data-i="0" aria-label="Song: Bouncy Kitty Party">🐱</button>
+    <button class="song" data-i="1" aria-label="Song: Jungle Wiggle">🐒</button>
+    <button class="song" data-i="2" aria-label="Song: Disco Kitty">🪩</button>
+    <button class="song" data-i="3" aria-label="Song: Marching Band Stomp">🥁</button>
+    <button class="stopbtn" id="stopBtn" aria-label="Stop the game" disabled><span class="sq"></span>Stop</button>
+  </nav>
+
+  <div class="panel" id="settings" hidden>
+    <div class="box" role="dialog" aria-label="Grown-up settings">
+      <h2>Grown-up settings</h2>
+      <label>Kitty's voice<select id="voiceSel"></select></label>
+      <label>Voice style
+        <select id="voiceStyle"><option value="natural">Natural</option><option value="kitty">Kitty (higher and squeakier)</option></select>
+      </label>
+      <p>★ marks the best-sounding voices on this device. Different phones and computers have different voices.</p>
+      <label>How long the music plays before freeze
+        <select id="playLen">
+          <option value="short">Short (3 to 6 seconds)</option>
+          <option value="medium">Medium (5 to 9 seconds)</option>
+          <option value="long">Long (8 to 14 seconds)</option>
+        </select>
+      </label>
+      <label>Trick moves (Kitty doesn't say "Kitty says")
+        <select id="tricks">
+          <option value="0">Off (best for little ones)</option>
+          <option value="0.25">Sometimes</option>
+          <option value="0.4">Often</option>
+        </select>
+      </label>
+      <p>How to play: Kitty says a move and shows it. Copy kitty! When the music stops, freeze like a statue until it starts again. On a trick move, kitty just says the move without "Kitty says" and doesn't do it, so stay still! Tap the word bubble to hear it again, or a round button to change the song. Stop ends the game.</p>
+      <a class="back" href="/">Back to all games</a>
+      <div class="btns"><button class="alt" id="testVoice">Test voice</button><button data-close>Done</button></div>
+    </div>
+  </div>
+</div>
+
+<script src="/voice-clips.js"></script>
+<script>
+/* ---------- Music: the Dance Like Me songs, which can stop suddenly and pick up where they left off ---------- */
+const Music = (() => {
+  let ctx, master, bus, noise, src = null, srcGain = null, song = null, offset = 0, startedAt = 0, token = 0, on = false;
+  const api = {};
+  function init() {
+    if (!ctx) {
+      const AC = window.AudioContext || window.webkitAudioContext;
+      ctx = new AC();
+      const comp = ctx.createDynamicsCompressor(); comp.connect(ctx.destination);
+      master = ctx.createGain(); master.gain.value = 0.9; master.connect(comp);
+      bus = ctx.createGain(); bus.gain.value = 0.6; bus.connect(master);   // music bus (ducked while kitty talks)
+      noise = ctx.createBuffer(1, ctx.sampleRate, ctx.sampleRate);
+      const d = noise.getChannelData(0); for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+    }
+    if (ctx.state !== 'running') ctx.resume();
+    return ctx;
+  }
+  const mtof = m => 440 * Math.pow(2, (m - 69) / 12);
+  function tone(t, freq, dur, type, vol, dest, freqEnd) {
+    const o = ctx.createOscillator(), g = ctx.createGain();
+    o.type = type; o.frequency.setValueAtTime(freq, t);
+    if (freqEnd) o.frequency.exponentialRampToValueAtTime(freqEnd, t + dur);
+    g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(vol, t + 0.012); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    o.connect(g); g.connect(dest || bus); o.start(t); o.stop(t + dur + 0.05);
+  }
+  function noiseHit(t, dur, vol, ftype, freq, dest, freqEnd) {
+    const s = ctx.createBufferSource(); s.buffer = noise;
+    const f = ctx.createBiquadFilter(); f.type = ftype; f.frequency.setValueAtTime(freq, t);
+    if (freqEnd) f.frequency.exponentialRampToValueAtTime(freqEnd, t + dur);
+    const g = ctx.createGain(); g.gain.setValueAtTime(vol, t); g.gain.exponentialRampToValueAtTime(0.001, t + dur);
+    s.connect(f); f.connect(g); g.connect(dest || bus); s.start(t, Math.random() * 0.4); s.stop(t + dur + 0.02);
+  }
+
+  /* Built-in backup beat, used only if a song file can't load */
+  const Synth = (() => {
+    let timer = null, step = 0, nextT = 0, bpm = 116;
+    const roots = [48, 48, 53, 55], arp = [0, 4, 7, 12, 7, 4, 7, 4];
+    function tick() {
+      while (nextT < ctx.currentTime + 0.12) {
+        const t = nextT, s = step % 64, p = s % 4, root = roots[Math.floor(s / 16)];
+        if (p === 0) { const o = ctx.createOscillator(), g = ctx.createGain();
+          o.frequency.setValueAtTime(150, t); o.frequency.exponentialRampToValueAtTime(45, t + 0.12);
+          g.gain.setValueAtTime(0.9, t); g.gain.exponentialRampToValueAtTime(0.001, t + 0.28); o.connect(g); g.connect(bus); o.start(t); o.stop(t + 0.3); }
+        if (p === 0 && (s / 4) % 2 === 1) noiseHit(t, 0.12, 0.4, 'bandpass', 1500);
+        if (p === 2) noiseHit(t, 0.045, 0.2, 'highpass', 7000);
+        if (p === 0) tone(t, mtof(root), 0.24, 'triangle', 0.5);
+        if (p === 2) tone(t, mtof(root + 12), 0.2, 'triangle', 0.4);
+        if (s % 2 === 0) tone(t, mtof(root + 24 + arp[(s / 2) % 8]), 0.16, 'triangle', 0.14);
+        step++; nextT += 60 / bpm / 4;
+      }
+    }
+    return {
+      start(b) { bpm = b || 116; nextT = ctx.currentTime + 0.05; clearInterval(timer); timer = setInterval(tick, 25); tick(); },
+      stop() { clearInterval(timer); timer = null; },
+      on() { return !!timer; }
+    };
+  })();
+
+  const buffers = {}, loading = {};
+  function load(sg) {
+    if (buffers[sg.file]) return Promise.resolve(buffers[sg.file]);
+    if (!loading[sg.file]) loading[sg.file] = fetch(sg.file).then(r => { if (!r.ok) throw new Error('song ' + r.status); return r.arrayBuffer(); })
+      .then(ab => new Promise((res, rej) => ctx.decodeAudioData(ab, res, rej)))
+      .then(b => (buffers[sg.file] = b))
+      .catch(err => { delete loading[sg.file]; throw err; });
+    return loading[sg.file];
+  }
+  function cut(fade) {
+    Synth.stop();
+    if (!src) return;
+    const s = src, g = srcGain, t = ctx.currentTime;
+    src = null; srcGain = null; s.onended = null;
+    if (fade) {   // "record scratch" stop: the song slows down and drops out
+      try { s.playbackRate.setValueAtTime(1, t); s.playbackRate.linearRampToValueAtTime(0.25, t + 0.35);
+        g.gain.setValueAtTime(g.gain.value, t); g.gain.linearRampToValueAtTime(0.0001, t + 0.38); s.stop(t + 0.4); } catch (e) { try { s.stop(); } catch (e2) {} }
+    } else { try { s.stop(); } catch (e) {} }
+  }
+
+  // Start (or carry on) a song. Resolves once the music is actually playing.
+  api.play = sg => {
+    init();
+    if (sg !== song) { song = sg; offset = 0; }
+    cut(false);
+    const my = ++token; on = true;
+    if (api.onLoading && !buffers[sg.file]) api.onLoading(true);
+    return load(sg).then(buf => {
+      if (my !== token) return;
+      if (api.onLoading) api.onLoading(false);
+      src = ctx.createBufferSource(); src.buffer = buf; src.loop = true;
+      srcGain = ctx.createGain(); srcGain.gain.value = 1.6;
+      src.connect(srcGain); srcGain.connect(bus);
+      const t0 = ctx.currentTime + 0.05, from = offset % buf.duration;
+      src.start(t0, from); startedAt = t0 - from;
+    }).catch(() => {
+      if (my !== token) return;
+      if (api.onLoading) api.onLoading(false);
+      Synth.start(sg.bpm);
+    });
+  };
+  // Stop the music where it is (sudden = record-scratch stop). play() picks it up again from here.
+  api.pause = sudden => {
+    token++; on = false;
+    if (src && src.buffer) offset = Math.max(0, ctx.currentTime - startedAt) % src.buffer.duration;
+    cut(sudden);
+  };
+  api.stop = () => { api.pause(false); offset = 0; song = null; };
+  api.isOn = () => on;
+  api.preload = sg => { init(); load(sg).catch(() => {}); };
+  api.duck = d => { if (!ctx) return; bus.gain.cancelScheduledValues(ctx.currentTime); bus.gain.setTargetAtTime(d ? 0.2 : 0.6, ctx.currentTime, 0.08); };
+  api.init = init;
+
+  api.sfx = {
+    meow() {
+      init(); const t = ctx.currentTime;
+      const o = ctx.createOscillator(), f = ctx.createBiquadFilter(), g = ctx.createGain();
+      o.type = 'sawtooth'; f.type = 'bandpass'; f.Q.value = 2.5;
+      o.frequency.setValueAtTime(560, t); o.frequency.linearRampToValueAtTime(860, t + 0.16); o.frequency.linearRampToValueAtTime(470, t + 0.6);
+      f.frequency.setValueAtTime(900, t); f.frequency.linearRampToValueAtTime(2200, t + 0.2); f.frequency.linearRampToValueAtTime(800, t + 0.6);
+      g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.7, t + 0.05);
+      g.gain.setValueAtTime(0.7, t + 0.42); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.65);
+      o.connect(f); f.connect(g); g.connect(master); o.start(t); o.stop(t + 0.7);
+    },
+    freeze() { init(); const t = ctx.currentTime + 0.3; tone(t, 1600, 0.5, 'sine', 0.25, master, 400); noiseHit(t, 0.3, 0.25, 'highpass', 6000, master);
+      [96, 100, 103].forEach((m, i) => tone(t + 0.1 + i * 0.07, mtof(m), 0.4, 'sine', 0.12, master)); },
+    sparkle() { init(); const t = ctx.currentTime; [84, 88, 91, 96, 100].forEach((m, i) => tone(t + i * 0.08, mtof(m), 0.5, 'sine', 0.22, master)); },
+    ding() { init(); const t = ctx.currentTime; tone(t, mtof(88), 0.35, 'sine', 0.25, master); tone(t + 0.09, mtof(95), 0.45, 'sine', 0.22, master); },
+    giggle() { init(); const t = ctx.currentTime; [0, 0.13, 0.26].forEach((d, i) => tone(t + d, 700 + i * 120, 0.1, 'sine', 0.22, master, 1100 + i * 120)); }
+  };
+  return api;
+})();
+
+/* Songs: the ElevenLabs Music tracks from Dance Like Me (one copy on the site, shared by both games) */
+const MUSIC_DIR = '/games/dance-like-me/music/';
+const SONGS = [
+  { name: 'Bouncy Kitty Party',  bpm: 120.00, file: MUSIC_DIR + 'bouncy-kitty-party.mp3' },
+  { name: 'Jungle Wiggle',       bpm: 110.00, file: MUSIC_DIR + 'jungle-wiggle.mp3' },
+  { name: 'Disco Kitty',         bpm: 117.98, file: MUSIC_DIR + 'disco-kitty.mp3' },
+  { name: 'Marching Band Stomp', bpm: 111.99, file: MUSIC_DIR + 'marching-band-stomp.mp3' }
+];
+
+const MOVES = [
+  { id: 'clap',   icon: '👏', word: 'Clap!',     say: 'Clap your hands!' },
+  { id: 'wave',   icon: '👋', word: 'Wave!',     say: 'Wave hello!' },
+  { id: 'jump',   icon: '🦘', word: 'Jump!',     say: 'Jump, jump, jump!' },
+  { id: 'spin',   icon: '🌀', word: 'Spin!',     say: 'Spin around!' },
+  { id: 'stomp',  icon: '🐾', word: 'Stomp!',    say: 'Stomp your feet!' },
+  { id: 'reach',  icon: '🙌', word: 'Reach up!', say: 'Reach up high!' },
+  { id: 'wiggle', icon: '💃', word: 'Wiggle!',   say: 'Wiggle, wiggle!' },
+  { id: 'nod',    icon: '🙂', word: 'Nod!',      say: 'Nod your head!' }
+];
+const kittySays = m => 'Kitty says, ' + m.say.charAt(0).toLowerCase() + m.say.slice(1);
+const INTRO = "Let's play Kitty Says! Do what Kitty says. When the music stops, freeze!";
+const FREEZE = ['Freeze!', 'Everybody freeze!'];
+const FROZEN_PRAISE = ['Good freezing!', 'Wow! You are a statue!', 'Brrr! Frozen like ice!'];
+const TRICK_REVEAL = ["Hee hee! Kitty didn't say! Good listening!", "Oops! Kitty didn't say it! Silly kitty!"];
+const END_PRAISE = ['Yay! Great job, Melly!', 'Meow! You are a super listener!'];
+const pick = a => a[Math.floor(Math.random() * a.length)];
+
+/* ---------- Grown-up-selectable voice (same as the other Melly Mo games) ---------- */
+const Voice = (() => {
+  const KEY = 'mellyMoVoice';
+  let voices = [];
+  const vo = VoiceClips.create({ base: '/games/kitty-says/voice/' });
+  let sayId = 0;
+  function score(v) {
+    const n = v.name; let sc = 0;
+    if (/natural|neural|premium|enhanced|online/i.test(n)) sc += 100;
+    if (/google us english|google uk english female|samantha|\bava\b|allison|susan|karen|moira|tessa|serena|aria|jenny|michelle|emma|ana\b|zoe|nicky/i.test(n)) sc += 60;
+    if (/en[-_]US/i.test(v.lang)) sc += 15;
+    if (v.localService === false) sc += 10;
+    if (/compact|eloquence|espeak|grandma|grandpa|bad news|good news|bells|boing|bubbles|cellos|jester|organ|superstar|trinoids|whisper|wobble|zarvox|albert|fred|junior|ralph|kathy|bahh|hysterical|deranged|pipe|rocko|shelley|flo|reed|sandy/i.test(n)) sc -= 80;
+    return sc;
+  }
+  const sel = () => document.getElementById('voiceSel');
+  const saved = () => { try { const v = localStorage.getItem(KEY); return v == null ? VoiceClips.RECORDED : v; } catch (e) { return VoiceClips.RECORDED; } };
+  const recOpt = () => { const o = document.createElement('option'); o.value = VoiceClips.RECORDED; o.textContent = VoiceClips.LABEL; return o; };
+  const recorded = () => { const s = sel(); return !!s && s.value === VoiceClips.RECORDED; };
+  function load() {
+    if (!('speechSynthesis' in window)) return;
+    const all = speechSynthesis.getVoices() || [];
+    voices = all.filter(v => /^en/i.test(v.lang));
+    if (!voices.length) voices = all;
+    voices = voices.filter(v => score(v) > -40).sort((a, b) => score(b) - score(a));
+    const s = sel(); if (!s) return;
+    const keep = s.value || saved();
+    s.innerHTML = '';
+    s.appendChild(recOpt());
+    voices.forEach(v => { const o = document.createElement('option'); o.value = v.voiceURI; o.textContent = (score(v) >= 60 ? '★ ' : '') + `${v.name} (${v.lang})`; s.appendChild(o); });
+    s.value = keep === VoiceClips.RECORDED ? keep : voices.some(v => v.voiceURI === keep) ? keep : (voices[0] ? voices[0].voiceURI : VoiceClips.RECORDED);
+  }
+  function init() {
+    vo.prefetch([INTRO].concat(MOVES.map(m => m.say), MOVES.map(kittySays), FREEZE, FROZEN_PRAISE, TRICK_REVEAL, END_PRAISE), 'en');
+    if (!('speechSynthesis' in window)) { const s = sel(); if (s) { s.innerHTML = ''; s.appendChild(recOpt()); s.value = VoiceClips.RECORDED; } }
+    else {
+      load();
+      speechSynthesis.addEventListener ? speechSynthesis.addEventListener('voiceschanged', load) : (speechSynthesis.onvoiceschanged = load);
+    }
+    const st = document.getElementById('voiceStyle');
+    try { st.value = localStorage.getItem(KEY + 'Style') || 'natural'; } catch (e) {}
+    st.addEventListener('change', () => { try { localStorage.setItem(KEY + 'Style', st.value); } catch (e) {} say('Hi! I am kitty!'); });
+    sel().addEventListener('change', () => { try { localStorage.setItem(KEY, sel().value); } catch (e) {} say('Hi! I am kitty!'); });
+  }
+  const kittyStyle = () => document.getElementById('voiceStyle').value === 'kitty';
+  function speakDevice(text, voice) {
+    return new Promise(resolve => {
+      if (!('speechSynthesis' in window)) { setTimeout(resolve, 800); return; }
+      speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      if (voice) { u.voice = voice; u.lang = voice.lang; }
+      u.rate = 0.95; u.pitch = kittyStyle() ? 1.3 : 1.05;
+      u.onend = u.onerror = () => resolve();
+      setTimeout(resolve, 5500); // safety if onend never fires
+      speechSynthesis.speak(u);
+    });
+  }
+  // Say a line; resolves when kitty is done talking (or was interrupted)
+  function say(text) {
+    const id = ++sayId;
+    Music.duck(true);
+    const done = () => { if (id === sayId) Music.duck(false); };
+    if (recorded()) {
+      if ('speechSynthesis' in window) speechSynthesis.cancel();
+      return vo.play([text], { lang: 'en', rate: kittyStyle() ? 1.12 : 1, fallback: part => speakDevice(part.text, voices[0]) })
+        .then(done, done);
+    }
+    vo.stop();
+    return speakDevice(text, voices.find(v => v.voiceURI === sel().value)).then(done);
+  }
+  function hush() { sayId++; vo.stop(); if ('speechSynthesis' in window) speechSynthesis.cancel(); Music.duck(false); }
+  return { init, say, hush };
+})();
+
+function pref(key, fallback) { try { const v = localStorage.getItem(key); return v == null ? fallback : JSON.parse(v); } catch (e) { return fallback; } }
+function savePref(key, val) { try { localStorage.setItem(key, JSON.stringify(val)); } catch (e) {} }
+
+/* ---------- Settings panel ---------- */
+const panel = document.getElementById('settings');
+document.getElementById('gear').addEventListener('click', () => { panel.hidden = false; });
+panel.querySelectorAll('[data-close]').forEach(b => b.addEventListener('click', () => { panel.hidden = true; }));
+panel.addEventListener('click', e => { if (e.target === panel) panel.hidden = true; });
+document.getElementById('testVoice').addEventListener('click', () => { Music.init(); Voice.say('Hi! I am kitty!'); });
+const playLen = document.getElementById('playLen'), tricks = document.getElementById('tricks');
+playLen.value = pref('ksLen', 'medium'); if (!playLen.value) playLen.value = 'medium';
+tricks.value = pref('ksTricks', '0.25'); if (!tricks.value) tricks.value = '0.25';
+playLen.addEventListener('change', () => savePref('ksLen', playLen.value));
+tricks.addEventListener('change', () => savePref('ksTricks', tricks.value));
+const LENS = { short: [3, 6], medium: [5, 9], long: [8, 14] };
+const playMs = () => { const [a, b] = LENS[playLen.value] || LENS.medium; return (a + Math.random() * (b - a)) * 1000; };
+
+/* ---------- Game ---------- */
+const cat = document.getElementById('cat'), stage = document.getElementById('stage'), poker = document.getElementById('poker');
+const notes = document.getElementById('notes'), promptEl = document.getElementById('prompt');
+const pIcon = document.getElementById('pIcon'), pSays = document.getElementById('pSays'), pWord = document.getElementById('pWord');
+const starsEl = document.getElementById('stars'), starCount = document.getElementById('starCount');
+const stopBtn = document.getElementById('stopBtn'), startOv = document.getElementById('start');
+const songBtns = [...document.querySelectorAll('.song')];
+
+let songIdx = 0, playing = false, run = 0, frozen = false, lastMove = null, lastLine = null, stars = 0, noteTimer = null;
+const alive = r => playing && r === run;
+const sleep = ms => new Promise(res => setTimeout(res, ms));
+
+function setCat(cls) { cat.setAttribute('class', 'cat ' + cls); }
+function bubble(icon, says, word, kind) {
+  pIcon.textContent = icon; pSays.textContent = says; pSays.hidden = !says; pWord.textContent = word;
+  promptEl.classList.toggle('trick', kind === 'trick'); promptEl.classList.toggle('ice', kind === 'ice');
+  promptEl.hidden = false; promptEl.classList.remove('pop'); void promptEl.offsetWidth; promptEl.classList.add('pop');
+}
+function showSong() {
+  songBtns.forEach((b, i) => b.classList.toggle('on', playing && i === songIdx));
+  cat.style.setProperty('--beat', (60 / SONGS[songIdx].bpm) + 's');
+}
+function randomMove() {
+  const pool = MOVES.filter(m => m !== lastMove);
+  return (lastMove = pool[Math.floor(Math.random() * pool.length)]);
+}
+function spawn(cls, glyph, color) {
+  const n = document.createElement('span');
+  n.className = cls; n.textContent = glyph; n.style.left = (4 + Math.random() * 86) + '%';
+  if (color) n.style.color = color;
+  (cls === 'note' ? notes : stage).appendChild(n);
+  setTimeout(() => n.remove(), 3100);
+}
+const NOTE_COLORS = ['var(--sun)', 'var(--pink)', 'var(--mint)', 'var(--sky)', 'var(--cream)'];
+function musicOn(on) {
+  stage.classList.toggle('playing', on);
+  clearInterval(noteTimer); noteTimer = null;
+  if (on) noteTimer = setInterval(() => spawn('note', pick(['♪', '♫']), pick(NOTE_COLORS)), 60000 / SONGS[songIdx].bpm);
+}
+async function speak(line) { lastLine = line; await Voice.say(line); }
+
+async function play() {
+  Music.init(); SONGS.forEach(Music.preload);
+  const r = ++run; playing = true; frozen = false; stars = 0; lastMove = null;
+  startOv.hidden = true; stopBtn.disabled = false;
+  starCount.textContent = '0'; starsEl.hidden = false;
+  showSong(); setCat('idle');
+  bubble('🐱', '', 'Kitty Says!');
+  await speak(INTRO); if (!alive(r)) return;
+  while (alive(r)) {
+    await Music.play(SONGS[songIdx]); if (!alive(r)) return;
+    musicOn(true);
+    if (Math.random() < +tricks.value) { await trick(r); if (!alive(r)) return; }
+    await kittyMove(r); if (!alive(r)) return;
+    await sleep(playMs()); if (!alive(r)) return;
+    await freeze(r); if (!alive(r)) return;
+  }
+}
+// "Kitty says ___!" and kitty shows the move
+async function kittyMove(r) {
+  const m = randomMove();
+  setCat('mv-' + m.id);
+  bubble(m.icon, 'Kitty says', m.word);
+  await speak(kittySays(m));
+}
+// Trick: kitty says only the move, doesn't do it, then giggles
+async function trick(r) {
+  const m = randomMove();
+  setCat('still');
+  bubble(m.icon, '', m.word, 'trick');
+  await speak(m.say); if (!alive(r)) return;
+  await sleep(1800); if (!alive(r)) return;
+  setCat('trick'); Music.sfx.giggle();
+  bubble('🤫', 'Oops!', "Kitty didn't say!", 'trick');
+  await speak(pick(TRICK_REVEAL)); if (!alive(r)) return;
+  await sleep(500);
+}
+// The music stops: freeze!
+async function freeze(r) {
+  frozen = true;
+  Music.pause(true); Music.sfx.freeze(); musicOn(false);
+  cat.classList.add('frozen'); stage.classList.add('frozen');
+  bubble('❄️', 'Music stopped', 'Freeze!', 'ice');
+  for (let i = 0; i < 10; i++) setTimeout(() => { if (frozen) spawn('flake', '❄', '#fff'); }, i * 180);
+  await speak(pick(FREEZE)); if (!alive(r)) return;
+  await sleep(2600 + Math.random() * 1400); if (!alive(r)) return;
+  stars++; starCount.textContent = stars;
+  starsEl.classList.remove('pop'); void starsEl.offsetWidth; starsEl.classList.add('pop');
+  Music.sfx.ding();
+  await speak(pick(FROZEN_PRAISE)); if (!alive(r)) return;
+  await sleep(300); if (!alive(r)) return;
+  unfreeze();
+}
+function unfreeze() {
+  frozen = false;
+  cat.classList.remove('frozen'); stage.classList.remove('frozen');
+  setCat('idle');
+}
+function stop() {
+  if (!playing) return;
+  playing = false; run++;
+  Music.stop(); musicOn(false); unfreeze(); Voice.hush();
+  promptEl.hidden = true; stopBtn.disabled = true;
+  showSong();
+  Music.sfx.sparkle();
+  for (let i = 0; i < 14; i++) {
+    const s = document.createElement('span'); s.className = 'star'; s.textContent = '★';
+    const a = (i / 14) * Math.PI * 2, rr = 120 + Math.random() * 80;
+    s.style.setProperty('--dx', Math.cos(a) * rr + 'px'); s.style.setProperty('--dy', Math.sin(a) * rr + 'px');
+    s.style.color = NOTE_COLORS[i % NOTE_COLORS.length];
+    stage.appendChild(s); setTimeout(() => s.remove(), 1400);
+  }
+  Voice.say(pick(END_PRAISE));
+  document.getElementById('startMsg').textContent = stars ? `You froze ${stars} ${stars === 1 ? 'time' : 'times'}! Play again?` : 'Play Kitty Says again?';
+  setTimeout(() => { if (!playing) startOv.hidden = false; }, 1500);
+}
+
+songBtns.forEach((b, i) => b.addEventListener('click', () => {
+  songIdx = i;
+  if (!playing) { play(); return; }
+  showSong();
+  if (!frozen && Music.isOn()) { Music.play(SONGS[songIdx]); musicOn(true); }   // new song right away (when frozen, it starts after the freeze)
+}));
+document.getElementById('startBtn').addEventListener('click', play);
+stopBtn.addEventListener('click', stop);
+Music.onLoading = on => { if (on && playing) bubble('🎵', '', 'Getting the music…'); };
+promptEl.addEventListener('click', () => { if (lastLine) Voice.say(lastLine); });
+poker.addEventListener('click', () => {
+  poker.classList.remove('poke'); void poker.offsetWidth; poker.classList.add('poke');
+  Music.sfx.meow();
+});
+Voice.init();
+</script>
+
+</body>
+</html>
