@@ -258,10 +258,10 @@ button:focus-visible,select:focus-visible,input:focus-visible{outline:4px solid 
 
   <div class="tray" id="tray" aria-label="Pick a move"></div>
   <nav class="controls" aria-label="Songs">
-    <button class="song" data-i="0" aria-label="Song: Can-Can">💃</button>
-    <button class="song" data-i="1" aria-label="Song: Mountain King">⛰️</button>
-    <button class="song" data-i="2" aria-label="Song: Pop Goes the Weasel">🎈</button>
-    <button class="song" data-i="3" aria-label="Song: The Entertainer">🎹</button>
+    <button class="song" data-i="0" aria-label="Song: Bouncy Kitty Party">🐱</button>
+    <button class="song" data-i="1" aria-label="Song: Jungle Wiggle">🐒</button>
+    <button class="song" data-i="2" aria-label="Song: Disco Kitty">🪩</button>
+    <button class="song" data-i="3" aria-label="Song: Marching Band Stomp">🥁</button>
     <button class="stopbtn" id="stopBtn" aria-label="Stop dancing" disabled><span class="sq"></span>Stop</button>
   </nav>
 
@@ -361,6 +361,7 @@ const Music = (() => {
   const stepDur = () => 60 / curBpm / song.beatSteps;
   function chordTones(t, root, minor, len, vol) { [12, minor ? 15 : 16, 19].forEach(iv => tone(t, mtof(root + 12 + iv), len, 'triangle', vol)); }
   function playStep(s, t) {
+    if (song.file) { if (api.onSchedule) api.onSchedule(s, t); return; }
     const bs = song.beatSteps, half = bs / 2, intro = s < song.intro;
     const ms = s - song.intro, L = song.loop;
     const pass = intro ? 0 : Math.floor(ms / L), ls = intro ? s % song.stepsPerBar : ms % L;
@@ -411,21 +412,59 @@ const Music = (() => {
     }
   }
   function run() { playing = true; nextT = ctx.currentTime + 0.08; timer = setInterval(tick, 25); tick(); }
+
+  /* Recorded songs (made with ElevenLabs Music): played from an mp3, with the beat clock running alongside it */
+  const buffers = {}, loading = {};
+  let src = null, srcStart = 0, startToken = 0;
+  function loadSong(sg) {
+    if (buffers[sg.file]) return Promise.resolve(buffers[sg.file]);
+    if (!loading[sg.file]) loading[sg.file] = fetch(sg.file).then(r => { if (!r.ok) throw new Error('song ' + r.status); return r.arrayBuffer(); })
+      .then(ab => new Promise((res, rej) => ctx.decodeAudioData(ab, res, rej)))
+      .then(b => (buffers[sg.file] = b))
+      .catch(err => { delete loading[sg.file]; throw err; });
+    return loading[sg.file];
+  }
+  function stopSrc() { if (src) { try { src.onended = null; src.stop(); } catch (e) {} src = null; } }
+  function startFile(sg, cb) {
+    const token = ++startToken;
+    if (api.onLoading) api.onLoading(true);
+    loadSong(sg).then(buf => {
+      if (token !== startToken) return;          // another song was picked while this one loaded
+      if (api.onLoading) api.onLoading(false);
+      song = sg; sg.beatSteps = 4; sg.stepsPerBar = 16; sg.intro = 0; sg.loop = 1e9; sg.totalSec = buf.duration;
+      onStep = cb || onStep; curBpm = sg.bpm; ended = false; playedSec = 0;
+      src = ctx.createBufferSource(); src.buffer = buf;
+      const g = ctx.createGain(); g.gain.value = 1.6; src.connect(g); g.connect(bus);
+      const t0 = ctx.currentTime + 0.08; srcStart = t0;
+      src.start(t0);
+      src.onended = () => { if (token !== startToken || !playing) return; ended = true; api.stop(); if (api.onEnd) api.onEnd(); };
+      // beat clock lines up with the song's first beat
+      step = 0; playing = true; nextT = t0 + (sg.offset || 0);
+      timer = setInterval(() => { tick(); playedSec = ctx.currentTime - srcStart; }, 25); tick();
+    }).catch(() => {
+      if (token !== startToken) return;
+      if (api.onLoading) api.onLoading(false);
+      if (sg.fallback) api.start(sg.fallback, cb);   // no file? play the built-in tune instead
+    });
+  }
+
   api.init = init;
   api.start = (s, cb) => {            // start a song from the top
     init(); api.stop();
+    if (s.file) { song = s; onStep = cb || onStep; startFile(s, cb); return; }
     song = prep(s); onStep = cb || onStep;
     curBpm = song.bpm; step = 0; ended = false; playedSec = 0;
     run();
   };
-  api.resume = () => { if (playing || !song || ended) return; init(); run(); };   // carry on where it paused
-  api.stop = () => { playing = false; clearInterval(timer); timer = null; };
+  api.preload = s => { if (s && s.file) { init(); loadSong(s).catch(() => {}); } };
+  api.resume = () => { if (playing || !song || ended || song.file) return; init(); run(); };   // carry on where it paused
+  api.stop = () => { playing = false; clearInterval(timer); timer = null; startToken++; stopSrc(); };
   api.setSong = s => api.start(s);
   api.beatSec = () => 60 / curBpm;
   api.song = () => song;
   api.isEnded = () => ended;
   api.progress = () => (song ? Math.min(1, playedSec / song.totalSec) : 0);
-  api.isPop = s => !!(song && song.pops && s >= song.intro && song.pops.includes((s - song.intro) % song.loop));
+  api.isPop = s => !!(song && !song.file && song.pops && s >= song.intro && song.pops.includes((s - song.intro) % song.loop));
   api.isPhrase = s => !!(song && s >= song.intro && (s - song.intro) % (song.stepsPerBar * 4) === 0);
   api.isPlaying = () => playing;
   api.duck = on => { if (!ctx) return; bus.gain.cancelScheduledValues(ctx.currentTime); bus.gain.setTargetAtTime(on ? 0.2 : 0.6, ctx.currentTime, 0.08); };
@@ -463,7 +502,7 @@ const Music = (() => {
 
 /* ---------- Songs (shared by the dance games) ---------- */
 const e = (notes, d) => notes.map(n => [n, d]);          // helper: run of equal-length notes
-const SONGS = [
+const CLASSIC_SONGS = [
   { name: 'Can-Can', icon: '💃', bpm: 132, chords: [[48,0],[48,0],[48,0],[48,0],[43,0],[43,0],[48,0],[43,0], [48,0],[48,0],[48,0],[48,0],[43,0],[43,0],[48,0],[48,0]],
     mel: [
       [72,8],[74,2],[77,2],[76,2],[74,2],
@@ -505,6 +544,17 @@ const SONGS = [
       [76,2],[84,4],[76,2],[84,4],[76,2],[84,8],[81,2],[79,2],[78,2],[81,2],[84,2],
       [88,4],[86,2],[84,2],[81,2],[86,6],
       [86,8],[0,4],[74,2],[75,2] ] }
+];
+
+// Kids' dance songs made with ElevenLabs Music (about a minute each). If a file can't load, the matching classic tune plays instead.
+// bpm is the song's tempo (sets the kitty's bounce and when moves change); offset is seconds to the first downbeat.
+// bpm/offset measured from the mp3s (beat tracking + kick/chord-change analysis, grid checked across the whole song).
+const MUSIC_DIR = '/games/dance-like-me/music/';
+const SONGS = [
+  { name: 'Bouncy Kitty Party',  icon: '🐱', bpm: 120.00, offset: 0.024, beatChecked: true, file: MUSIC_DIR + 'bouncy-kitty-party.mp3',  fallback: CLASSIC_SONGS[0] },
+  { name: 'Jungle Wiggle',       icon: '🐒', bpm: 110.00, offset: 0.020, beatChecked: true, file: MUSIC_DIR + 'jungle-wiggle.mp3',       fallback: CLASSIC_SONGS[1] },
+  { name: 'Disco Kitty',         icon: '🪩', bpm: 117.98, offset: 0.020, beatChecked: true, file: MUSIC_DIR + 'disco-kitty.mp3',         fallback: CLASSIC_SONGS[2] },
+  { name: 'Marching Band Stomp', icon: '🥁', bpm: 111.99, offset: 0.024, beatChecked: true, file: MUSIC_DIR + 'marching-band-stomp.mp3', fallback: CLASSIC_SONGS[3] }
 ];
 
 /* ---------- Grown-up-selectable voice ---------- */
@@ -662,6 +712,7 @@ MOVES.forEach(m => {
 
 Music.onSchedule = (s, t) => {
   if (!playing || !current) return;
+  if (Music.song().file && !Music.song().beatChecked) return;
   const every = Math.max(1, Math.round(current.every / 4 * Music.song().beatSteps));
   if (s % every === 0) Music.sfx[current.sfx](t);
 };
@@ -684,7 +735,7 @@ function onStep(s) {
 }
 
 function play() {
-  Music.init();
+  Music.init(); DANCE_SONGS.forEach(Music.preload);
   playing = true; startOv.hidden = true; stopBtn.disabled = false;
   stage.classList.add('playing');
   showSong();
@@ -737,6 +788,7 @@ songBtns.forEach((b, i) => b.addEventListener('click', () => {
 document.getElementById('startBtn').addEventListener('click', play);
 stopBtn.addEventListener('click', () => stop());
 Music.onEnd = () => stop('That song is done! Pick another one.');
+Music.onLoading = on => { if (on && playing) { document.getElementById('pIcon').textContent = '🎵'; document.getElementById('pWord').textContent = 'Getting the music…'; promptEl.hidden = false; } };
 promptEl.addEventListener('click', () => { if (current) Voice.say(current.say); });
 poker.addEventListener('click', () => { if (playing) pokeCat(poker); });
 setupPanel(); Voice.init();
