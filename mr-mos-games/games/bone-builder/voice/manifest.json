@@ -1,0 +1,2400 @@
+{
+  "game": "bone-builder",
+  "model": "eleven_v4",
+  "lines": [
+    {
+      "text": "Hi! This is how I sound in the game.",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "hi-this-is-how-i-sound-in-the-game.mp3"
+    },
+    {
+      "text": "Robot’s turn.",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "robots-turn.mp3"
+    },
+    {
+      "text": "Mr. Mo’s turn!",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "mr-mos-turn.mp3"
+    },
+    {
+      "text": "Mr. Mo wins!",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "mr-mo-wins.mp3"
+    },
+    {
+      "text": "The whole skeleton is built! Shake those bones!",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "the-whole-skeleton-is-built-shake-those-bones.mp3"
+    },
+    {
+      "text": "Player 1’s turn!",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "player-1s-turn.mp3"
+    },
+    {
+      "text": "Player 1 wins!",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "player-1-wins.mp3"
+    },
+    {
+      "text": "Player 2’s turn!",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "player-2s-turn.mp3"
+    },
+    {
+      "text": "Player 2 wins!",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "player-2-wins.mp3"
+    },
+    {
+      "text": "Robot wins this time!",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "robot-wins-this-time.mp3"
+    },
+    {
+      "text": "Let's play again!",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "lets-play-again.mp3"
+    },
+    {
+      "text": "ay!",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "letter-a.mp3",
+      "say": "A!"
+    },
+    {
+      "text": "ay says aah, aah.",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "ay-says-aah-aah.mp3",
+      "say": "A says aah, aah."
+    },
+    {
+      "text": "Which animal starts with ay?",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "which-animal-starts-with-ay.mp3",
+      "say": "Which animal starts with A?"
+    },
+    {
+      "text": "ay says aah.",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "ay-says-aah.mp3",
+      "say": "A says aah."
+    },
+    {
+      "text": "B!",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "letter-b.mp3"
+    },
+    {
+      "text": "B says buh, buh.",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "b-says-buh-buh.mp3"
+    },
+    {
+      "text": "Which animal starts with B?",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "which-animal-starts-with-b.mp3"
+    },
+    {
+      "text": "B says buh.",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "b-says-buh.mp3"
+    },
+    {
+      "text": "C!",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "letter-c.mp3"
+    },
+    {
+      "text": "C says kuh, kuh.",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "c-says-kuh-kuh.mp3"
+    },
+    {
+      "text": "Which animal starts with C?",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "which-animal-starts-with-c.mp3"
+    },
+    {
+      "text": "C says kuh.",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "c-says-kuh.mp3"
+    },
+    {
+      "text": "D!",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "letter-d.mp3"
+    },
+    {
+      "text": "D says duh, duh.",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "d-says-duh-duh.mp3"
+    },
+    {
+      "text": "Which animal starts with D?",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "which-animal-starts-with-d.mp3"
+    },
+    {
+      "text": "D says duh.",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "d-says-duh.mp3"
+    },
+    {
+      "text": "E!",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "letter-e.mp3"
+    },
+    {
+      "text": "E says eh, eh.",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "e-says-eh-eh.mp3"
+    },
+    {
+      "text": "Which animal starts with E?",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "which-animal-starts-with-e.mp3"
+    },
+    {
+      "text": "E says eh.",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "e-says-eh.mp3"
+    },
+    {
+      "text": "F!",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "letter-f.mp3"
+    },
+    {
+      "text": "F says fuh, fuh.",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "f-says-fuh-fuh.mp3"
+    },
+    {
+      "text": "Which animal starts with F?",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "which-animal-starts-with-f.mp3"
+    },
+    {
+      "text": "F says fuh.",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "f-says-fuh.mp3"
+    },
+    {
+      "text": "G!",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "letter-g.mp3"
+    },
+    {
+      "text": "G says guh, guh.",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "g-says-guh-guh.mp3"
+    },
+    {
+      "text": "Which animal starts with G?",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "which-animal-starts-with-g.mp3"
+    },
+    {
+      "text": "G says guh.",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "g-says-guh.mp3"
+    },
+    {
+      "text": "H!",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "letter-h.mp3"
+    },
+    {
+      "text": "H says huh, huh.",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "h-says-huh-huh.mp3"
+    },
+    {
+      "text": "Which animal starts with H?",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "which-animal-starts-with-h.mp3"
+    },
+    {
+      "text": "H says huh.",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "h-says-huh.mp3"
+    },
+    {
+      "text": "K!",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "letter-k.mp3"
+    },
+    {
+      "text": "K says kuh, kuh.",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "k-says-kuh-kuh.mp3"
+    },
+    {
+      "text": "Which animal starts with K?",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "which-animal-starts-with-k.mp3"
+    },
+    {
+      "text": "K says kuh.",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "k-says-kuh.mp3"
+    },
+    {
+      "text": "L!",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "letter-l.mp3"
+    },
+    {
+      "text": "L says luh, luh.",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "l-says-luh-luh.mp3"
+    },
+    {
+      "text": "Which animal starts with L?",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "which-animal-starts-with-l.mp3"
+    },
+    {
+      "text": "L says luh.",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "l-says-luh.mp3"
+    },
+    {
+      "text": "M!",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "letter-m.mp3"
+    },
+    {
+      "text": "M says muh, muh.",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "m-says-muh-muh.mp3"
+    },
+    {
+      "text": "Which animal starts with M?",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "which-animal-starts-with-m.mp3"
+    },
+    {
+      "text": "M says muh.",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "m-says-muh.mp3"
+    },
+    {
+      "text": "O!",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "letter-o.mp3"
+    },
+    {
+      "text": "O says aw, aw.",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "o-says-aw-aw.mp3"
+    },
+    {
+      "text": "Which animal starts with O?",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "which-animal-starts-with-o.mp3"
+    },
+    {
+      "text": "O says aw.",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "o-says-aw.mp3"
+    },
+    {
+      "text": "P!",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "letter-p.mp3"
+    },
+    {
+      "text": "P says puh, puh.",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "p-says-puh-puh.mp3"
+    },
+    {
+      "text": "Which animal starts with P?",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "which-animal-starts-with-p.mp3"
+    },
+    {
+      "text": "P says puh.",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "p-says-puh.mp3"
+    },
+    {
+      "text": "R!",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "letter-r.mp3"
+    },
+    {
+      "text": "R says ruh, ruh.",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "r-says-ruh-ruh.mp3"
+    },
+    {
+      "text": "Which animal starts with R?",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "which-animal-starts-with-r.mp3"
+    },
+    {
+      "text": "R says ruh.",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "r-says-ruh.mp3"
+    },
+    {
+      "text": "S!",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "letter-s.mp3"
+    },
+    {
+      "text": "S says suh, suh.",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "s-says-suh-suh.mp3"
+    },
+    {
+      "text": "Which animal starts with S?",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "which-animal-starts-with-s.mp3"
+    },
+    {
+      "text": "S says suh.",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "s-says-suh.mp3"
+    },
+    {
+      "text": "T!",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "letter-t.mp3"
+    },
+    {
+      "text": "T says tuh, tuh.",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "t-says-tuh-tuh.mp3"
+    },
+    {
+      "text": "Which animal starts with T?",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "which-animal-starts-with-t.mp3"
+    },
+    {
+      "text": "T says tuh.",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "t-says-tuh.mp3"
+    },
+    {
+      "text": "U!",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "letter-u.mp3"
+    },
+    {
+      "text": "U says you, you.",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "u-says-you-you.mp3"
+    },
+    {
+      "text": "Which animal starts with U?",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "which-animal-starts-with-u.mp3"
+    },
+    {
+      "text": "U says you.",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "u-says-you.mp3"
+    },
+    {
+      "text": "W!",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "letter-w.mp3"
+    },
+    {
+      "text": "W says wuh, wuh.",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "w-says-wuh-wuh.mp3"
+    },
+    {
+      "text": "Which animal starts with W?",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "which-animal-starts-with-w.mp3"
+    },
+    {
+      "text": "W says wuh.",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "w-says-wuh.mp3"
+    },
+    {
+      "text": "Z!",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "letter-z.mp3"
+    },
+    {
+      "text": "Z says zuh, zuh.",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "z-says-zuh-zuh.mp3"
+    },
+    {
+      "text": "Which animal starts with Z?",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "which-animal-starts-with-z.mp3"
+    },
+    {
+      "text": "Z says zuh.",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "z-says-zuh.mp3"
+    },
+    {
+      "text": "Ant",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "ant.mp3"
+    },
+    {
+      "text": "What letter does",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "what-letter-does.mp3"
+    },
+    {
+      "text": "start with?",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "start-with.mp3"
+    },
+    {
+      "text": "Robot got it!",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "robot-got-it.mp3"
+    },
+    {
+      "text": "starts with ay!",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "starts-with-ay.mp3",
+      "say": "starts with A!"
+    },
+    {
+      "text": "Yes!",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "yes.mp3"
+    },
+    {
+      "text": "Here comes the skull!",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "here-comes-the-skull.mp3"
+    },
+    {
+      "text": "Here comes the backbone!",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "here-comes-the-backbone.mp3"
+    },
+    {
+      "text": "Here comes the ribs!",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "here-comes-the-ribs.mp3"
+    },
+    {
+      "text": "Here comes the hips!",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "here-comes-the-hips.mp3"
+    },
+    {
+      "text": "Here comes an arm bone!",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "here-comes-an-arm-bone.mp3"
+    },
+    {
+      "text": "Here comes another arm bone!",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "here-comes-another-arm-bone.mp3"
+    },
+    {
+      "text": "Here comes a hand!",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "here-comes-a-hand.mp3"
+    },
+    {
+      "text": "Here comes another hand!",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "here-comes-another-hand.mp3"
+    },
+    {
+      "text": "Here comes a leg!",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "here-comes-a-leg.mp3"
+    },
+    {
+      "text": "That’s a",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "thats-a.mp3",
+      "say": "That’s a…"
+    },
+    {
+      "text": "Bear",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "bear.mp3"
+    },
+    {
+      "text": "starts with B!",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "starts-with-b.mp3"
+    },
+    {
+      "text": "Bee",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "bee.mp3"
+    },
+    {
+      "text": "Bat",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "bat.mp3"
+    },
+    {
+      "text": "Bird",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "bird.mp3"
+    },
+    {
+      "text": "Cat",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "cat.mp3"
+    },
+    {
+      "text": "starts with C!",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "starts-with-c.mp3"
+    },
+    {
+      "text": "Cow",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "cow.mp3"
+    },
+    {
+      "text": "Crab",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "crab.mp3"
+    },
+    {
+      "text": "Camel",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "camel.mp3"
+    },
+    {
+      "text": "Dog",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "dog.mp3"
+    },
+    {
+      "text": "starts with D!",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "starts-with-d.mp3"
+    },
+    {
+      "text": "Duck",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "duck.mp3"
+    },
+    {
+      "text": "Dolphin",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "dolphin.mp3"
+    },
+    {
+      "text": "Deer",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "deer.mp3"
+    },
+    {
+      "text": "That’s an",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "thats-an.mp3",
+      "say": "That’s an…"
+    },
+    {
+      "text": "Elephant",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "elephant.mp3"
+    },
+    {
+      "text": "starts with E!",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "starts-with-e.mp3"
+    },
+    {
+      "text": "Fish",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "fish.mp3"
+    },
+    {
+      "text": "starts with F!",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "starts-with-f.mp3"
+    },
+    {
+      "text": "Frog",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "frog.mp3"
+    },
+    {
+      "text": "Fox",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "fox.mp3"
+    },
+    {
+      "text": "Flamingo",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "flamingo.mp3"
+    },
+    {
+      "text": "Goat",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "goat.mp3"
+    },
+    {
+      "text": "starts with G!",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "starts-with-g.mp3"
+    },
+    {
+      "text": "Gorilla",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "gorilla.mp3"
+    },
+    {
+      "text": "Horse",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "horse.mp3"
+    },
+    {
+      "text": "starts with H!",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "starts-with-h.mp3"
+    },
+    {
+      "text": "Hippo",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "hippo.mp3"
+    },
+    {
+      "text": "Hedgehog",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "hedgehog.mp3"
+    },
+    {
+      "text": "Kangaroo",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "kangaroo.mp3"
+    },
+    {
+      "text": "starts with K!",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "starts-with-k.mp3"
+    },
+    {
+      "text": "Koala",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "koala.mp3"
+    },
+    {
+      "text": "Lion",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "lion.mp3"
+    },
+    {
+      "text": "starts with L!",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "starts-with-l.mp3"
+    },
+    {
+      "text": "Ladybug",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "ladybug.mp3"
+    },
+    {
+      "text": "Llama",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "llama.mp3"
+    },
+    {
+      "text": "Lobster",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "lobster.mp3"
+    },
+    {
+      "text": "Monkey",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "monkey.mp3"
+    },
+    {
+      "text": "starts with M!",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "starts-with-m.mp3"
+    },
+    {
+      "text": "Mouse",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "mouse.mp3"
+    },
+    {
+      "text": "Octopus",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "octopus.mp3"
+    },
+    {
+      "text": "starts with O!",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "starts-with-o.mp3"
+    },
+    {
+      "text": "Otter",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "otter.mp3"
+    },
+    {
+      "text": "Pig",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "pig.mp3"
+    },
+    {
+      "text": "starts with P!",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "starts-with-p.mp3"
+    },
+    {
+      "text": "Penguin",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "penguin.mp3"
+    },
+    {
+      "text": "Panda",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "panda.mp3"
+    },
+    {
+      "text": "Parrot",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "parrot.mp3"
+    },
+    {
+      "text": "Rabbit",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "rabbit.mp3"
+    },
+    {
+      "text": "starts with R!",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "starts-with-r.mp3"
+    },
+    {
+      "text": "Rhino",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "rhino.mp3"
+    },
+    {
+      "text": "Raccoon",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "raccoon.mp3"
+    },
+    {
+      "text": "Snake",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "snake.mp3"
+    },
+    {
+      "text": "starts with S!",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "starts-with-s.mp3"
+    },
+    {
+      "text": "Snail",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "snail.mp3"
+    },
+    {
+      "text": "Shark",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "shark.mp3"
+    },
+    {
+      "text": "Sheep",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "sheep.mp3"
+    },
+    {
+      "text": "Seal",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "seal.mp3"
+    },
+    {
+      "text": "Tiger",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "tiger.mp3"
+    },
+    {
+      "text": "starts with T!",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "starts-with-t.mp3"
+    },
+    {
+      "text": "Turtle",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "turtle.mp3"
+    },
+    {
+      "text": "Turkey",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "turkey.mp3"
+    },
+    {
+      "text": "Unicorn",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "unicorn.mp3"
+    },
+    {
+      "text": "starts with U!",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "starts-with-u.mp3"
+    },
+    {
+      "text": "Whale",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "whale.mp3"
+    },
+    {
+      "text": "starts with W!",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "starts-with-w.mp3"
+    },
+    {
+      "text": "Wolf",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "wolf.mp3"
+    },
+    {
+      "text": "Worm",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "worm.mp3"
+    },
+    {
+      "text": "Zebra",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "zebra.mp3"
+    },
+    {
+      "text": "starts with Z!",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "starts-with-z.mp3"
+    },
+    {
+      "text": "That’s B.",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "thats-b.mp3"
+    },
+    {
+      "text": "That’s C.",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "thats-c.mp3"
+    },
+    {
+      "text": "That’s D.",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "thats-d.mp3"
+    },
+    {
+      "text": "That’s E.",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "thats-e.mp3"
+    },
+    {
+      "text": "That’s F.",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "thats-f.mp3"
+    },
+    {
+      "text": "That’s G.",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "thats-g.mp3"
+    },
+    {
+      "text": "That’s H.",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "thats-h.mp3"
+    },
+    {
+      "text": "That’s K.",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "thats-k.mp3"
+    },
+    {
+      "text": "That’s L.",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "thats-l.mp3"
+    },
+    {
+      "text": "That’s M.",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "thats-m.mp3"
+    },
+    {
+      "text": "That’s O.",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "thats-o.mp3"
+    },
+    {
+      "text": "That’s P.",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "thats-p.mp3"
+    },
+    {
+      "text": "That’s R.",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "thats-r.mp3"
+    },
+    {
+      "text": "That’s S.",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "thats-s.mp3"
+    },
+    {
+      "text": "That’s T.",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "thats-t.mp3"
+    },
+    {
+      "text": "That’s U.",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "thats-u.mp3"
+    },
+    {
+      "text": "That’s W.",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "thats-w.mp3"
+    },
+    {
+      "text": "That’s Z.",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "thats-z.mp3"
+    },
+    {
+      "text": "That’s ay.",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "thats-ay.mp3",
+      "say": "That’s A."
+    },
+    {
+      "text": "¡Hola! Así sueno en el juego.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-hola-asi-sueno-en-el-juego.mp3"
+    },
+    {
+      "text": "Turno del Robot.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-turno-del-robot.mp3"
+    },
+    {
+      "text": "¡Turno de Mr. Mo!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-turno-de-mr-mo.mp3",
+      "say": "¡Turno de Mister Mo!"
+    },
+    {
+      "text": "¡Mr. Mo gana!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-mr-mo-gana.mp3",
+      "say": "¡Mister Mo gana!"
+    },
+    {
+      "text": "¡El esqueleto está completo! ¡A mover los huesos!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-el-esqueleto-esta-completo-a-mover-los-huesos.mp3"
+    },
+    {
+      "text": "¡Turno de Jugador 1!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-turno-de-jugador-1.mp3"
+    },
+    {
+      "text": "¡Jugador 1 gana!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-jugador-1-gana.mp3"
+    },
+    {
+      "text": "¡Turno de Jugador 2!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-turno-de-jugador-2.mp3"
+    },
+    {
+      "text": "¡Jugador 2 gana!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-jugador-2-gana.mp3"
+    },
+    {
+      "text": "¡El Robot gana esta vez!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-el-robot-gana-esta-vez.mp3"
+    },
+    {
+      "text": "¡Juguemos otra vez!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-juguemos-otra-vez.mp3"
+    },
+    {
+      "text": "¡a!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-letter-a.mp3"
+    },
+    {
+      "text": "La a suena a, a.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-la-a-suena-a-a.mp3"
+    },
+    {
+      "text": "¿Qué animal empieza con la a?",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-que-animal-empieza-con-la-a.mp3"
+    },
+    {
+      "text": "La a suena a.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-la-a-suena-a.mp3"
+    },
+    {
+      "text": "¡be!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-letter-be.mp3"
+    },
+    {
+      "text": "La be suena ba, ba.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-la-be-suena-ba-ba.mp3"
+    },
+    {
+      "text": "¿Qué animal empieza con la be?",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-que-animal-empieza-con-la-be.mp3"
+    },
+    {
+      "text": "La be suena ba.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-la-be-suena-ba.mp3"
+    },
+    {
+      "text": "¡ce!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-letter-ce.mp3"
+    },
+    {
+      "text": "La ce suena ca, ca.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-la-ce-suena-ca-ca.mp3"
+    },
+    {
+      "text": "¿Qué animal empieza con la ce?",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-que-animal-empieza-con-la-ce.mp3"
+    },
+    {
+      "text": "La ce suena ca.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-la-ce-suena-ca.mp3"
+    },
+    {
+      "text": "¡de!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-letter-de.mp3"
+    },
+    {
+      "text": "La de suena da, da.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-la-de-suena-da-da.mp3"
+    },
+    {
+      "text": "¿Qué animal empieza con la de?",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-que-animal-empieza-con-la-de.mp3"
+    },
+    {
+      "text": "La de suena da.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-la-de-suena-da.mp3"
+    },
+    {
+      "text": "¡e!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-letter-e.mp3"
+    },
+    {
+      "text": "La e suena e, e.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-la-e-suena-e-e.mp3"
+    },
+    {
+      "text": "¿Qué animal empieza con la e?",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-que-animal-empieza-con-la-e.mp3"
+    },
+    {
+      "text": "La e suena e.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-la-e-suena-e.mp3"
+    },
+    {
+      "text": "¡efe!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-letter-efe.mp3"
+    },
+    {
+      "text": "La efe suena fa, fa.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-la-efe-suena-fa-fa.mp3"
+    },
+    {
+      "text": "¿Qué animal empieza con la efe?",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-que-animal-empieza-con-la-efe.mp3"
+    },
+    {
+      "text": "La efe suena fa.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-la-efe-suena-fa.mp3"
+    },
+    {
+      "text": "¡ge!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-letter-ge.mp3"
+    },
+    {
+      "text": "La ge suena ga, ga.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-la-ge-suena-ga-ga.mp3"
+    },
+    {
+      "text": "¿Qué animal empieza con la ge?",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-que-animal-empieza-con-la-ge.mp3"
+    },
+    {
+      "text": "La ge suena ga.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-la-ge-suena-ga.mp3"
+    },
+    {
+      "text": "¡hache!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-letter-hache.mp3"
+    },
+    {
+      "text": "La hache no suena.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-la-hache-no-suena.mp3"
+    },
+    {
+      "text": "¿Qué animal empieza con la hache?",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-que-animal-empieza-con-la-hache.mp3"
+    },
+    {
+      "text": "¡i!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-letter-i.mp3"
+    },
+    {
+      "text": "La i suena i, i.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-la-i-suena-i-i.mp3"
+    },
+    {
+      "text": "¿Qué animal empieza con la i?",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-que-animal-empieza-con-la-i.mp3"
+    },
+    {
+      "text": "La i suena i.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-la-i-suena-i.mp3"
+    },
+    {
+      "text": "¡jota!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-letter-jota.mp3"
+    },
+    {
+      "text": "La jota suena ja, ja.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-la-jota-suena-ja-ja.mp3",
+      "say": "La jota suena «ja», «ja»."
+    },
+    {
+      "text": "¿Qué animal empieza con la jota?",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-que-animal-empieza-con-la-jota.mp3"
+    },
+    {
+      "text": "La jota suena ja.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-la-jota-suena-ja.mp3",
+      "say": "La jota suena «ja»."
+    },
+    {
+      "text": "¡ka!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-letter-ka.mp3"
+    },
+    {
+      "text": "La ka suena ka, ka.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-la-ka-suena-ka-ka.mp3"
+    },
+    {
+      "text": "¿Qué animal empieza con la ka?",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-que-animal-empieza-con-la-ka.mp3"
+    },
+    {
+      "text": "La ka suena ka.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-la-ka-suena-ka.mp3"
+    },
+    {
+      "text": "¡ele!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-letter-ele.mp3"
+    },
+    {
+      "text": "La ele suena la, la.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-la-ele-suena-la-la.mp3"
+    },
+    {
+      "text": "¿Qué animal empieza con la ele?",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-que-animal-empieza-con-la-ele.mp3"
+    },
+    {
+      "text": "La ele suena la.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-la-ele-suena-la.mp3"
+    },
+    {
+      "text": "¡eme!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-letter-eme.mp3"
+    },
+    {
+      "text": "La eme suena ma, ma.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-la-eme-suena-ma-ma.mp3"
+    },
+    {
+      "text": "¿Qué animal empieza con la eme?",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-que-animal-empieza-con-la-eme.mp3"
+    },
+    {
+      "text": "La eme suena ma.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-la-eme-suena-ma.mp3"
+    },
+    {
+      "text": "¡o!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-letter-o.mp3"
+    },
+    {
+      "text": "La o suena o, o.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-la-o-suena-o-o.mp3"
+    },
+    {
+      "text": "¿Qué animal empieza con la o?",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-que-animal-empieza-con-la-o.mp3"
+    },
+    {
+      "text": "La o suena o.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-la-o-suena-o.mp3"
+    },
+    {
+      "text": "¡pe!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-letter-pe.mp3"
+    },
+    {
+      "text": "La pe suena pa, pa.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-la-pe-suena-pa-pa.mp3"
+    },
+    {
+      "text": "¿Qué animal empieza con la pe?",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-que-animal-empieza-con-la-pe.mp3"
+    },
+    {
+      "text": "La pe suena pa.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-la-pe-suena-pa.mp3"
+    },
+    {
+      "text": "¡erre!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-letter-erre.mp3"
+    },
+    {
+      "text": "La erre suena rra, rra.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-la-erre-suena-rra-rra.mp3"
+    },
+    {
+      "text": "¿Qué animal empieza con la erre?",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-que-animal-empieza-con-la-erre.mp3"
+    },
+    {
+      "text": "La erre suena rra.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-la-erre-suena-rra.mp3"
+    },
+    {
+      "text": "¡ese!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-letter-ese.mp3"
+    },
+    {
+      "text": "La ese suena sa, sa.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-la-ese-suena-sa-sa.mp3"
+    },
+    {
+      "text": "¿Qué animal empieza con la ese?",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-que-animal-empieza-con-la-ese.mp3"
+    },
+    {
+      "text": "La ese suena sa.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-la-ese-suena-sa.mp3"
+    },
+    {
+      "text": "¡te!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-letter-te.mp3"
+    },
+    {
+      "text": "La te suena ta, ta.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-la-te-suena-ta-ta.mp3"
+    },
+    {
+      "text": "¿Qué animal empieza con la te?",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-que-animal-empieza-con-la-te.mp3"
+    },
+    {
+      "text": "La te suena ta.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-la-te-suena-ta.mp3"
+    },
+    {
+      "text": "¡u!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-letter-u.mp3"
+    },
+    {
+      "text": "La u suena u, u.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-la-u-suena-u-u.mp3"
+    },
+    {
+      "text": "¿Qué animal empieza con la u?",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-que-animal-empieza-con-la-u.mp3"
+    },
+    {
+      "text": "La u suena u.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-la-u-suena-u.mp3"
+    },
+    {
+      "text": "¡uve!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-letter-uve.mp3"
+    },
+    {
+      "text": "La uve suena va, va.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-la-uve-suena-va-va.mp3"
+    },
+    {
+      "text": "¿Qué animal empieza con la uve?",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-que-animal-empieza-con-la-uve.mp3"
+    },
+    {
+      "text": "La uve suena va.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-la-uve-suena-va.mp3"
+    },
+    {
+      "text": "¡zeta!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-letter-zeta.mp3"
+    },
+    {
+      "text": "La zeta suena za, za.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-la-zeta-suena-za-za.mp3"
+    },
+    {
+      "text": "¿Qué animal empieza con la zeta?",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-que-animal-empieza-con-la-zeta.mp3"
+    },
+    {
+      "text": "La zeta suena za.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-la-zeta-suena-za.mp3"
+    },
+    {
+      "text": "Araña",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-arana.mp3"
+    },
+    {
+      "text": "¿Con qué letra empieza",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-con-que-letra-empieza.mp3"
+    },
+    {
+      "text": "¡El Robot acertó!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-el-robot-acerto.mp3"
+    },
+    {
+      "text": "empieza con a.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-empieza-con-a.mp3"
+    },
+    {
+      "text": "¡Sí!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-si.mp3"
+    },
+    {
+      "text": "¡Aquí viene el cráneo!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-aqui-viene-el-craneo.mp3"
+    },
+    {
+      "text": "¡Aquí viene la columna!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-aqui-viene-la-columna.mp3"
+    },
+    {
+      "text": "¡Aquí viene las costillas!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-aqui-viene-las-costillas.mp3"
+    },
+    {
+      "text": "¡Aquí viene la cadera!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-aqui-viene-la-cadera.mp3"
+    },
+    {
+      "text": "¡Aquí viene un hueso del brazo!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-aqui-viene-un-hueso-del-brazo.mp3"
+    },
+    {
+      "text": "¡Aquí viene otro hueso del brazo!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-aqui-viene-otro-hueso-del-brazo.mp3"
+    },
+    {
+      "text": "¡Aquí viene una mano!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-aqui-viene-una-mano.mp3"
+    },
+    {
+      "text": "¡Aquí viene la otra mano!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-aqui-viene-la-otra-mano.mp3"
+    },
+    {
+      "text": "¡Aquí viene una pierna!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-aqui-viene-una-pierna.mp3"
+    },
+    {
+      "text": "Es una",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-es-una.mp3"
+    },
+    {
+      "text": "Ballena",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-ballena.mp3"
+    },
+    {
+      "text": "empieza con be.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-empieza-con-be.mp3"
+    },
+    {
+      "text": "Es un",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-es-un.mp3"
+    },
+    {
+      "text": "Búho",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-buho.mp3"
+    },
+    {
+      "text": "Caballo",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-caballo.mp3"
+    },
+    {
+      "text": "empieza con ce.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-empieza-con-ce.mp3"
+    },
+    {
+      "text": "Conejo",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-conejo.mp3"
+    },
+    {
+      "text": "Cangrejo",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-cangrejo.mp3"
+    },
+    {
+      "text": "Camello",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-camello.mp3"
+    },
+    {
+      "text": "Caracol",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-caracol.mp3"
+    },
+    {
+      "text": "Delfín",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-delfin.mp3"
+    },
+    {
+      "text": "empieza con de.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-empieza-con-de.mp3"
+    },
+    {
+      "text": "Dinosaurio",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-dinosaurio.mp3"
+    },
+    {
+      "text": "Elefante",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-elefante.mp3"
+    },
+    {
+      "text": "empieza con e.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-empieza-con-e.mp3"
+    },
+    {
+      "text": "Erizo",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-erizo.mp3"
+    },
+    {
+      "text": "Foca",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-foca.mp3"
+    },
+    {
+      "text": "empieza con efe.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-empieza-con-efe.mp3"
+    },
+    {
+      "text": "Flamenco",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-flamenco.mp3"
+    },
+    {
+      "text": "Gato",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-gato.mp3"
+    },
+    {
+      "text": "empieza con ge.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-empieza-con-ge.mp3"
+    },
+    {
+      "text": "Gallina",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-gallina.mp3"
+    },
+    {
+      "text": "Gorila",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-gorila.mp3"
+    },
+    {
+      "text": "Hipopótamo",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-hipopotamo.mp3"
+    },
+    {
+      "text": "empieza con hache.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-empieza-con-hache.mp3"
+    },
+    {
+      "text": "Hormiga",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-hormiga.mp3"
+    },
+    {
+      "text": "Iguana",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-iguana.mp3"
+    },
+    {
+      "text": "empieza con i.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-empieza-con-i.mp3"
+    },
+    {
+      "text": "Jirafa",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-jirafa.mp3"
+    },
+    {
+      "text": "empieza con jota.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-empieza-con-jota.mp3"
+    },
+    {
+      "text": "Koala",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-koala.mp3"
+    },
+    {
+      "text": "empieza con ka.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-empieza-con-ka.mp3"
+    },
+    {
+      "text": "León",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-leon.mp3"
+    },
+    {
+      "text": "empieza con ele.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-empieza-con-ele.mp3"
+    },
+    {
+      "text": "Lobo",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-lobo.mp3"
+    },
+    {
+      "text": "Loro",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-loro.mp3"
+    },
+    {
+      "text": "Langosta",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-langosta.mp3"
+    },
+    {
+      "text": "Mono",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-mono.mp3"
+    },
+    {
+      "text": "empieza con eme.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-empieza-con-eme.mp3"
+    },
+    {
+      "text": "Mariposa",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-mariposa.mp3"
+    },
+    {
+      "text": "Murciélago",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-murcielago.mp3"
+    },
+    {
+      "text": "Mariquita",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-mariquita.mp3"
+    },
+    {
+      "text": "Oso",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-oso.mp3"
+    },
+    {
+      "text": "empieza con o.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-empieza-con-o.mp3"
+    },
+    {
+      "text": "Oveja",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-oveja.mp3"
+    },
+    {
+      "text": "Oruga",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-oruga.mp3"
+    },
+    {
+      "text": "Perro",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-perro.mp3"
+    },
+    {
+      "text": "empieza con pe.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-empieza-con-pe.mp3"
+    },
+    {
+      "text": "Pato",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-pato.mp3"
+    },
+    {
+      "text": "Pez",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-pez.mp3"
+    },
+    {
+      "text": "Pingüino",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-pinguino.mp3"
+    },
+    {
+      "text": "Pulpo",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-pulpo.mp3"
+    },
+    {
+      "text": "Panda",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-panda.mp3"
+    },
+    {
+      "text": "Ratón",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-raton.mp3"
+    },
+    {
+      "text": "empieza con erre.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-empieza-con-erre.mp3"
+    },
+    {
+      "text": "Rana",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-rana.mp3"
+    },
+    {
+      "text": "Rinoceronte",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-rinoceronte.mp3"
+    },
+    {
+      "text": "Serpiente",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-serpiente.mp3"
+    },
+    {
+      "text": "empieza con ese.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-empieza-con-ese.mp3"
+    },
+    {
+      "text": "Tigre",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-tigre.mp3"
+    },
+    {
+      "text": "empieza con te.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-empieza-con-te.mp3"
+    },
+    {
+      "text": "Tortuga",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-tortuga.mp3"
+    },
+    {
+      "text": "Tiburón",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-tiburon.mp3"
+    },
+    {
+      "text": "Toro",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-toro.mp3"
+    },
+    {
+      "text": "Unicornio",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-unicornio.mp3"
+    },
+    {
+      "text": "empieza con u.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-empieza-con-u.mp3"
+    },
+    {
+      "text": "Vaca",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-vaca.mp3"
+    },
+    {
+      "text": "empieza con uve.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-empieza-con-uve.mp3"
+    },
+    {
+      "text": "Venado",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-venado.mp3"
+    },
+    {
+      "text": "Zorro",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-zorro.mp3"
+    },
+    {
+      "text": "empieza con zeta.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-empieza-con-zeta.mp3"
+    },
+    {
+      "text": "Esa es la be.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-esa-es-la-be.mp3"
+    },
+    {
+      "text": "Esa es la ce.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-esa-es-la-ce.mp3"
+    },
+    {
+      "text": "Esa es la de.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-esa-es-la-de.mp3"
+    },
+    {
+      "text": "Esa es la e.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-esa-es-la-e.mp3"
+    },
+    {
+      "text": "Esa es la efe.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-esa-es-la-efe.mp3"
+    },
+    {
+      "text": "Esa es la ge.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-esa-es-la-ge.mp3"
+    },
+    {
+      "text": "Esa es la hache.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-esa-es-la-hache.mp3"
+    },
+    {
+      "text": "Esa es la i.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-esa-es-la-i.mp3"
+    },
+    {
+      "text": "Esa es la jota.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-esa-es-la-jota.mp3"
+    },
+    {
+      "text": "Esa es la ka.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-esa-es-la-ka.mp3"
+    },
+    {
+      "text": "Esa es la ele.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-esa-es-la-ele.mp3"
+    },
+    {
+      "text": "Esa es la eme.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-esa-es-la-eme.mp3"
+    },
+    {
+      "text": "Esa es la o.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-esa-es-la-o.mp3"
+    },
+    {
+      "text": "Esa es la pe.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-esa-es-la-pe.mp3"
+    },
+    {
+      "text": "Esa es la erre.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-esa-es-la-erre.mp3"
+    },
+    {
+      "text": "Esa es la ese.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-esa-es-la-ese.mp3"
+    },
+    {
+      "text": "Esa es la te.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-esa-es-la-te.mp3"
+    },
+    {
+      "text": "Esa es la u.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-esa-es-la-u.mp3"
+    },
+    {
+      "text": "Esa es la uve.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-esa-es-la-uve.mp3"
+    },
+    {
+      "text": "Esa es la zeta.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-esa-es-la-zeta.mp3"
+    },
+    {
+      "text": "Abeja",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-abeja.mp3"
+    },
+    {
+      "text": "Águila",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-aguila.mp3"
+    },
+    {
+      "text": "Ardilla",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-ardilla.mp3"
+    },
+    {
+      "text": "Esa es la a.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-esa-es-la-a.mp3"
+    }
+  ]
+}

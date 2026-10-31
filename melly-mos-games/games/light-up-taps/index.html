@@ -149,13 +149,21 @@ select{ flex:1; min-width:0; font:600 16px/1.2 var(--font); min-height:46px; bor
   </div>
 </div>
 
+<script src="/voice-clips.js"></script>
 <script>
 (() => {
 "use strict";
 /* ================= settings ================= */
 const LS_KEY = "mellymo-settings";
-function loadSettings(){ try{ return JSON.parse(localStorage.getItem(LS_KEY) || "{}") || {}; }catch(e){ return {}; } }
-const settings = Object.assign({ lang:"en", enVoice:"", esVoice:"", sfx:true, sayColors:true }, loadSettings());
+function loadSettings(){
+  let s; try{ s = JSON.parse(localStorage.getItem(LS_KEY) || "{}") || {}; }catch(e){ s = {}; }
+  // One-time move to the recorded voice: "" used to mean "Automatic" (the old default), not a deliberate choice.
+  // A specific device voice someone picked is kept.
+  if (!s.recVoice){ if (s.enVoice === "") delete s.enVoice; if (s.esVoice === "") delete s.esVoice; s.recVoice = 1; }
+  return s;
+}
+const REC = window.VoiceClips ? VoiceClips.RECORDED : "recorded";
+const settings = Object.assign({ lang:"en", enVoice:REC, esVoice:REC, sfx:true, sayColors:true }, loadSettings());
 function saveSettings(){ try{ localStorage.setItem(LS_KEY, JSON.stringify(settings)); }catch(e){} }
 const reduceMotion = (() => { try{ return matchMedia("(prefers-reduced-motion: reduce)").matches; }catch(e){ return false; } })();
 
@@ -172,9 +180,60 @@ function voiceFor(lang){
   return list.find(x => langOf(x) === first) || list.find(x => langOf(x) === second) || list[0] || null;
 }
 let speakToken = 0, spokeOnce = false, silentTimer = null, speaking = false;
+/* recorded voice clips (voice/manifest.json), device voice for anything without a clip */
+const vo = window.VoiceClips ? VoiceClips.create({ base:"/games/light-up-taps/voice/" }) : null;
+window.__vo = vo;
+const isRec = lang => !!vo && settings[lang === "en" ? "enVoice" : "esVoice"] === REC;
+// The whole line if it was recorded, else its sentences: "Blue! Red! Yellow!" plays three clips.
+function clipParts(text, lang){
+  if (vo.has(text, lang)) return [text];
+  return text.replace(/([!?.])\s+/g, "$1\n").split("\n");
+}
+function sayDevice(text, lang, tok){
+  return new Promise(res => {
+    if (tok !== speakToken) return res();
+    try{
+      if (!window.speechSynthesis) return res();
+      const u = new SpeechSynthesisUtterance(text);
+      const v = voiceFor(lang);
+      if (v){ u.voice = v; u.lang = v.lang; } else { u.lang = lang === "en" ? "en-US" : "es-ES"; }
+      u.rate = 0.85; u.pitch = 1.1;
+      let done = false;
+      const fin = () => { if (done) return; done = true; clearTimeout(safety); res(); };
+      const safety = setTimeout(fin, 6000);
+      u.onstart = () => { spokeOnce = true; hideNoSound(); };
+      u.onend = fin; u.onerror = fin;
+      speechSynthesis.speak(u);
+    }catch(e){ res(); }
+  });
+}
+function speakRecorded(parts, tok){
+  vo.ready.then(() => {
+    let i = 0;
+    const next = () => {
+      if (tok !== speakToken) return;
+      if (i >= parts.length){ speaking = false; return; }
+      const p = parts[i++];
+      const after = () => { if (tok === speakToken) setTimeout(next, 200); };
+      if (!isRec(p.lang)) { sayDevice(p.text, p.lang, tok).then(after); return; }
+      const pieces = clipParts(p.text, p.lang);
+      vo.play(pieces, { lang:p.lang, fallback: q => sayDevice(q.text, q.lang, tok),
+        onstart: () => { if (pieces.some(t => vo.has(t, p.lang))){ spokeOnce = true; hideNoSound(); } } }).then(after);
+    };
+    next();
+  });
+}
 function speak(parts){
   if (!parts.length) return;
   const tok = ++speakToken;
+  if (parts.some(p => isRec(p.lang))){
+    try{ vo.stop(); if (window.speechSynthesis) speechSynthesis.cancel(); }catch(e){}
+    speaking = true;
+    speakRecorded(parts, tok);
+    if (!spokeOnce){ clearTimeout(silentTimer); silentTimer = setTimeout(() => { if (!spokeOnce) showNoSound(); }, 6000); }
+    return;
+  }
+  if (vo) vo.stop();
   try{ if (!window.speechSynthesis) { showNoSound(); return; } speechSynthesis.cancel(); }catch(e){ return; }
   let i = 0; speaking = true;
   const next = () => {
@@ -262,7 +321,7 @@ function nextColor(){
 function sayColor(col){
   if (!settings.sayColors) return;
   const now = performance.now();
-  if (speaking || now - lastSay < 1500) return;
+  if (speaking || (vo && vo.speaking) || now - lastSay < 1500) return;
   lastSay = now;
   speak(lines(col.en + "!", "¡" + col.es + "!"));
 }
@@ -511,10 +570,11 @@ function fillVoiceSelects(){
     const list = voices.filter(v => langOf(v).startsWith(lang));
     const key = lang + "Voice";
     sel.innerHTML = "";
+    if (vo){ const r = document.createElement("option"); r.value = REC; r.textContent = VoiceClips.LABEL; sel.appendChild(r); }
     const auto = document.createElement("option"); auto.value = ""; auto.textContent = list.length ? "Automatic" : "No " + (lang === "en" ? "English" : "Spanish") + " voices on this device";
     sel.appendChild(auto);
     for (const v of list){ const o = document.createElement("option"); o.value = v.voiceURI; o.textContent = v.name + " (" + v.lang + ")"; sel.appendChild(o); }
-    sel.value = list.some(v => v.voiceURI === settings[key]) ? settings[key] : "";
+    sel.value = vo && settings[key] === REC ? REC : list.some(v => v.voiceURI === settings[key]) ? settings[key] : "";
   }
 }
 for (const lang of ["en","es"]){
@@ -528,6 +588,11 @@ document.addEventListener("contextmenu", e => { if (!e.target.closest(".sheet"))
 document.addEventListener("gesturestart", e => e.preventDefault());
 document.addEventListener("touchmove", e => { if (!e.target.closest(".sheet")) e.preventDefault(); }, { passive:false });
 resize(); buildModes(); loadVoices();
+// Only a couple dozen short clips: warm them all so taps never wait on a download.
+if (vo) vo.ready.then(() => {
+  vo.prefetch(["Tap anywhere to make lights!", "English"].concat(COLORS.map(c => c.en + "!"), Object.keys(MODES).map(k => MODES[k].en + "!")), "en");
+  vo.prefetch(["¡Toca para hacer luces!", "Español"].concat(COLORS.map(c => "¡" + c.es + "!"), Object.keys(MODES).map(k => "¡" + MODES[k].es + "!")), "es");
+});
 requestAnimationFrame(t0 => { last = t0; requestAnimationFrame(frame); });
 })();
 </script>

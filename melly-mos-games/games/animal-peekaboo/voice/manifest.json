@@ -1,0 +1,648 @@
+{
+  "game": "animal-peekaboo",
+  "model": "eleven_v4",
+  "lines": [
+    {
+      "text": "Let’s play peekaboo! Tap a door.",
+      "lang": "en",
+      "voice_id": "4gnXtzQIIeGuC5hxActn",
+      "file": "lets-play-peekaboo-tap-a-door.mp3"
+    },
+    {
+      "text": "English",
+      "lang": "en",
+      "voice_id": "4gnXtzQIIeGuC5hxActn",
+      "file": "english.mp3"
+    },
+    {
+      "text": "Peekaboo!",
+      "lang": "en",
+      "voice_id": "4gnXtzQIIeGuC5hxActn",
+      "file": "peekaboo.mp3"
+    },
+    {
+      "text": "The farm!",
+      "lang": "en",
+      "voice_id": "4gnXtzQIIeGuC5hxActn",
+      "file": "the-farm.mp3"
+    },
+    {
+      "text": "The zoo!",
+      "lang": "en",
+      "voice_id": "4gnXtzQIIeGuC5hxActn",
+      "file": "the-zoo.mp3"
+    },
+    {
+      "text": "The ocean!",
+      "lang": "en",
+      "voice_id": "4gnXtzQIIeGuC5hxActn",
+      "file": "the-ocean.mp3"
+    },
+    {
+      "text": "Moo!",
+      "lang": "en",
+      "voice_id": "4gnXtzQIIeGuC5hxActn",
+      "file": "moo.mp3"
+    },
+    {
+      "text": "It’s a cow!",
+      "lang": "en",
+      "voice_id": "4gnXtzQIIeGuC5hxActn",
+      "file": "its-a-cow.mp3"
+    },
+    {
+      "text": "Oink oink!",
+      "lang": "en",
+      "voice_id": "4gnXtzQIIeGuC5hxActn",
+      "file": "oink-oink.mp3"
+    },
+    {
+      "text": "It’s a pig!",
+      "lang": "en",
+      "voice_id": "4gnXtzQIIeGuC5hxActn",
+      "file": "its-a-pig.mp3"
+    },
+    {
+      "text": "Baa baa!",
+      "lang": "en",
+      "voice_id": "4gnXtzQIIeGuC5hxActn",
+      "file": "baa-baa.mp3"
+    },
+    {
+      "text": "It’s a sheep!",
+      "lang": "en",
+      "voice_id": "4gnXtzQIIeGuC5hxActn",
+      "file": "its-a-sheep.mp3"
+    },
+    {
+      "text": "Neigh!",
+      "lang": "en",
+      "voice_id": "4gnXtzQIIeGuC5hxActn",
+      "file": "neigh.mp3"
+    },
+    {
+      "text": "It’s a horse!",
+      "lang": "en",
+      "voice_id": "4gnXtzQIIeGuC5hxActn",
+      "file": "its-a-horse.mp3"
+    },
+    {
+      "text": "Quack quack!",
+      "lang": "en",
+      "voice_id": "4gnXtzQIIeGuC5hxActn",
+      "file": "quack-quack.mp3"
+    },
+    {
+      "text": "It’s a duck!",
+      "lang": "en",
+      "voice_id": "4gnXtzQIIeGuC5hxActn",
+      "file": "its-a-duck.mp3"
+    },
+    {
+      "text": "Cluck cluck!",
+      "lang": "en",
+      "voice_id": "4gnXtzQIIeGuC5hxActn",
+      "file": "cluck-cluck.mp3"
+    },
+    {
+      "text": "It’s a chicken!",
+      "lang": "en",
+      "voice_id": "4gnXtzQIIeGuC5hxActn",
+      "file": "its-a-chicken.mp3"
+    },
+    {
+      "text": "Woof woof!",
+      "lang": "en",
+      "voice_id": "4gnXtzQIIeGuC5hxActn",
+      "file": "woof-woof.mp3"
+    },
+    {
+      "text": "It’s a dog!",
+      "lang": "en",
+      "voice_id": "4gnXtzQIIeGuC5hxActn",
+      "file": "its-a-dog.mp3"
+    },
+    {
+      "text": "Meow!",
+      "lang": "en",
+      "voice_id": "4gnXtzQIIeGuC5hxActn",
+      "file": "meow.mp3"
+    },
+    {
+      "text": "It’s a cat!",
+      "lang": "en",
+      "voice_id": "4gnXtzQIIeGuC5hxActn",
+      "file": "its-a-cat.mp3"
+    },
+    {
+      "text": "Roar!",
+      "lang": "en",
+      "voice_id": "4gnXtzQIIeGuC5hxActn",
+      "file": "roar.mp3"
+    },
+    {
+      "text": "It’s a lion!",
+      "lang": "en",
+      "voice_id": "4gnXtzQIIeGuC5hxActn",
+      "file": "its-a-lion.mp3"
+    },
+    {
+      "text": "Toot toot!",
+      "lang": "en",
+      "voice_id": "4gnXtzQIIeGuC5hxActn",
+      "file": "toot-toot.mp3"
+    },
+    {
+      "text": "It’s an elephant!",
+      "lang": "en",
+      "voice_id": "4gnXtzQIIeGuC5hxActn",
+      "file": "its-an-elephant.mp3"
+    },
+    {
+      "text": "Ooh ooh, ah ah!",
+      "lang": "en",
+      "voice_id": "4gnXtzQIIeGuC5hxActn",
+      "file": "ooh-ooh-ah-ah.mp3"
+    },
+    {
+      "text": "It’s a monkey!",
+      "lang": "en",
+      "voice_id": "4gnXtzQIIeGuC5hxActn",
+      "file": "its-a-monkey.mp3"
+    },
+    {
+      "text": "Rawr!",
+      "lang": "en",
+      "voice_id": "4gnXtzQIIeGuC5hxActn",
+      "file": "rawr.mp3"
+    },
+    {
+      "text": "It’s a tiger!",
+      "lang": "en",
+      "voice_id": "4gnXtzQIIeGuC5hxActn",
+      "file": "its-a-tiger.mp3"
+    },
+    {
+      "text": "Munch munch!",
+      "lang": "en",
+      "voice_id": "4gnXtzQIIeGuC5hxActn",
+      "file": "munch-munch.mp3"
+    },
+    {
+      "text": "It’s a giraffe!",
+      "lang": "en",
+      "voice_id": "4gnXtzQIIeGuC5hxActn",
+      "file": "its-a-giraffe.mp3"
+    },
+    {
+      "text": "Clip clop!",
+      "lang": "en",
+      "voice_id": "4gnXtzQIIeGuC5hxActn",
+      "file": "clip-clop.mp3"
+    },
+    {
+      "text": "It’s a zebra!",
+      "lang": "en",
+      "voice_id": "4gnXtzQIIeGuC5hxActn",
+      "file": "its-a-zebra.mp3"
+    },
+    {
+      "text": "Grrr!",
+      "lang": "en",
+      "voice_id": "4gnXtzQIIeGuC5hxActn",
+      "file": "grrr.mp3"
+    },
+    {
+      "text": "It’s a bear!",
+      "lang": "en",
+      "voice_id": "4gnXtzQIIeGuC5hxActn",
+      "file": "its-a-bear.mp3"
+    },
+    {
+      "text": "Hisss!",
+      "lang": "en",
+      "voice_id": "4gnXtzQIIeGuC5hxActn",
+      "file": "hisss.mp3"
+    },
+    {
+      "text": "It’s a snake!",
+      "lang": "en",
+      "voice_id": "4gnXtzQIIeGuC5hxActn",
+      "file": "its-a-snake.mp3"
+    },
+    {
+      "text": "Blub blub!",
+      "lang": "en",
+      "voice_id": "4gnXtzQIIeGuC5hxActn",
+      "file": "blub-blub.mp3"
+    },
+    {
+      "text": "It’s a fish!",
+      "lang": "en",
+      "voice_id": "4gnXtzQIIeGuC5hxActn",
+      "file": "its-a-fish.mp3"
+    },
+    {
+      "text": "Splash!",
+      "lang": "en",
+      "voice_id": "4gnXtzQIIeGuC5hxActn",
+      "file": "splash.mp3"
+    },
+    {
+      "text": "It’s a whale!",
+      "lang": "en",
+      "voice_id": "4gnXtzQIIeGuC5hxActn",
+      "file": "its-a-whale.mp3"
+    },
+    {
+      "text": "Wiggle wiggle!",
+      "lang": "en",
+      "voice_id": "4gnXtzQIIeGuC5hxActn",
+      "file": "wiggle-wiggle.mp3"
+    },
+    {
+      "text": "It’s an octopus!",
+      "lang": "en",
+      "voice_id": "4gnXtzQIIeGuC5hxActn",
+      "file": "its-an-octopus.mp3"
+    },
+    {
+      "text": "Snip snip!",
+      "lang": "en",
+      "voice_id": "4gnXtzQIIeGuC5hxActn",
+      "file": "snip-snip.mp3"
+    },
+    {
+      "text": "It’s a crab!",
+      "lang": "en",
+      "voice_id": "4gnXtzQIIeGuC5hxActn",
+      "file": "its-a-crab.mp3"
+    },
+    {
+      "text": "Swish swish!",
+      "lang": "en",
+      "voice_id": "4gnXtzQIIeGuC5hxActn",
+      "file": "swish-swish.mp3"
+    },
+    {
+      "text": "It’s a turtle!",
+      "lang": "en",
+      "voice_id": "4gnXtzQIIeGuC5hxActn",
+      "file": "its-a-turtle.mp3"
+    },
+    {
+      "text": "Eee eee!",
+      "lang": "en",
+      "voice_id": "4gnXtzQIIeGuC5hxActn",
+      "file": "eee-eee.mp3"
+    },
+    {
+      "text": "It’s a dolphin!",
+      "lang": "en",
+      "voice_id": "4gnXtzQIIeGuC5hxActn",
+      "file": "its-a-dolphin.mp3"
+    },
+    {
+      "text": "Arf arf!",
+      "lang": "en",
+      "voice_id": "4gnXtzQIIeGuC5hxActn",
+      "file": "arf-arf.mp3"
+    },
+    {
+      "text": "It’s a seal!",
+      "lang": "en",
+      "voice_id": "4gnXtzQIIeGuC5hxActn",
+      "file": "its-a-seal.mp3"
+    },
+    {
+      "text": "Chomp chomp!",
+      "lang": "en",
+      "voice_id": "4gnXtzQIIeGuC5hxActn",
+      "file": "chomp-chomp.mp3"
+    },
+    {
+      "text": "It’s a shark!",
+      "lang": "en",
+      "voice_id": "4gnXtzQIIeGuC5hxActn",
+      "file": "its-a-shark.mp3"
+    },
+    {
+      "text": "¡Vamos a jugar! Toca una puerta.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-vamos-a-jugar-toca-una-puerta.mp3"
+    },
+    {
+      "text": "Español",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-espanol.mp3"
+    },
+    {
+      "text": "¡Aquí está!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-aqui-esta.mp3"
+    },
+    {
+      "text": "¡La granja!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-la-granja.mp3"
+    },
+    {
+      "text": "¡El zoológico!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-el-zoologico.mp3"
+    },
+    {
+      "text": "¡El mar!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-el-mar.mp3"
+    },
+    {
+      "text": "¡Muu!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-muu.mp3"
+    },
+    {
+      "text": "¡Es una vaca!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-es-una-vaca.mp3"
+    },
+    {
+      "text": "¡Oinc oinc!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-oinc-oinc.mp3"
+    },
+    {
+      "text": "¡Es un cerdo!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-es-un-cerdo.mp3"
+    },
+    {
+      "text": "¡Beee!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-beee.mp3"
+    },
+    {
+      "text": "¡Es una oveja!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-es-una-oveja.mp3"
+    },
+    {
+      "text": "¡Iiiiih!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-iiiiih.mp3"
+    },
+    {
+      "text": "¡Es un caballo!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-es-un-caballo.mp3"
+    },
+    {
+      "text": "¡Cuac cuac!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-cuac-cuac.mp3"
+    },
+    {
+      "text": "¡Es un pato!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-es-un-pato.mp3"
+    },
+    {
+      "text": "¡Coc co co!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-coc-co-co.mp3"
+    },
+    {
+      "text": "¡Es una gallina!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-es-una-gallina.mp3"
+    },
+    {
+      "text": "¡Guau guau!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-guau-guau.mp3"
+    },
+    {
+      "text": "¡Es un perro!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-es-un-perro.mp3"
+    },
+    {
+      "text": "¡Miau!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-miau.mp3"
+    },
+    {
+      "text": "¡Es un gato!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-es-un-gato.mp3"
+    },
+    {
+      "text": "¡Groar!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-groar.mp3"
+    },
+    {
+      "text": "¡Es un león!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-es-un-leon.mp3"
+    },
+    {
+      "text": "¡Pruu pruu!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-pruu-pruu.mp3"
+    },
+    {
+      "text": "¡Es un elefante!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-es-un-elefante.mp3"
+    },
+    {
+      "text": "¡U u, a a!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-u-u-a-a.mp3"
+    },
+    {
+      "text": "¡Es un mono!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-es-un-mono.mp3"
+    },
+    {
+      "text": "¡Rrrau!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-rrrau.mp3"
+    },
+    {
+      "text": "¡Es un tigre!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-es-un-tigre.mp3"
+    },
+    {
+      "text": "¡Ñam ñam!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-nam-nam.mp3"
+    },
+    {
+      "text": "¡Es una jirafa!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-es-una-jirafa.mp3"
+    },
+    {
+      "text": "¡Clop clop!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-clop-clop.mp3"
+    },
+    {
+      "text": "¡Es una cebra!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-es-una-cebra.mp3"
+    },
+    {
+      "text": "¡Grrr!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-grrr.mp3"
+    },
+    {
+      "text": "¡Es un oso!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-es-un-oso.mp3"
+    },
+    {
+      "text": "¡Sssss!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-sssss.mp3"
+    },
+    {
+      "text": "¡Es una serpiente!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-es-una-serpiente.mp3"
+    },
+    {
+      "text": "¡Glu glu!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-glu-glu.mp3"
+    },
+    {
+      "text": "¡Es un pez!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-es-un-pez.mp3"
+    },
+    {
+      "text": "¡Chof!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-chof.mp3"
+    },
+    {
+      "text": "¡Es una ballena!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-es-una-ballena.mp3"
+    },
+    {
+      "text": "¡Chiqui chiqui!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-chiqui-chiqui.mp3"
+    },
+    {
+      "text": "¡Es un pulpo!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-es-un-pulpo.mp3"
+    },
+    {
+      "text": "¡Clic clac!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-clic-clac.mp3"
+    },
+    {
+      "text": "¡Es un cangrejo!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-es-un-cangrejo.mp3"
+    },
+    {
+      "text": "¡Chis chas!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-chis-chas.mp3"
+    },
+    {
+      "text": "¡Es una tortuga!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-es-una-tortuga.mp3"
+    },
+    {
+      "text": "¡Iii iii!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-iii-iii.mp3"
+    },
+    {
+      "text": "¡Es un delfín!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-es-un-delfin.mp3"
+    },
+    {
+      "text": "¡Arf arf!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-arf-arf.mp3"
+    },
+    {
+      "text": "¡Es una foca!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-es-una-foca.mp3"
+    },
+    {
+      "text": "¡Es un tiburón!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-es-un-tiburon.mp3"
+    }
+  ]
+}

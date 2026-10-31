@@ -452,6 +452,7 @@ body.playing .apptitle small{display:none}
   </div>
 </div>
 
+<script src="/voice-clips.js"></script>
 <script>
 (() => {
 'use strict';
@@ -624,7 +625,11 @@ try { if (window.speechSynthesis){ loadVoices(); speechSynthesis.addEventListene
 function norm(v){ return (v.lang || '').replace('_', '-').toLowerCase(); }
 // shared with the other Mr. Mo games on this site: pick a voice once and every game uses it
 function vkey(pre){ return 'mrmo.voice.' + pre; }
-function savedVoice(pre){ try { return localStorage.getItem(vkey(pre)) || ''; } catch(e){ return ''; } }
+// nothing saved yet means the recorded voice; "" is an explicit choice of the device voice
+function savedVoice(pre){ try { const v = localStorage.getItem(vkey(pre)); return v === null ? VoiceClips.RECORDED : v; } catch(e){ return VoiceClips.RECORDED; } }
+const isRecorded = pre => savedVoice(pre) === VoiceClips.RECORDED;
+const vo = VoiceClips.create({base:'/games/bilingual-bingo/voice/'});
+window.__vo = vo;
 function chosenVoice(pre){ const n = savedVoice(pre); return n ? (voices.find(v => v.voiceURI === n || v.name === n) || null) : null; }
 function deviceVoice(pre){ return voices.find(v => v.default && norm(v).startsWith(pre)) || null; }
 // null means "let the device speak with its own voice for this language"
@@ -635,20 +640,56 @@ function pickVoice(lang){
   return voices.find(v => norm(v) === want) || voices.find(v => norm(v).startsWith(pre)) || null;
 }
 function fillVoiceMenus(){
-  [['en', '#voiceEn', 'Device voice'], ['es', '#voiceEs', 'Voz del dispositivo']].forEach(([pre, sel, label]) => {
+  [['en', '#voiceEn', 'Device voice', VoiceClips.LABEL], ['es', '#voiceEs', 'Voz del dispositivo', VoiceClips.LABEL_ES]].forEach(([pre, sel, label, recLabel]) => {
     const s = document.querySelector(sel); if (!s) return;
     const cur = savedVoice(pre);
     s.textContent = '';
+    s.add(new Option(recLabel, VoiceClips.RECORDED));
     s.add(new Option(label, ''));
     voices.filter(v => norm(v).startsWith(pre)).sort((a, b) => a.name.localeCompare(b.name))
       .forEach(v => s.add(new Option(`${v.name} (${v.lang})${v.default ? ' ★' : ''}`, v.voiceURI)));
     s.value = cur; if (s.value !== cur) s.value = '';
   });
 }
+const NOT_CALLED = "That one hasn't been called yet. Keep listening!";
 const NO_SOUND = "No sound came out. Check that your device isn't on silent and the volume is up, or try opening this page directly in Safari or Chrome. You can also turn off Listen only to read the call.";
 let speakToken = 0, noSoundTimer = null;
 const boxEl = b => b === 'en' ? $('#enBox') : b === 'es' ? $('#esBox') : null;
 function clearBoxes(){ $('#enBox').classList.remove('speaking'); $('#esBox').classList.remove('speaking'); }
+
+// device speech for one part; resolves when it has finished (or failed)
+function deviceSay(part, onstart){
+  return new Promise(resolve => {
+    let synth = null;
+    try { synth = window.speechSynthesis; } catch(e){}
+    if (!synth || typeof SpeechSynthesisUtterance === 'undefined') return resolve();
+    let done = false, safety = null;
+    const fin = () => { if (done) return; done = true; clearTimeout(safety); resolve(); };
+    try {
+      const u = new SpeechSynthesisUtterance(part.text);
+      u.rate = .85;
+      const v = pickVoice(part.lang); if (v) u.voice = v;
+      const dv = v ? null : deviceVoice(part.lang.slice(0, 2).toLowerCase());
+      u.lang = v ? v.lang : (dv ? dv.lang : part.lang);
+      u.onstart = onstart;
+      u.onend = fin; u.onerror = fin;
+      safety = setTimeout(fin, 8000);
+      synth.speak(u);
+    } catch(e){ fin(); }
+  });
+}
+const partPre = part => part.lang.slice(0, 2).toLowerCase();
+function prefetchParts(parts){
+  ['en', 'es'].forEach(pre => {
+    if (!isRecorded(pre)) return;
+    vo.prefetch(parts.filter(p => p && partPre(p) === pre).map(p => p.text), pre);
+  });
+}
+function stopSpeech(){
+  speakToken++;
+  vo.stop();
+  try { window.speechSynthesis && speechSynthesis.cancel(); } catch(e){}
+}
 
 function speak(parts){
   const token = ++speakToken;
@@ -657,37 +698,37 @@ function speak(parts){
   if (!parts.length) return;
   let synth = null;
   try { synth = window.speechSynthesis; } catch(e){}
-  if (!synth || typeof SpeechSynthesisUtterance === 'undefined'){ setStatus(NO_SOUND); return; }
-  try { synth.cancel(); } catch(e){}
+  const hasSynth = !!synth && typeof SpeechSynthesisUtterance !== 'undefined';
+  const rec = part => isRecorded(partPre(part));
+  vo.stop();
+  if (!hasSynth && !parts.some(rec)){ setStatus(NO_SOUND); return; }
+  if (hasSynth){ try { synth.cancel(); } catch(e){} }
   let started = false, i = 0;
   noSoundTimer = setTimeout(() => { if (token === speakToken && !started) setStatus(NO_SOUND); }, 1500);
   const next = () => {
     if (token !== speakToken) return;
     if (i >= parts.length){ clearBoxes(); return; }
     const part = parts[i++];
-    let done = false, safety = null;
+    const onstart = () => {
+      started = true;
+      if (token !== speakToken) return;
+      if ($('#status').textContent === NO_SOUND) setStatus('');
+      const b = boxEl(part.box); if (b) b.classList.add('speaking');
+    };
     const finish = () => {
-      if (done) return; done = true; clearTimeout(safety);
       if (token !== speakToken) return;
       const b = boxEl(part.box); if (b) b.classList.remove('speaking');
       setTimeout(next, 300);
     };
-    try {
-      const u = new SpeechSynthesisUtterance(part.text);
-      u.rate = .85;
-      const v = pickVoice(part.lang); if (v) u.voice = v;
-      const dv = v ? null : deviceVoice(part.lang.slice(0, 2).toLowerCase());
-      u.lang = v ? v.lang : (dv ? dv.lang : part.lang);
-      u.onstart = () => {
-        started = true;
-        if (token !== speakToken) return;
-        if ($('#status').textContent === NO_SOUND) setStatus('');
-        const b = boxEl(part.box); if (b) b.classList.add('speaking');
-      };
-      u.onend = finish; u.onerror = finish;
-      safety = setTimeout(finish, 8000);
-      synth.speak(u);
-    } catch(e){ finish(); }
+    if (rec(part)){
+      const pre = partPre(part);
+      let fellBack = false;   // a missing/broken clip goes to the device voice instead
+      vo.play([part.text], {
+        lang: pre,
+        onstart: () => { setTimeout(() => { if (!fellBack && vo.has(part.text, pre)) onstart(); }, 0); },
+        fallback: () => { fellBack = true; return deviceSay(part, onstart); }
+      }).then(finish, finish);
+    } else deviceSay(part, onstart).then(finish);
   };
   next();
 }
@@ -752,6 +793,8 @@ function newGame(mode){
   applyWho();
   setStatus('');
   renderCall();
+  prefetchParts([...S.deck.slice(0, 2).flatMap(k => callParts(k, 'both')), EN(NOT_CALLED),
+    ...(mode === 'letters' ? [...S.boards[0].words, ...S.boards[1].words].flatMap(w => [EN(w.en), ES(w.es)]) : []), EN('Bingo!'), ES('¡Bingo!')]);
   $('#start').hidden = true; game.hidden = false;
   document.body.classList.add('playing');
 }
@@ -836,6 +879,7 @@ function callNext(){
   setStatus('');
   renderCall();
   speak(callParts(S.current, 'both'));
+  prefetchParts([...nameParts(S.current), ...(S.pos < S.deck.length ? callParts(S.deck[S.pos], 'both') : [])]);
   botWatch();
 }
 
@@ -859,7 +903,7 @@ function tapCell(p, i, btn){
   if (b.marked.has(i) || isBot(p)){ speak(nameParts(k)); return; }
   if (!S.called.has(k)){
     restart(btn, 'shake');
-    const msg = "That one hasn't been called yet. Keep listening!";
+    const msg = NOT_CALLED;
     setStatus(msg);
     speak([...nameParts(k), EN(msg)]);
     return;
@@ -909,7 +953,7 @@ function botWatch(){
   const t0 = Date.now(); let quiet = 0;
   botPoll = setInterval(() => {
     let talking = false;
-    try { talking = !!(window.speechSynthesis && (speechSynthesis.speaking || speechSynthesis.pending)); } catch(e){}
+    try { talking = vo.speaking || !!(window.speechSynthesis && (speechSynthesis.speaking || speechSynthesis.pending)); } catch(e){}
     quiet = talking ? 0 : quiet + 1;
     if (quiet < 3 && Date.now() - t0 < 12000) return;
     clearInterval(botPoll); botPoll = 0;
@@ -941,7 +985,7 @@ function buildReveal(p, line){
         html: `<p class="rline">Bingo! Your ${where} spelled <b>${esc(word.w)}</b></p>
                <div class="rbig" aria-hidden="true">${word.e}</div>
                <div class="rwords"><span><b>English</b> ${esc(cap(word.en))}</span><span><b>Español</b> ${esc(cap(word.es))}</span></div>`,
-        parts: [EN(cap(word.en)), ES(cap(word.es))]
+        parts: [EN(word.en), ES(word.es)]
       };
     }
     const chips = items.map(ch => { const L = LET[ch]; return `<span>${esc(ch)} <span aria-hidden="true">${ch === 'Ñ' ? L.se : L.ee}</span></span>`; }).join('');
@@ -976,7 +1020,7 @@ function win(p, line){
   $('#banner').hidden = false;               // explicitly un-hide the winner banner
   renderCall();
   setStatus(rv.text);
-  speakToken++; try { window.speechSynthesis && speechSynthesis.cancel(); } catch(e){}
+  stopSpeech();
   bell();
   setTimeout(() => { if (S.over) speak(rv.parts); }, 900);
   openOverlay(p, line, title, rv);
@@ -1078,7 +1122,7 @@ function stopStars(){
 function showStart(){
   closeOverlay();
   stopBot();
-  speakToken++; try { window.speechSynthesis && speechSynthesis.cancel(); } catch(e){}
+  stopSpeech();
   $('#game').hidden = true; $('#start').hidden = false;
   document.body.classList.remove('playing');
   const first = document.querySelector('.mode'); if (first) first.focus();
@@ -1104,6 +1148,7 @@ $('#whoBot').addEventListener('click', () => setWho(true));
 [['en', '#voiceEn', EN('Hi! This is my English voice.')], ['es', '#voiceEs', ES('¡Hola! Esta es mi voz en español.')]].forEach(([pre, sel, part]) => {
   $(sel).addEventListener('change', e => { try { localStorage.setItem(vkey(pre), e.target.value); } catch(_){} ac(); speak([part]); });
   document.querySelector(`.vtest[data-test="${pre}"]`).addEventListener('click', () => { ac(); speak([part]); });
+  prefetchParts([part]);
 });
 document.addEventListener('keydown', e => {
   if ($('#overlay').hidden) return;

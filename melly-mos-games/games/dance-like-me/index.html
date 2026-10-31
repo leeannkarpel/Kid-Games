@@ -288,6 +288,7 @@ button:focus-visible,select:focus-visible,input:focus-visible{outline:4px solid 
   </div>
 </div>
 
+<script src="/voice-clips.js"></script>
 <script>
 /* ---------- Music + sound effects (all made in the browser, no files) ---------- */
 const Music = (() => {
@@ -510,6 +511,9 @@ const SONGS = [
 const Voice = (() => {
   const KEY = 'mellyMoVoice';
   let voices = [];
+  const vo = VoiceClips.create({ base: '/games/dance-like-me/voice/' });
+  window.__vo = vo;
+  let sayId = 0;
   // Rank voices so the nicest-sounding one on this device is picked first
   function score(v) {
     const n = v.name; let sc = 0;
@@ -521,7 +525,9 @@ const Voice = (() => {
     return sc;
   }
   const sel = () => document.getElementById('voiceSel');
-  const saved = () => { try { return localStorage.getItem(KEY) || ''; } catch (e) { return ''; } };
+  const saved = () => { try { const v = localStorage.getItem(KEY); return v == null ? VoiceClips.RECORDED : v; } catch (e) { return VoiceClips.RECORDED; } };
+  const recOpt = () => { const o = document.createElement('option'); o.value = VoiceClips.RECORDED; o.textContent = VoiceClips.LABEL; return o; };
+  const recorded = () => { const s = sel(); return !!s && s.value === VoiceClips.RECORDED; };
   function load() {
     if (!('speechSynthesis' in window)) return;
     const all = speechSynthesis.getVoices() || [];
@@ -531,19 +537,50 @@ const Voice = (() => {
     const s = sel(); if (!s) return;
     const keep = s.value || saved();
     s.innerHTML = '';
+    s.appendChild(recOpt());
     voices.forEach(v => { const o = document.createElement('option'); o.value = v.voiceURI; o.textContent = (score(v) >= 60 ? '★ ' : '') + `${v.name} (${v.lang})`; s.appendChild(o); });
-    s.value = voices.some(v => v.voiceURI === keep) ? keep : (voices[0] ? voices[0].voiceURI : '');
+    s.value = keep === VoiceClips.RECORDED ? keep : voices.some(v => v.voiceURI === keep) ? keep : (voices[0] ? voices[0].voiceURI : VoiceClips.RECORDED);
   }
   function init() {
-    if (!('speechSynthesis' in window)) { const s = sel(); if (s) { s.innerHTML = '<option>Voice not available on this device</option>'; s.disabled = true; } return; }
+    vo.prefetch(MOVES.map(m => m.say).concat(PRAISE, ['Hi! I am kitty!', 'Hi! Let\'s dance!']), 'en');
+    if (!('speechSynthesis' in window)) { const s = sel(); if (s) { s.innerHTML = ''; s.appendChild(recOpt()); s.value = VoiceClips.RECORDED; } }
+    else {
     load();
     speechSynthesis.addEventListener ? speechSynthesis.addEventListener('voiceschanged', load) : (speechSynthesis.onvoiceschanged = load);
+    }
     const st = document.getElementById('voiceStyle');
     if (st) { try { st.value = localStorage.getItem(KEY + 'Style') || 'natural'; } catch (e) {}
       st.addEventListener('change', () => { try { localStorage.setItem(KEY + 'Style', st.value); } catch (e) {} say('Hi! I am kitty!'); }); }
     sel().addEventListener('change', () => { try { localStorage.setItem(KEY, sel().value); } catch (e) {} say('Hi! I am kitty!'); });
   }
+  const kittyStyle = () => { const style = document.getElementById('voiceStyle'); return !!style && style.value === 'kitty'; };
+  // Device voice for a part that has no recorded clip; resolves when it is done speaking
+  function deviceSpeak(text) {
+    return new Promise(resolve => {
+      if (!('speechSynthesis' in window)) { setTimeout(resolve, 800); return; }
+      const u = new SpeechSynthesisUtterance(text);
+      const v = voices[0];
+      if (v) { u.voice = v; u.lang = v.lang; }
+      u.rate = 0.95; u.pitch = kittyStyle() ? 1.3 : 1.05;
+      u.onend = u.onerror = () => resolve();
+      setTimeout(resolve, 4500); // safety if onend never fires
+      speechSynthesis.speak(u);
+    });
+  }
   function say(text, onend) {
+    const id = ++sayId;
+    if (recorded()) {
+      if ('speechSynthesis' in window) speechSynthesis.cancel();
+      Music.duck(true);
+      let done = false;
+      const finish = () => { if (done) return; done = true; if (id === sayId) Music.duck(false); if (onend) onend(); };
+      vo.play([text], { lang: 'en', rate: kittyStyle() ? 1.12 : 1,
+        fallback: part => deviceSpeak(part.text),
+        onstart: () => { if (id === sayId) Music.duck(true); },
+        onend: finish }).then(finish, finish);
+      return;
+    }
+    vo.stop();
     if (!('speechSynthesis' in window)) { if (onend) setTimeout(onend, 800); return; }
     speechSynthesis.cancel();
     const u = new SpeechSynthesisUtterance(text);

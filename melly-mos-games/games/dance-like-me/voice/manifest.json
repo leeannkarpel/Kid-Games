@@ -1,0 +1,90 @@
+{
+  "game": "dance-like-me",
+  "model": "eleven_v4",
+  "lines": [
+    {
+      "text": "Hi! I am kitty!",
+      "lang": "en",
+      "voice_id": "ocZQ262SsZb9RIxcQBOj",
+      "file": "hi-i-am-kitty.mp3"
+    },
+    {
+      "text": "Hi! Let's dance!",
+      "lang": "en",
+      "voice_id": "ocZQ262SsZb9RIxcQBOj",
+      "file": "hi-lets-dance.mp3"
+    },
+    {
+      "text": "Clap your hands!",
+      "lang": "en",
+      "voice_id": "ocZQ262SsZb9RIxcQBOj",
+      "file": "clap-your-hands.mp3"
+    },
+    {
+      "text": "Wave hello!",
+      "lang": "en",
+      "voice_id": "ocZQ262SsZb9RIxcQBOj",
+      "file": "wave-hello.mp3"
+    },
+    {
+      "text": "Jump, jump, jump!",
+      "lang": "en",
+      "voice_id": "ocZQ262SsZb9RIxcQBOj",
+      "file": "jump-jump-jump.mp3"
+    },
+    {
+      "text": "Spin around!",
+      "lang": "en",
+      "voice_id": "ocZQ262SsZb9RIxcQBOj",
+      "file": "spin-around.mp3"
+    },
+    {
+      "text": "Stomp your feet!",
+      "lang": "en",
+      "voice_id": "ocZQ262SsZb9RIxcQBOj",
+      "file": "stomp-your-feet.mp3"
+    },
+    {
+      "text": "Reach up high!",
+      "lang": "en",
+      "voice_id": "ocZQ262SsZb9RIxcQBOj",
+      "file": "reach-up-high.mp3"
+    },
+    {
+      "text": "Wiggle, wiggle!",
+      "lang": "en",
+      "voice_id": "ocZQ262SsZb9RIxcQBOj",
+      "file": "wiggle-wiggle.mp3"
+    },
+    {
+      "text": "Nod your head!",
+      "lang": "en",
+      "voice_id": "ocZQ262SsZb9RIxcQBOj",
+      "file": "nod-your-head.mp3"
+    },
+    {
+      "text": "Yay! Great dancing!",
+      "lang": "en",
+      "voice_id": "ocZQ262SsZb9RIxcQBOj",
+      "file": "yay-great-dancing.mp3"
+    },
+    {
+      "text": "Wow! Good job!",
+      "lang": "en",
+      "voice_id": "ocZQ262SsZb9RIxcQBOj",
+      "file": "wow-good-job.mp3"
+    },
+    {
+      "text": "Hooray! What a dancer!",
+      "lang": "en",
+      "voice_id": "ocZQ262SsZb9RIxcQBOj",
+      "file": "hooray-what-a-dancer.mp3"
+    },
+    {
+      "text": "Meow! You are a dancing kitty!",
+      "lang": "en",
+      "voice_id": "ocZQ262SsZb9RIxcQBOj",
+      "file": "meow-you-are-a-dancing-kitty.mp3"
+    }
+  ]
+}

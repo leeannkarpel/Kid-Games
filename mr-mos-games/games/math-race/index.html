@@ -552,7 +552,7 @@
   </div>
   <div class="voicerow">
     <label for="voiceSel">Voice</label>
-    <select id="voiceSel"><option value="">Device voice</option></select>
+    <select id="voiceSel"><option value="recorded">Recorded voice</option><option value="">Device voice</option></select>
     <button id="voiceTest" type="button" aria-label="Test the voice"><svg aria-hidden="true"><use href="#speaker"/></svg></button>
   </div>
   <button class="again" id="go" type="button">Start race</button>
@@ -560,6 +560,7 @@
 
 <canvas id="fx" aria-hidden="true"></canvas>
 
+<script src="/voice-clips.js"></script>
 <script>
 (() => {
   "use strict";
@@ -771,10 +772,18 @@
     const n = load(KEY_VOICE);
     return n ? allVoices.find(v => v.voiceURI === n || v.name === n) || null : null;
   }
+  // recorded clips first, the phone's own voice as a fallback; nothing saved means recorded
+  const REC = VoiceClips.RECORDED;
+  const vo = VoiceClips.create({ base: "/games/math-race/voice/" });
+  window.__vo = vo;
+  function savedVoice() { const n = load(KEY_VOICE); return n === null ? REC : n; }
+  function useRecorded() { const n = load(KEY_VOICE); return (n === null ? voiceSel.value : n) === REC; }
+  voiceSel.value = savedVoice() === REC ? REC : "";
   function fillVoices() {
     try { allVoices = window.speechSynthesis.getVoices() || []; } catch (e) { allVoices = []; }
-    const cur = load(KEY_VOICE) || "";
+    const cur = savedVoice();
     voiceSel.textContent = "";
+    voiceSel.add(new Option(VoiceClips.LABEL, REC));
     voiceSel.add(new Option("Device voice", ""));
     allVoices.filter(isEn).sort((a, b) => a.name.localeCompare(b.name))
       .forEach(v => voiceSel.add(new Option(`${v.name} (${v.lang})${v.default ? " ★" : ""}`, v.voiceURI)));
@@ -788,19 +797,44 @@
   voiceSel.addEventListener("change", () => { save(KEY_VOICE, voiceSel.value); audio(); speak("Ready, set, go!"); });
   $("voiceTest").addEventListener("click", () => { audio(); speak("Ready, set, go!"); });
 
-  function speak(text) {
+  function utter(text) {
+    const u = new SpeechSynthesisUtterance(text);
+    u.rate = 0.85; u.pitch = 1.1;
+    const v = chosenVoice();
+    const dv = allVoices.find(x => x.default && isEn(x));
+    if (v) u.voice = v;
+    u.lang = v ? v.lang : (dv ? dv.lang : "en-US");
+    return u;
+  }
+  // device voice for one part with no clip; resolves when it has been said
+  function deviceSay(text) {
+    return new Promise((resolve) => {
+      if (!("speechSynthesis" in window)) return resolve();
+      let done = false, timer = 0;
+      const fin = () => { if (!done) { done = true; clearTimeout(timer); resolve(); } };
+      try {
+        const u = utter(text);
+        u.onend = u.onerror = fin;
+        window.speechSynthesis.speak(u);
+        timer = setTimeout(fin, 3000 + text.length * 150);
+      } catch (e) { fin(); }
+    });
+  }
+  // parts: the same words split into recorded pieces (defaults to the whole text)
+  function speak(text, parts) {
+    vo.stop();
+    if (useRecorded()) {
+      try { if ("speechSynthesis" in window) window.speechSynthesis.cancel(); } catch (e) { /* ignore */ }
+      vo.play(parts || [text], { lang: "en", fallback: (p) => deviceSay(p.text) });
+      return;
+    }
     if (!("speechSynthesis" in window)) return;
     try {
       window.speechSynthesis.cancel();
-      const u = new SpeechSynthesisUtterance(text);
-      u.rate = 0.85; u.pitch = 1.1;
-      const v = chosenVoice();
-      const dv = allVoices.find(x => x.default && isEn(x));
-      if (v) u.voice = v;
-      u.lang = v ? v.lang : (dv ? dv.lang : "en-US");
-      window.speechSynthesis.speak(u);
+      window.speechSynthesis.speak(utter(text));
     } catch (e) { /* speech unavailable */ }
   }
+  vo.prefetch(["Ready, set, go!"].concat(CARS.map(c => c.name)));
 
   /* ---------- helpers ---------- */
   const rand = (lo, hi) => lo + Math.floor(Math.random() * (hi - lo + 1));
@@ -1079,8 +1113,10 @@
 
   function speakProblem() {
     const lead = state.announce ? state.announce + " " : "";
+    const q = `${WORDS[state.a]} plus ${WORDS[state.b]} equals`;
+    const parts = [state.announce, q];
     state.announce = "";
-    speak(`${lead}${WORDS[state.a]} plus ${WORDS[state.b]} equals`);
+    speak(`${lead}${q}`, parts);
   }
   el.problem.addEventListener("click", () => {
     audio();
@@ -1179,7 +1215,8 @@
       el.note.innerHTML = cheer + bestNote;
       openCard();
       celebrate();
-      speak(rivalsOn ? `You won the race! First place, in ${m} moves!` : `You won the race in ${m} moves!`);
+      speak(rivalsOn ? `You won the race! First place, in ${m} moves!` : `You won the race in ${m} moves!`,
+        [rivalsOn ? "You won the race! First place, in" : "You won the race in", String(m), "moves!"]);
     } else {
       el.finishTitle.textContent = `You came in ${ordinal(place)}!`;
       el.stars.hidden = true;
@@ -1198,7 +1235,8 @@
     el.result.textContent = `You drove ${state.progress}% of the track`;
     el.note.textContent = "So close! Let’s race again.";
     openCard();
-    speak(`Out of moves. You drove ${state.progress} percent of the way. Let's race again!`);
+    speak(`Out of moves. You drove ${state.progress} percent of the way. Let's race again!`,
+      ["Out of moves. You drove", String(state.progress), "percent of the way. Let's race again!"]);
   }
 
   function openCard() {
@@ -1338,9 +1376,16 @@
     modesChanged = false;
     state.started = true;
     if (fresh) reset(true);
+    vo.prefetch(PREFETCH);
     el.problem.focus();
     speakProblem();
   }
+  // problem lines, answers and "car finished" lines, so the race has no download pauses
+  const PREFETCH = [];
+  for (let a = 1; a <= 5; a++) for (let b = 1; b <= 5; b++) PREFETCH.push(`${WORDS[a]} plus ${WORDS[b]} equals`);
+  for (let n = 2; n <= 10; n++) PREFETCH.push(WORDS[n]);
+  ["green", "purple"].forEach(c => PREFETCH.push(`The ${c} car finished. Keep going!`));
+  PREFETCH.push("You won the race! First place, in", "You won the race in", "moves!");
   el.garageBtn.addEventListener("click", openGarage);
   el.go.addEventListener("click", startRace);
   el.garage.addEventListener("cancel", (e) => { e.preventDefault(); startRace(); });

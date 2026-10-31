@@ -168,7 +168,7 @@ box-shadow:0 5px 0 #c9b79a;display:flex;flex-direction:column;align-items:center
 <div class="box" role="group" aria-labelledby="h-voice">
 <h3 id="h-voice">Voice</h3>
 <div class="voice-row">
-<select id="voiceSel" aria-label="Voice"><option value="">Default voice</option></select>
+<select id="voiceSel" aria-label="Voice"><option value="recorded">Recorded voice</option><option value="">Default voice</option></select>
 <button class="btn" id="voiceTest">🔊 Test</button>
 </div>
 </div>
@@ -202,6 +202,7 @@ box-shadow:0 5px 0 #c9b79a;display:flex;flex-direction:column;align-items:center
 </div>
 </div>
 <canvas id="confetti" hidden></canvas>
+<script src="/voice-clips.js"></script>
 <script>
 (function(){
 "use strict";
@@ -424,27 +425,52 @@ horn(){ [0,0.32].forEach(w=>{ tone(440,0.22,"square",0.08,w); tone(554,0.22,"squ
 fanfare(){ [523,659,784,1047,784,1047].forEach((f,i)=>tone(f,0.28,"triangle",0.18,i*0.14)); }
 };
 const synth = window.speechSynthesis || null;
+const REC = VoiceClips.RECORDED;
+const vo = VoiceClips.create({ base:"/games/ramp-rally/voice/" });
+window.__vo = vo;
 let voices = [];
 function loadVoices(){
-if(!synth) return;
-let all = []; try{ all = synth.getVoices(); }catch(e){}
+let all = []; if(synth){ try{ all = synth.getVoices(); }catch(e){} }
 voices = all.filter(v=>/^en/i.test(v.lang)); if(!voices.length) voices = all;
 const sel = $("#voiceSel"), saved = store.get("rr-voice");
-sel.innerHTML = '<option value="">Default voice</option>';
+sel.innerHTML = `<option value="${REC}">${VoiceClips.LABEL}</option><option value="">Default voice</option>`;
 voices.forEach(v=>{ const o=document.createElement("option"); o.value=v.name; o.textContent=`${v.name} (${v.lang})`; sel.appendChild(o); });
-if(saved && voices.some(v=>v.name===saved)) sel.value = saved;
+if(saved===null || saved===REC) sel.value = REC;
+else if(saved && voices.some(v=>v.name===saved)) sel.value = saved;
+else sel.value = "";
 }
-if(synth){ loadVoices(); try{ synth.addEventListener("voiceschanged", loadVoices); }catch(e){ synth.onvoiceschanged = loadVoices; } }
+loadVoices();
+if(synth){ try{ synth.addEventListener("voiceschanged", loadVoices); }catch(e){ synth.onvoiceschanged = loadVoices; } }
 $("#voiceSel").addEventListener("change", e=>{ store.set("rr-voice", e.target.value); say("Hi! Ready to race?"); });
 $("#voiceTest").addEventListener("click", ()=>say("Vroom vroom! Three plus four is seven!"));
-function say(text){
-if(!synth || !soundOn) return;
-try{
-synth.cancel();
+function utter(text){
 const u = new SpeechSynthesisUtterance(text);
 const v = voices.find(x=>x.name===$("#voiceSel").value) || voices.find(x=>/en-US/i.test(x.lang));
 if(v){ u.voice = v; u.lang = v.lang; } else u.lang = "en-US";
-u.rate = 0.9; u.pitch = 1.05; synth.speak(u);
+u.rate = 0.9; u.pitch = 1.05; return u;
+}
+// device voice for one recorded piece that has no clip (e.g. a typed name); resolves when said
+function deviceSay(text){
+return new Promise(res=>{
+if(!synth) return res();
+let done = false, t = 0; const fin = ()=>{ if(!done){ done = true; clearTimeout(t); res(); } };
+try{ const u = utter(text); u.onend = u.onerror = fin; synth.speak(u); t = setTimeout(fin, 3000 + text.length*150); }catch(e){ fin(); }
+});
+}
+function stopSpeech(){ vo.stop(); try{ synth && synth.cancel(); }catch(e){} }
+// parts: the same words split into recorded pieces (defaults to the whole text)
+function say(text, parts){
+if(!soundOn) return;
+vo.stop();
+if($("#voiceSel").value===REC){
+try{ synth && synth.cancel(); }catch(e){}
+vo.play(parts || [text], { lang:"en", fallback: p=>deviceSay(p.text) });
+return;
+}
+if(!synth) return;
+try{
+synth.cancel();
+synth.speak(utter(text));
 }catch(e){}
 }
 const G = { pos:[0,0], taken:[0,0], turn:0, starter:0, tries:0, a:0, b:0, ans:0, opts:[], busy:false, over:false, bonus:false, timers:[] };
@@ -486,7 +512,7 @@ $("#answers").querySelectorAll(".ans").forEach(b=>b.disabled = rob);
 setStatus(rob ? "Robo is thinking" : "First try gets a big jump!", rob);
 }
 function setStatus(t, thinking, big){ const s=$("#status"); s.textContent=t; s.classList.toggle("think", !!thinking); s.classList.toggle("big", !!big); }
-function speakProblem(){ say(`${name(G.turn)}. ${G.a} plus ${G.b}?`); }
+function speakProblem(){ say(`${name(G.turn)}. ${G.a} plus ${G.b}?`, [name(G.turn), `${G.a} plus`, `${G.b}?`]); }
 function startTurn(){
 if(G.over) return;
 newProblem(); render(); G.busy = false;
@@ -517,8 +543,8 @@ const big = G.tries===0;
 btn.classList.add("right");
 $("#answers").querySelectorAll(".ans").forEach(b=>b.disabled = true);
 $("#eq .q").textContent = G.ans;
-if(big){ setStatus(`First try! Big jump! ${G.a} + ${G.b} = ${G.ans}`, false, true); say(`${G.ans}! First try! Big jump!`); }
-else { setStatus(`Got it! ${G.a} + ${G.b} = ${G.ans}. Little jump.`); say(`${G.ans}! Little jump.`); }
+if(big){ setStatus(`First try! Big jump! ${G.a} + ${G.b} = ${G.ans}`, false, true); say(`${G.ans}! First try! Big jump!`, [`${G.ans}!`, "First try! Big jump!"]); }
+else { setStatus(`Got it! ${G.a} + ${G.b} = ${G.ans}. Little jump.`); say(`${G.ans}! Little jump.`, [`${G.ans}!`, "Little jump."]); }
 jump(G.turn, big ? 2 : 1);
 } else {
 G.tries++;
@@ -551,7 +577,8 @@ if(done[cur] && !even){
 G.lastChance = true; sfx.horn();
 const other = 1-cur;
 setStatus(`${name(cur)} crossed the finish! ${name(other)} gets one last turn!`, false, true);
-say(`${name(cur)} crossed the finish line! ${name(other)}, you get one last turn!`);
+say(`${name(cur)} crossed the finish line! ${name(other)}, you get one last turn!`,
+[name(cur), "crossed the finish line!", name(other), "you get one last turn!"]);
 later(()=>{ G.turn = other; startTurn(); }, 3000);
 return;
 }
@@ -746,12 +773,22 @@ G.pos = [0,0]; G.taken = [0,0]; G.turn = G.starter; G.over = false; G.busy = fal
 $("#start").hidden = true; $("#game").hidden = false;
 resize();
 lanes.forEach(L=>{ L.anim=null; L.cam=-W*0.3; L.puffs=[]; L.wob=0; });
+prefetchRace();
 startTurn();
+}
+// clips this race can use (names, sums up to the level's top, the usual lines) so speech starts without a download pause
+function prefetchRace(){
+const max = maxSum(), list = [name(0), name(1), "First try! Big jump!", "Little jump.", "Not quite. Try again!", "Oops! Robo sputtered.",
+"crossed the finish line!", "you get one last turn!", "Both cars crossed together! One more turn each!",
+"wins with", "spaces!", "got", "Great racing!", "Want a rematch?"];
+for(let n=1;n<max;n++) list.push(`${n} plus`, `${n}?`);
+for(let n=2;n<=max;n++) list.push(`${n}!`);
+vo.prefetch(list);
 }
 $("#startBtn").addEventListener("click", ()=>startGame(true));
 $("#againBtn").addEventListener("click", ()=>startGame(false));
 function toMenu(){
-clearTimers(); G.over = true; hideWin(); try{ synth && synth.cancel(); }catch(e){}
+clearTimers(); G.over = true; hideWin(); stopSpeech();
 $("#game").hidden = true; $("#start").hidden = false; buildDrivers();
 }
 $("#menuBtn").addEventListener("click", toMenu);
@@ -759,7 +796,7 @@ $("#settingsBtn").addEventListener("click", toMenu);
 $("#soundBtn").addEventListener("click", e=>{
 soundOn = !soundOn; const b = e.currentTarget; b.textContent = soundOn ? "🔊" : "🔇";
 b.setAttribute("aria-pressed", String(soundOn)); b.setAttribute("aria-label", soundOn ? "Sound on" : "Sound off");
-if(!soundOn){ try{ synth && synth.cancel(); }catch(err){} }
+if(!soundOn){ stopSpeech(); }
 });
 document.addEventListener("keydown", e=>{ if(e.key==="Escape" && !$("#win").hidden) toMenu(); });
 const cc = $("#confetti"), c2 = cc.getContext("2d");
@@ -774,7 +811,10 @@ sfx.fanfare();
 const loser = 1-i, msg = isRobot(i)
 ? `Robo wins with ${G.pos[i]} spaces! Want a rematch?`
 : `${name(i)} wins with ${G.pos[i]} spaces! ${name(loser)} got ${G.pos[loser]}. Great racing!`;
-setTimeout(()=>say(msg), 900);
+const parts = isRobot(i)
+? ["Robo", "wins with", String(G.pos[i]), "spaces!", "Want a rematch?"]
+: [name(i), "wins with", String(G.pos[i]), "spaces!", name(loser), "got", String(G.pos[loser]), "Great racing!"];
+setTimeout(()=>say(msg, parts), 900);
 if(reduced) return;
 cc.hidden = false; cc.width = innerWidth; cc.height = innerHeight;
 const cols = ["#ffd23f","#ffffff","#ff8a3d",cfg.paint[i],"#7fd3ff","#3fbf5f"];

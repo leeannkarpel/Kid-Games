@@ -255,7 +255,7 @@ h1{margin:0;font-size:clamp(2.2rem,8vw,3.6rem);line-height:1;font-weight:700;let
     <div class="voicepick">
       <label for="voiceSel" data-t="voice">Voice</label>
       <div class="vrow">
-        <select id="voiceSel"><option value="">Device default</option></select>
+        <select id="voiceSel"><option value="recorded">Recorded voice</option><option value="">Device default</option></select>
         <button type="button" class="ibtn" id="voiceTest" aria-label="Test voice">🔊</button>
       </div>
     </div>
@@ -330,6 +330,7 @@ h1{margin:0;font-size:clamp(2.2rem,8vw,3.6rem);line-height:1;font-weight:700;let
   </div>
 </div>
 
+<script src="/voice-clips.js"></script>
 <script>
 (function(){
 "use strict";
@@ -397,6 +398,10 @@ const snd = l => SOUNDS[lang][l]||"";
 let lang = "en";
 const sayL = l => lang==="es" ? (ES_NAMES[l]||l) : (l==="A" ? "ay" : l);
 const article = n => /^[AEIO]/.test(n) ? "an" : "a";
+// a spoken line made of recorded clips chained together: t = what the device voice says, c = clip keys
+const ln = (t, ...c) => ({t, c});
+const stw = l => lang==="es" ? `empieza con ${sayL(l)}.` : `starts with ${sayL(l)}!`;
+const exL = l => lang==="es" ? `¡${sayL(l)}!` : `${sayL(l)}!`;
 
 /* ---------- Words on screen and spoken ---------- */
 const T = {
@@ -408,18 +413,18 @@ const T = {
    turnTxt:w=>`${w}’s turn`, turnSay:n=>`${n}’s turn!`, robotTurn:"Robot’s turn.", thinking:"Robot is thinking…",
    askShort:L=>`Which animal starts with ${L}?`, askSay:l=>[`${sayL(l)}!`, `${sayL(l)} says ${snd(l)}, ${snd(l)}.`, `Which animal starts with ${sayL(l)}?`],
    rightStatus:(o,L,b)=>`${o.emoji} ${o.name} starts with ${L}! +1 bone: ${b}.`,
-   rightSay:(o,l,b,cpu)=>[`${o.name}!`, cpu?`Robot got it! ${o.name} starts with ${sayL(l)}.`:`Yes! ${o.name} starts with ${sayL(l)}! Here comes ${b}!`],
+   rightSay:(o,l,b,cpu)=>[ln(`${o.name}!`, o.name), cpu?ln(`Robot got it! ${o.name} starts with ${sayL(l)}.`, "Robot got it!", o.name, stw(l)):ln(`Yes! ${o.name} starts with ${sayL(l)}! Here comes ${b}!`, "Yes!", o.name, stw(l), `Here comes ${b}!`)],
    wrongStatus:(o,a,L)=>`${o.name} starts with ${o.letter}. ${a.emoji} ${a.name} starts with ${L}.`,
-   wrongSay:(o,a,l)=>[`That’s ${article(o.name)} ${o.name}.`, `${o.name} starts with ${sayL(o.letter)}.`, `${a.name} starts with ${sayL(l)}!`],
+   wrongSay:(o,a,l)=>[ln(`That’s ${article(o.name)} ${o.name}.`, `That’s ${article(o.name)}`, o.name), ln(`${o.name} starts with ${sayL(o.letter)}.`, o.name, stw(o.letter)), ln(`${a.name} starts with ${sayL(l)}!`, a.name, stw(l))],
    endCpu:"🤖 Robot built a skeleton first!", endWin:n=>`🏆 ${n} built the whole skeleton!`,
    winTitleCpu:"🤖 Robot wins! 🤖", winTitle:n=>`🏆 ${n} wins! 🏆`,
    winSubCpu:"Good try! Play again and beat the robot.", winSub:"The whole skeleton is built!",
    winSayCpu:["Robot wins this time!","Let's play again!"], winSay:n=>[`${n} wins!`,"The whole skeleton is built! Shake those bones!"],
    kindH:"Game", kAnimal:"Find the animal", kLetter:"Find the letter",
-   askShortL:a=>`What letter does ${a.name} start with?`, askSayL:a=>[`${a.name}!`, `What letter does ${a.name} start with?`],
+   askShortL:a=>`What letter does ${a.name} start with?`, askSayL:a=>[ln(`${a.name}!`, a.name), ln(`What letter does ${a.name} start with?`, "What letter does", a.name, "start with?")],
    wrongStatusL:(p,a,L)=>`Not ${p}. ${a.emoji} ${a.name} starts with ${L}.`,
-   wrongSayL:(p,a,l)=>[`That’s ${sayL(p)}.`, `${a.name} starts with ${sayL(l)}!`, `${sayL(l)} says ${snd(l)}.`],
-   letterHear:l=>[`${sayL(l)}.`, `${sayL(l)} says ${snd(l)}.`], hearLetter:l=>`Hear the letter ${l}`,
+   wrongSayL:(p,a,l)=>[`That’s ${sayL(p)}.`, ln(`${a.name} starts with ${sayL(l)}!`, a.name, stw(l)), `${sayL(l)} says ${snd(l)}.`],
+   letterHear:l=>[ln(`${sayL(l)}.`, exL(l)), `${sayL(l)} says ${snd(l)}.`], hearLetter:l=>`Hear the letter ${l}`,
    listen:n=>`Hear ${n}`, voice:"Voice", deviceVoice:"Device default", testSay:"Hi! This is how I sound in the game.",
    noSound:"No sound came out. Check that the device isn’t on silent and the volume is up."},
  es:{tag:"Elige el animal que empieza con la letra. ¡Cada respuesta correcta suma un hueso!", who:"¿Quién juega?", two:"2 jugadores", cpu:"Contra el robot",
@@ -430,18 +435,18 @@ const T = {
    turnTxt:w=>`Turno de ${w}`, turnSay:n=>`¡Turno de ${n}!`, robotTurn:"Turno del Robot.", thinking:"El Robot está pensando…",
    askShort:L=>`¿Qué animal empieza con la ${L}?`, askSay:l=>[`¡${sayL(l)}!`, l==="H" ? "La hache no suena." : `La ${sayL(l)} suena ${snd(l)}, ${snd(l)}.`, `¿Qué animal empieza con la ${sayL(l)}?`],
    rightStatus:(o,L,b)=>`${o.emoji} ¡${o.name} empieza con ${L}! +1 hueso: ${b}.`,
-   rightSay:(o,l,b,cpu)=>[`¡${o.name}!`, cpu?`¡El Robot acertó! ${o.name} empieza con ${sayL(l)}.`:`¡Sí! ${o.name} empieza con ${sayL(l)}. ¡Aquí viene ${b}!`],
+   rightSay:(o,l,b,cpu)=>[ln(`¡${o.name}!`, o.name), cpu?ln(`¡El Robot acertó! ${o.name} empieza con ${sayL(l)}.`, "¡El Robot acertó!", o.name, stw(l)):ln(`¡Sí! ${o.name} empieza con ${sayL(l)}. ¡Aquí viene ${b}!`, "¡Sí!", o.name, stw(l), `¡Aquí viene ${b}!`)],
    wrongStatus:(o,a,L)=>`${o.name} empieza con ${o.letter}. ${a.emoji} ${a.name} empieza con ${L}.`,
-   wrongSay:(o,a,l)=>[`Es ${o.g==="f"?"una":"un"} ${o.name.toLowerCase()}.`, `${o.name} empieza con ${sayL(o.letter)}.`, `¡${a.name} empieza con ${sayL(l)}!`],
+   wrongSay:(o,a,l)=>[ln(`Es ${o.g==="f"?"una":"un"} ${o.name.toLowerCase()}.`, `Es ${o.g==="f"?"una":"un"}`, o.name), ln(`${o.name} empieza con ${sayL(o.letter)}.`, o.name, stw(o.letter)), ln(`¡${a.name} empieza con ${sayL(l)}!`, a.name, stw(l))],
    endCpu:"🤖 ¡El Robot armó su esqueleto primero!", endWin:n=>`🏆 ¡${n} armó el esqueleto completo!`,
    winTitleCpu:"🤖 ¡Gana el Robot! 🤖", winTitle:n=>`🏆 ¡${n} gana! 🏆`,
    winSubCpu:"¡Buen intento! Juega otra vez y gánale al robot.", winSub:"¡El esqueleto está completo!",
    winSayCpu:["¡El Robot gana esta vez!","¡Juguemos otra vez!"], winSay:n=>[`¡${n} gana!`,"¡El esqueleto está completo! ¡A mover los huesos!"],
    kindH:"Juego", kAnimal:"Busca el animal", kLetter:"Busca la letra",
-   askShortL:a=>`¿Con qué letra empieza ${a.name}?`, askSayL:a=>[`¡${a.name}!`, `¿Con qué letra empieza ${a.name}?`],
+   askShortL:a=>`¿Con qué letra empieza ${a.name}?`, askSayL:a=>[ln(`¡${a.name}!`, a.name), ln(`¿Con qué letra empieza ${a.name}?`, "¿Con qué letra empieza", a.name)],
    wrongStatusL:(p,a,L)=>`No es la ${p}. ${a.emoji} ${a.name} empieza con ${L}.`,
-   wrongSayL:(p,a,l)=>[`Esa es la ${sayL(p)}.`, `¡${a.name} empieza con ${sayL(l)}!`, l==="H" ? "La hache no suena." : `La ${sayL(l)} suena ${snd(l)}.`],
-   letterHear:l=>[`${sayL(l)}.`, l==="H" ? "La hache no suena." : `La ${sayL(l)} suena ${snd(l)}.`], hearLetter:l=>`Escuchar la letra ${l}`,
+   wrongSayL:(p,a,l)=>[`Esa es la ${sayL(p)}.`, ln(`¡${a.name} empieza con ${sayL(l)}!`, a.name, stw(l)), l==="H" ? "La hache no suena." : `La ${sayL(l)} suena ${snd(l)}.`],
+   letterHear:l=>[ln(`${sayL(l)}.`, exL(l)), l==="H" ? "La hache no suena." : `La ${sayL(l)} suena ${snd(l)}.`], hearLetter:l=>`Escuchar la letra ${l}`,
    listen:n=>`Escuchar ${n}`, voice:"Voz", deviceVoice:"Voz del dispositivo", testSay:"¡Hola! Así sueno en el juego.",
    noSound:"No se oye nada. Revisa que el dispositivo no esté en silencio y que el volumen esté alto."}
 };
@@ -579,12 +584,19 @@ function loadVoices(){
 }
 function voicesForLang(){ return allVoices.filter(v=>(v.lang||"").toLowerCase().replace("_","-").startsWith(lang)); }
 // shared with the other Mr. Mo games on this site: pick a voice once and every game uses it
-function savedVoiceName(){ try{ return localStorage.getItem("mrmo.voice."+lang) || localStorage.getItem("mrmo-bonebuilder-voice-"+lang) || ""; }catch(e){ return ""; } }
+// nothing saved = the recorded voice; "" = device default
+function savedVoiceName(){ try{ const v=localStorage.getItem("mrmo.voice."+lang); return v || localStorage.getItem("mrmo-bonebuilder-voice-"+lang) || (v===null ? VoiceClips.RECORDED : ""); }catch(e){ return VoiceClips.RECORDED; } }
+const vo = VoiceClips.create({base:"/games/bone-builder/voice/"});
+window.__vo = vo;
+const useRec = () => savedVoiceName()===VoiceClips.RECORDED;
+const lineText = p => typeof p==="string" ? p : p.t;
+const lineClips = p => typeof p==="string" ? [p] : p.c;
 // null = let the device use its own selected voice
 function chosenVoice(){ const n=savedVoiceName(); if(!n) return null; return allVoices.find(v=>v.voiceURI===n || v.name===n) || null; }
 function fillVoiceSel(){
   const sel=document.getElementById("voiceSel"); if(!sel) return;
   const cur=savedVoiceName(); sel.innerHTML="";
+  sel.add(new Option(lang==="es" ? VoiceClips.LABEL_ES : VoiceClips.LABEL, VoiceClips.RECORDED));
   sel.add(new Option(tx().deviceVoice, ""));
   voicesForLang().slice().sort((a,b)=>a.name.localeCompare(b.name)).forEach(v=>sel.add(new Option(`${v.name} (${v.lang})${v.default?" ★":""}`, v.voiceURI)));
   sel.value=cur; if(sel.value!==cur) sel.value="";
@@ -609,17 +621,29 @@ function speakOne(text){
     }catch(e){ fin(); }
   });
 }
+// recorded clips for one line; the device voice says the whole line if any clip is missing from the list
+function speakClips(p){
+  const c=lineClips(p), L=lang;
+  return vo.ready.then(()=>{
+    if(!c.every(k=>vo.has(k, L))) return speakOne(lineText(p));
+    return vo.play(c, {lang:L, fallback: part=>speakOne(part.text)});
+  });
+}
+function prefetchLines(lines){ if(useRec()) vo.prefetch([].concat(...lines.map(lineClips)), lang); }
 async function say(...parts){
   const my=++speechToken;
+  vo.stop();
   try{ if(synth && (synth.speaking||synth.pending)){ synth.cancel(); await wait(70); } }catch(e){}
+  const rec=useRec();
+  if(rec) prefetchLines(parts);
   for(const p of parts){
     if(my!==speechToken) return;
-    await speakOne(p);
+    await (rec ? speakClips(p) : speakOne(lineText(p)));
     if(my!==speechToken) return;
     await wait(220);
   }
 }
-function hush(){ speechToken++; try{ synth && synth.cancel(); }catch(e){} }
+function hush(){ speechToken++; vo.stop(); try{ synth && synth.cancel(); }catch(e){} }
 
 /* ---------- Theme ---------- */
 function setSkin(s){
@@ -698,6 +722,7 @@ function startGame(){
   }
   $("start").hidden=true; $("game").hidden=false; $("celebrate").hidden=true;
   $("endbar").hidden=true; $("ask").hidden=false; $("choices").hidden=false;
+  prefetchLines([tx().robotTurn, ...players.map(p=>tx().turnSay(p.name)), ...tx().winSayCpu, ...players.map(p=>tx().winSay(p.name)).flat()]);
   startTurn();
 }
 function goHome(){
@@ -719,6 +744,19 @@ function setTurnUI(){
   }
 }
 function askNow(){ return kind==="letter" ? tx().askSayL(round.target) : tx().askSay(round.letter); }
+// warm the clips for every answer this round could get, so feedback starts right away
+function prefetchRound(){
+  if(!useRec()) return;
+  const p=players[turn], bn=tx().boneNames[Math.min(p.bones, BONES-1)], ans=round.options[round.answer], lines=[];
+  if(kind==="letter"){
+    lines.push(...tx().rightSay(round.target, round.letter, bn, p.cpu));
+    round.options.forEach(o=>{ lines.push(...tx().letterHear(o.letter)); if(o.letter!==round.letter) lines.push(...tx().wrongSayL(o.letter, round.target, round.letter)); });
+  }else{
+    lines.push(...tx().rightSay(ans, round.letter, bn, p.cpu));
+    round.options.forEach(o=>{ lines.push(o.name); if(o!==ans) lines.push(...tx().wrongSay(o, ans, round.letter)); });
+  }
+  prefetchLines(lines);
+}
 function renderLetter(){
   const L=$("bigL"), card=$("letterBtn");
   let p=card.querySelector(".pnm");
@@ -770,6 +808,7 @@ async function startTurn(){
   const g=gameId; round=makeRound(); locked=true;
   setTurnUI(); renderLetter(); renderChoices();
   const p=players[turn];
+  prefetchRound();
   if(p.cpu){
     setStatus(tx().thinking);
     await say(tx().robotTurn, ...askNow());
