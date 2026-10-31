@@ -163,6 +163,17 @@ button:focus-visible,select:focus-visible,input:focus-visible{outline:4px solid 
 @media (max-height:500px){.prompt{top:8px;padding:5px 18px 5px 6px}.rug{width:min(62%,420px)}.catwrap{height:88%;bottom:3%}}
 @media (max-height:500px) and (min-aspect-ratio:3/2){.catwrap{left:70%}.prompt{left:35%;max-width:calc(70% - 120px)}}
 @media (prefers-reduced-motion:reduce){.flake{display:none}}
+
+/* Kitty Says only: tuxedo kitty (black with white chest, paws and muzzle) on a soft rainbow */
+.cat{--fur:#1f1c26;--belly:#fff;--line:#6f6888;--eye:#c8ec4a;--whisker:#f2eefa;
+  filter:drop-shadow(0 0 2px #fff) drop-shadow(0 6px 10px rgba(60,30,90,.25))}
+.stage{background:
+  radial-gradient(circle at 50% 108%,transparent 0 30%,#ffb8cb 33% 38%,#ffd3ad 41% 46%,#fff0a6 49% 54%,#c9f1c4 57% 62%,#bfe3ff 65% 70%,#d9c9ff 73% 78%,transparent 81%),
+  linear-gradient(180deg,#f3ecff 0%,#eaf6ff 55%,#fff6fb 100%)}
+.stage.playing .light{opacity:.28}
+.start h2{color:var(--ink);text-shadow:none;background:rgba(255,255,255,.85);padding:6px 18px;border-radius:18px;max-width:100%}
+.stars{background:rgba(255,255,255,.75);color:var(--ink)}
+.cat.frozen{filter:drop-shadow(0 0 14px #5fb2ff) brightness(1.15)}
 </style>
 
 <style>
@@ -237,35 +248,34 @@ button:focus-visible,select:focus-visible,input:focus-visible{outline:4px solid 
     <div class="notes" id="notes"></div>
     <div class="catwrap"><div class="poker" id="poker"><svg class="cat idle" id="cat" viewBox="0 0 200 270" role="img" aria-label="Kitty">
   <g class="whole">
-    <g class="tail"><path d="M136 208 C 172 204, 186 168, 174 136 C 170 124, 182 116, 187 128 C 200 168, 184 218, 140 224 Z" fill="var(--fur)" stroke="var(--ink)" stroke-width="4" stroke-linejoin="round"/>
-      <path d="M180 140 l9 -3 M183 158 l10 0 M180 178 l10 4" stroke="var(--fur-dark)" stroke-width="5" stroke-linecap="round"/></g>
-    <g class="legL"><rect x="71" y="204" width="28" height="44" rx="14" fill="var(--fur)" stroke="var(--ink)" stroke-width="4"/>
-      <ellipse cx="82" cy="249" rx="18" ry="10" fill="var(--belly)" stroke="var(--ink)" stroke-width="4"/></g>
-    <g class="legR"><rect x="101" y="204" width="28" height="44" rx="14" fill="var(--fur)" stroke="var(--ink)" stroke-width="4"/>
-      <ellipse cx="118" cy="249" rx="18" ry="10" fill="var(--belly)" stroke="var(--ink)" stroke-width="4"/></g>
-    <g class="body"><ellipse cx="100" cy="188" rx="45" ry="47" fill="var(--fur)" stroke="var(--ink)" stroke-width="4"/>
-      <ellipse cx="100" cy="196" rx="27" ry="31" fill="var(--belly)"/>
-      <path d="M60 172 q8 3 12 -1 M58 192 q8 3 12 -1 M140 172 q-8 3 -12 -1 M142 192 q-8 3 -12 -1" stroke="var(--fur-dark)" stroke-width="5" fill="none" stroke-linecap="round"/></g>
+    <g class="tail"><path d="M136 208 C 172 204, 186 168, 174 136 C 170 124, 182 116, 187 128 C 200 168, 184 218, 140 224 Z" fill="var(--fur)" stroke="var(--line)" stroke-width="4" stroke-linejoin="round"/>
+      <path d="M174 136 C 170 124, 182 116, 187 128 C 189 134, 190 140, 190 146 C 184 148, 178 146, 175 142 Z" fill="var(--belly)"/></g>
+    <g class="legL"><rect x="71" y="204" width="28" height="44" rx="14" fill="var(--fur)" stroke="var(--line)" stroke-width="4"/>
+      <ellipse cx="82" cy="249" rx="18" ry="10" fill="var(--belly)" stroke="var(--line)" stroke-width="4"/></g>
+    <g class="legR"><rect x="101" y="204" width="28" height="44" rx="14" fill="var(--fur)" stroke="var(--line)" stroke-width="4"/>
+      <ellipse cx="118" cy="249" rx="18" ry="10" fill="var(--belly)" stroke="var(--line)" stroke-width="4"/></g>
+    <g class="body"><ellipse cx="100" cy="188" rx="45" ry="47" fill="var(--fur)" stroke="var(--line)" stroke-width="4"/>
+      <ellipse cx="100" cy="196" rx="27" ry="31" fill="var(--belly)"/></g>
     <g class="head">
-      <path d="M48 82 L56 20 L98 52 Z" fill="var(--fur)" stroke="var(--ink)" stroke-width="4" stroke-linejoin="round"/>
-      <path d="M152 82 L144 20 L102 52 Z" fill="var(--fur)" stroke="var(--ink)" stroke-width="4" stroke-linejoin="round"/>
+      <path d="M48 82 L56 20 L98 52 Z" fill="var(--fur)" stroke="var(--line)" stroke-width="4" stroke-linejoin="round"/>
+      <path d="M152 82 L144 20 L102 52 Z" fill="var(--fur)" stroke="var(--line)" stroke-width="4" stroke-linejoin="round"/>
       <path d="M60 64 L63 34 L84 52 Z M140 64 L137 34 L116 52 Z" fill="var(--pink)"/>
-      <ellipse cx="100" cy="92" rx="63" ry="53" fill="var(--fur)" stroke="var(--ink)" stroke-width="4"/>
-      <path d="M100 42 v16 M86 45 l3 13 M114 45 l-3 13" stroke="var(--fur-dark)" stroke-width="5" stroke-linecap="round"/>
+      <ellipse cx="100" cy="92" rx="63" ry="53" fill="var(--fur)" stroke="var(--line)" stroke-width="4"/>
+      <path class="blaze" d="M100 50 C 95 66, 90 82, 84 96 C 66 100, 70 126, 92 124 Q100 128 108 124 C 130 126, 134 100, 116 96 C 110 82, 105 66, 100 50 Z" fill="var(--belly)"/>
       <g class="eyes">
-        <ellipse cx="78" cy="88" rx="9.5" ry="12.5" fill="var(--ink)"/><circle cx="81.5" cy="83" r="3.8" fill="#fff"/>
-        <ellipse cx="122" cy="88" rx="9.5" ry="12.5" fill="var(--ink)"/><circle cx="125.5" cy="83" r="3.8" fill="#fff"/>
+        <ellipse cx="76" cy="86" rx="12" ry="14.5" fill="var(--eye)" stroke="#fff" stroke-width="2.5"/><ellipse cx="76" cy="88" rx="6" ry="10.5" fill="#120a18"/><circle cx="80.5" cy="81" r="3.8" fill="#fff"/>
+        <ellipse cx="124" cy="86" rx="12" ry="14.5" fill="var(--eye)" stroke="#fff" stroke-width="2.5"/><ellipse cx="124" cy="88" rx="6" ry="10.5" fill="#120a18"/><circle cx="128.5" cy="81" r="3.8" fill="#fff"/>
       </g>
       <ellipse cx="62" cy="109" rx="10" ry="6.5" fill="var(--pink)" opacity=".8"/>
       <ellipse cx="138" cy="109" rx="10" ry="6.5" fill="var(--pink)" opacity=".8"/>
       <path d="M93 103 L107 103 L100 111 Z" fill="var(--pink)" stroke="var(--ink)" stroke-width="3" stroke-linejoin="round"/>
       <path d="M100 111 Q100 121 90 120 M100 111 Q100 121 110 120" stroke="var(--ink)" stroke-width="3.5" fill="none" stroke-linecap="round"/>
-      <path d="M48 100 L28 96 M48 108 L27 110 M152 100 L172 96 M152 108 L173 110" stroke="var(--ink)" stroke-width="2.5" stroke-linecap="round"/>
+      <path d="M48 100 L28 96 M48 108 L27 110 M152 100 L172 96 M152 108 L173 110" stroke="var(--whisker)" stroke-width="2.5" stroke-linecap="round"/>
     </g>
-    <g class="armL"><rect x="52" y="150" width="22" height="52" rx="11" fill="var(--fur)" stroke="var(--ink)" stroke-width="4"/>
-      <circle cx="63" cy="204" r="12.5" fill="var(--belly)" stroke="var(--ink)" stroke-width="4"/></g>
-    <g class="armR"><rect x="126" y="150" width="22" height="52" rx="11" fill="var(--fur)" stroke="var(--ink)" stroke-width="4"/>
-      <circle cx="137" cy="204" r="12.5" fill="var(--belly)" stroke="var(--ink)" stroke-width="4"/></g>
+    <g class="armL"><rect x="52" y="150" width="22" height="52" rx="11" fill="var(--fur)" stroke="var(--line)" stroke-width="4"/>
+      <circle cx="63" cy="204" r="12.5" fill="var(--belly)" stroke="var(--line)" stroke-width="4"/></g>
+    <g class="armR"><rect x="126" y="150" width="22" height="52" rx="11" fill="var(--fur)" stroke="var(--line)" stroke-width="4"/>
+      <circle cx="137" cy="204" r="12.5" fill="var(--belly)" stroke="var(--line)" stroke-width="4"/></g>
   </g>
 </svg></div></div>
     <div class="icefx"></div>
