@@ -39,9 +39,13 @@ Voices used:
 | Math Race, Ramp Rally | Mister Mouse | `iHiL14jSTiWXy4nzDtbq` |
 | Bone Builder and Bingo English lines | Emma | `oClOrzqamOXmtcB8iqTj` |
 | All Spanish lines | Kate 7 | `U9tZtg3uJtVgXPkvosWR` |
-| Animal Peekaboo and Light-Up Taps English lines | Tilly | `4gnXtzQIIeGuC5hxActn` |
+| Animal Peekaboo, Light-Up Taps and Kitty Taps English lines | Tilly | `4gnXtzQIIeGuC5hxActn` |
 | Dance Like Me, Kitty Says | Lulu Lollipop | `ocZQ262SsZb9RIxcQBOj` |
 
 The clips use the `eleven_v4` model.
+
+## Sound effects
+
+Some games also have real sound effects made with ElevenLabs sound generation, such as the meows in Kitty Taps. They live in `<site>/games/<slug>/sounds/` with a `manifest.json` that lists each file and the prompt that made it. Run `python3 tools/generate_sounds.py` to make any that are missing (delete an mp3 to redo it).
 
 `tools/` sits outside both site folders, so it is never deployed.

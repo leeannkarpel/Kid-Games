@@ -1,0 +1,30 @@
+{
+  "game": "kitty-taps",
+  "model": "eleven_v4",
+  "lines": [
+    {
+      "text": "Tap anywhere to make kitties!",
+      "lang": "en",
+      "voice_id": "4gnXtzQIIeGuC5hxActn",
+      "file": "tap-anywhere-to-make-kitties.mp3"
+    },
+    {
+      "text": "English",
+      "lang": "en",
+      "voice_id": "4gnXtzQIIeGuC5hxActn",
+      "file": "english.mp3"
+    },
+    {
+      "text": "¡Toca para hacer gatitos!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-toca-para-hacer-gatitos.mp3"
+    },
+    {
+      "text": "Español",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-espanol.mp3"
+    }
+  ]
+}
