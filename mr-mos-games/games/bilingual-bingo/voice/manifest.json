@@ -1,0 +1,1900 @@
+{
+  "game": "bilingual-bingo",
+  "model": "eleven_v4",
+  "lines": [
+    {
+      "text": "Hi! This is my English voice.",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "test-voice.mp3"
+    },
+    {
+      "text": "¡Hola! Esta es mi voz en español.",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-test-voice.mp3"
+    },
+    {
+      "text": "That one hasn't been called yet. Keep listening!",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "not-called-yet.mp3"
+    },
+    {
+      "text": "Bingo!",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "bingo.mp3"
+    },
+    {
+      "text": "¡Bingo!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-bingo.mp3"
+    },
+    {
+      "text": "ay is for Apple",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "call-a-apple.mp3",
+      "say": "A is for Apple."
+    },
+    {
+      "text": "ay",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "letter-a.mp3",
+      "say": "A"
+    },
+    {
+      "text": "a de Araña",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-call-a-arana.mp3"
+    },
+    {
+      "text": "a",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-letter-a.mp3"
+    },
+    {
+      "text": "bee is for Bear",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "call-b-bear.mp3",
+      "say": "B is for Bear."
+    },
+    {
+      "text": "bee",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "letter-b.mp3",
+      "say": "B"
+    },
+    {
+      "text": "be de Ballena",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-call-b-ballena.mp3"
+    },
+    {
+      "text": "be",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-letter-b.mp3"
+    },
+    {
+      "text": "see is for Cat",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "call-c-cat.mp3",
+      "say": "C is for Cat."
+    },
+    {
+      "text": "see",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "letter-c.mp3",
+      "say": "C"
+    },
+    {
+      "text": "ce de Caballo",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-call-c-caballo.mp3"
+    },
+    {
+      "text": "ce",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-letter-c.mp3"
+    },
+    {
+      "text": "dee is for Dog",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "call-d-dog.mp3",
+      "say": "D is for Dog."
+    },
+    {
+      "text": "dee",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "letter-d.mp3",
+      "say": "D"
+    },
+    {
+      "text": "de de Delfín",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-call-d-delfin.mp3"
+    },
+    {
+      "text": "de",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-letter-d.mp3"
+    },
+    {
+      "text": "ee is for Elephant",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "call-e-elephant.mp3",
+      "say": "E is for Elephant."
+    },
+    {
+      "text": "ee",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "letter-e.mp3",
+      "say": "E"
+    },
+    {
+      "text": "e de Elefante",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-call-e-elefante.mp3"
+    },
+    {
+      "text": "e",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-letter-e.mp3"
+    },
+    {
+      "text": "eff is for Fish",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "call-f-fish.mp3",
+      "say": "F is for Fish."
+    },
+    {
+      "text": "eff",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "letter-f.mp3",
+      "say": "F"
+    },
+    {
+      "text": "efe de Fresa",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-call-f-fresa.mp3"
+    },
+    {
+      "text": "efe",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-letter-f.mp3"
+    },
+    {
+      "text": "gee is for Goat",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "call-g-goat.mp3",
+      "say": "G is for Goat."
+    },
+    {
+      "text": "gee",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "letter-g.mp3",
+      "say": "G"
+    },
+    {
+      "text": "ge de Gato",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-call-g-gato.mp3"
+    },
+    {
+      "text": "ge",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-letter-g.mp3"
+    },
+    {
+      "text": "aitch is for Horse",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "call-h-horse.mp3",
+      "say": "H is for Horse."
+    },
+    {
+      "text": "aitch",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "letter-h.mp3",
+      "say": "H"
+    },
+    {
+      "text": "hache de Helado",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-call-h-helado.mp3"
+    },
+    {
+      "text": "hache",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-letter-h.mp3"
+    },
+    {
+      "text": "eye is for Insect",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "call-i-insect.mp3",
+      "say": "I is for Insect."
+    },
+    {
+      "text": "eye",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "letter-i.mp3",
+      "say": "I"
+    },
+    {
+      "text": "i de Iguana",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-call-i-iguana.mp3"
+    },
+    {
+      "text": "i",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-letter-i.mp3"
+    },
+    {
+      "text": "jay is for Juice",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "call-j-juice.mp3",
+      "say": "J is for Juice."
+    },
+    {
+      "text": "jay",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "letter-j.mp3",
+      "say": "J"
+    },
+    {
+      "text": "jota de Jirafa",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-call-j-jirafa.mp3"
+    },
+    {
+      "text": "jota",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-letter-j.mp3"
+    },
+    {
+      "text": "kay is for Kangaroo",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "call-k-kangaroo.mp3",
+      "say": "K is for Kangaroo."
+    },
+    {
+      "text": "kay",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "letter-k.mp3",
+      "say": "K"
+    },
+    {
+      "text": "ka de Koala",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-call-k-koala.mp3"
+    },
+    {
+      "text": "ka",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-letter-k.mp3"
+    },
+    {
+      "text": "ell is for Lion",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "call-l-lion.mp3",
+      "say": "L is for Lion."
+    },
+    {
+      "text": "ell",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "letter-l.mp3",
+      "say": "L"
+    },
+    {
+      "text": "ele de León",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-call-l-leon.mp3"
+    },
+    {
+      "text": "ele",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-letter-l.mp3"
+    },
+    {
+      "text": "em is for Monkey",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "call-m-monkey.mp3",
+      "say": "M is for Monkey."
+    },
+    {
+      "text": "em",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "letter-m.mp3",
+      "say": "M"
+    },
+    {
+      "text": "eme de Mariposa",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-call-m-mariposa.mp3"
+    },
+    {
+      "text": "eme",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-letter-m.mp3"
+    },
+    {
+      "text": "en is for Nose",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "call-n-nose.mp3",
+      "say": "N is for Nose."
+    },
+    {
+      "text": "en",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "letter-n.mp3",
+      "say": "N"
+    },
+    {
+      "text": "ene de Nube",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-call-n-nube.mp3"
+    },
+    {
+      "text": "ene",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-letter-n.mp3"
+    },
+    {
+      "text": "eñe de Ñoquis",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-call-enye-noquis.mp3"
+    },
+    {
+      "text": "eñe",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-letter-enye.mp3"
+    },
+    {
+      "text": "oh is for Octopus",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "call-o-octopus.mp3",
+      "say": "O is for Octopus."
+    },
+    {
+      "text": "oh",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "letter-o.mp3",
+      "say": "O"
+    },
+    {
+      "text": "o de Oso",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-call-o-oso.mp3"
+    },
+    {
+      "text": "o",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-letter-o.mp3"
+    },
+    {
+      "text": "pee is for Pig",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "call-p-pig.mp3",
+      "say": "P is for Pig."
+    },
+    {
+      "text": "pee",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "letter-p.mp3",
+      "say": "P"
+    },
+    {
+      "text": "pe de Perro",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-call-p-perro.mp3"
+    },
+    {
+      "text": "pe",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-letter-p.mp3"
+    },
+    {
+      "text": "cue is for Queen",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "call-q-queen.mp3",
+      "say": "Q is for Queen."
+    },
+    {
+      "text": "cue",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "letter-q.mp3",
+      "say": "Q"
+    },
+    {
+      "text": "cu de Queso",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-call-q-queso.mp3"
+    },
+    {
+      "text": "cu",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-letter-q.mp3"
+    },
+    {
+      "text": "are is for Rabbit",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "call-r-rabbit.mp3",
+      "say": "R is for Rabbit."
+    },
+    {
+      "text": "are",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "letter-r.mp3",
+      "say": "R"
+    },
+    {
+      "text": "erre de Ratón",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-call-r-raton.mp3"
+    },
+    {
+      "text": "erre",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-letter-r.mp3"
+    },
+    {
+      "text": "ess is for Snake",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "call-s-snake.mp3",
+      "say": "S is for Snake."
+    },
+    {
+      "text": "ess",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "letter-s.mp3",
+      "say": "S"
+    },
+    {
+      "text": "ese de Sol",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-call-s-sol.mp3"
+    },
+    {
+      "text": "ese",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-letter-s.mp3"
+    },
+    {
+      "text": "tea is for Tiger",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "call-t-tiger.mp3",
+      "say": "T is for Tiger."
+    },
+    {
+      "text": "tea",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "letter-t.mp3",
+      "say": "T"
+    },
+    {
+      "text": "te de Tortuga",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-call-t-tortuga.mp3"
+    },
+    {
+      "text": "te",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-letter-t.mp3"
+    },
+    {
+      "text": "you is for Umbrella",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "call-u-umbrella.mp3",
+      "say": "U is for Umbrella."
+    },
+    {
+      "text": "you",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "letter-u.mp3",
+      "say": "U"
+    },
+    {
+      "text": "u de Uva",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-call-u-uva.mp3"
+    },
+    {
+      "text": "u",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-letter-u.mp3"
+    },
+    {
+      "text": "vee is for Violin",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "call-v-violin.mp3",
+      "say": "V is for Violin."
+    },
+    {
+      "text": "vee",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "letter-v.mp3",
+      "say": "V"
+    },
+    {
+      "text": "uve de Vaca",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-call-v-vaca.mp3"
+    },
+    {
+      "text": "uve",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-letter-v.mp3"
+    },
+    {
+      "text": "double you is for Whale",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "call-w-whale.mp3",
+      "say": "W is for Whale."
+    },
+    {
+      "text": "double you",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "letter-w.mp3",
+      "say": "W"
+    },
+    {
+      "text": "uve doble de Waffle",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-call-w-waffle.mp3"
+    },
+    {
+      "text": "uve doble",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-letter-w.mp3"
+    },
+    {
+      "text": "ex is for X-ray",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "call-x-x-ray.mp3",
+      "say": "X is for X-ray."
+    },
+    {
+      "text": "ex",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "letter-x.mp3",
+      "say": "X"
+    },
+    {
+      "text": "equis de Xilófono",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-call-x-xilofono.mp3"
+    },
+    {
+      "text": "equis",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-letter-x.mp3"
+    },
+    {
+      "text": "why is for Yo-yo",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "call-y-yo-yo.mp3",
+      "say": "Y is for Yo-yo."
+    },
+    {
+      "text": "why",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "letter-y.mp3",
+      "say": "Y"
+    },
+    {
+      "text": "ye de Yate",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-call-y-yate.mp3"
+    },
+    {
+      "text": "ye",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-letter-y.mp3"
+    },
+    {
+      "text": "zee is for Zebra",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "call-z-zebra.mp3",
+      "say": "Z is for Zebra."
+    },
+    {
+      "text": "zee",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "letter-z.mp3",
+      "say": "Z"
+    },
+    {
+      "text": "zeta de Zorro",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-call-z-zorro.mp3"
+    },
+    {
+      "text": "zeta",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-letter-z.mp3"
+    },
+    {
+      "text": "one",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "num-1.mp3"
+    },
+    {
+      "text": "two",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "num-2.mp3"
+    },
+    {
+      "text": "three",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "num-3.mp3"
+    },
+    {
+      "text": "four",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "num-4.mp3"
+    },
+    {
+      "text": "five",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "num-5.mp3"
+    },
+    {
+      "text": "six",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "num-6.mp3"
+    },
+    {
+      "text": "seven",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "num-7.mp3"
+    },
+    {
+      "text": "eight",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "num-8.mp3"
+    },
+    {
+      "text": "nine",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "num-9.mp3"
+    },
+    {
+      "text": "ten",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "num-10.mp3"
+    },
+    {
+      "text": "eleven",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "num-11.mp3"
+    },
+    {
+      "text": "twelve",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "num-12.mp3"
+    },
+    {
+      "text": "thirteen",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "num-13.mp3"
+    },
+    {
+      "text": "fourteen",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "num-14.mp3"
+    },
+    {
+      "text": "fifteen",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "num-15.mp3"
+    },
+    {
+      "text": "sixteen",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "num-16.mp3"
+    },
+    {
+      "text": "seventeen",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "num-17.mp3"
+    },
+    {
+      "text": "eighteen",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "num-18.mp3"
+    },
+    {
+      "text": "nineteen",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "num-19.mp3"
+    },
+    {
+      "text": "twenty",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "num-20.mp3"
+    },
+    {
+      "text": "uno",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-num-1.mp3"
+    },
+    {
+      "text": "dos",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-num-2.mp3"
+    },
+    {
+      "text": "tres",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-num-3.mp3"
+    },
+    {
+      "text": "cuatro",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-num-4.mp3"
+    },
+    {
+      "text": "cinco",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-num-5.mp3"
+    },
+    {
+      "text": "seis",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-num-6.mp3"
+    },
+    {
+      "text": "siete",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-num-7.mp3"
+    },
+    {
+      "text": "ocho",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-num-8.mp3"
+    },
+    {
+      "text": "nueve",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-num-9.mp3"
+    },
+    {
+      "text": "diez",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-num-10.mp3"
+    },
+    {
+      "text": "once",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-num-11.mp3"
+    },
+    {
+      "text": "doce",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-num-12.mp3"
+    },
+    {
+      "text": "trece",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-num-13.mp3"
+    },
+    {
+      "text": "catorce",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-num-14.mp3"
+    },
+    {
+      "text": "quince",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-num-15.mp3"
+    },
+    {
+      "text": "dieciséis",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-num-16.mp3"
+    },
+    {
+      "text": "diecisiete",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-num-17.mp3"
+    },
+    {
+      "text": "dieciocho",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-num-18.mp3"
+    },
+    {
+      "text": "diecinueve",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-num-19.mp3"
+    },
+    {
+      "text": "veinte",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-num-20.mp3"
+    },
+    {
+      "text": "bear",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "word-bear.mp3"
+    },
+    {
+      "text": "oso",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-word-oso.mp3"
+    },
+    {
+      "text": "bird",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "word-bird.mp3"
+    },
+    {
+      "text": "pájaro",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-word-pajaro.mp3"
+    },
+    {
+      "text": "fish",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "word-fish.mp3"
+    },
+    {
+      "text": "pez",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-word-pez.mp3"
+    },
+    {
+      "text": "frog",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "word-frog.mp3"
+    },
+    {
+      "text": "rana",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-word-rana.mp3"
+    },
+    {
+      "text": "duck",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "word-duck.mp3"
+    },
+    {
+      "text": "pato",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-word-pato.mp3"
+    },
+    {
+      "text": "crab",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "word-crab.mp3"
+    },
+    {
+      "text": "cangrejo",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-word-cangrejo.mp3"
+    },
+    {
+      "text": "swan",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "word-swan.mp3"
+    },
+    {
+      "text": "cisne",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-word-cisne.mp3"
+    },
+    {
+      "text": "goat",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "word-goat.mp3"
+    },
+    {
+      "text": "cabra",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-word-cabra.mp3"
+    },
+    {
+      "text": "wolf",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "word-wolf.mp3"
+    },
+    {
+      "text": "lobo",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-word-lobo.mp3"
+    },
+    {
+      "text": "lion",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "word-lion.mp3"
+    },
+    {
+      "text": "león",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-word-leon.mp3"
+    },
+    {
+      "text": "star",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "word-star.mp3"
+    },
+    {
+      "text": "estrella",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-word-estrella.mp3"
+    },
+    {
+      "text": "rain",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "word-rain.mp3"
+    },
+    {
+      "text": "lluvia",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-word-lluvia.mp3"
+    },
+    {
+      "text": "fire",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "word-fire.mp3"
+    },
+    {
+      "text": "fuego",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-word-fuego.mp3"
+    },
+    {
+      "text": "leaf",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "word-leaf.mp3"
+    },
+    {
+      "text": "hoja",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-word-hoja.mp3"
+    },
+    {
+      "text": "rose",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "word-rose.mp3"
+    },
+    {
+      "text": "rosa",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-word-rosa.mp3"
+    },
+    {
+      "text": "corn",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "word-corn.mp3"
+    },
+    {
+      "text": "maíz",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-word-maiz.mp3"
+    },
+    {
+      "text": "pear",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "word-pear.mp3"
+    },
+    {
+      "text": "pera",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-word-pera.mp3"
+    },
+    {
+      "text": "cake",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "word-cake.mp3"
+    },
+    {
+      "text": "pastel",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-word-pastel.mp3"
+    },
+    {
+      "text": "milk",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "word-milk.mp3"
+    },
+    {
+      "text": "leche",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-word-leche.mp3"
+    },
+    {
+      "text": "rice",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "word-rice.mp3"
+    },
+    {
+      "text": "arroz",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-word-arroz.mp3"
+    },
+    {
+      "text": "fork",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "word-fork.mp3"
+    },
+    {
+      "text": "tenedor",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-word-tenedor.mp3"
+    },
+    {
+      "text": "bowl",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "word-bowl.mp3"
+    },
+    {
+      "text": "tazón",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-word-tazon.mp3"
+    },
+    {
+      "text": "ring",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "word-ring.mp3"
+    },
+    {
+      "text": "anillo",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-word-anillo.mp3"
+    },
+    {
+      "text": "hand",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "word-hand.mp3"
+    },
+    {
+      "text": "mano",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-word-mano.mp3"
+    },
+    {
+      "text": "nose",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "word-nose.mp3"
+    },
+    {
+      "text": "nariz",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-word-nariz.mp3"
+    },
+    {
+      "text": "boat",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "word-boat.mp3"
+    },
+    {
+      "text": "barco",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-word-barco.mp3"
+    },
+    {
+      "text": "bike",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "word-bike.mp3"
+    },
+    {
+      "text": "bicicleta",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-word-bicicleta.mp3"
+    },
+    {
+      "text": "sock",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "word-sock.mp3"
+    },
+    {
+      "text": "calcetín",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-word-calcetin.mp3"
+    },
+    {
+      "text": "coat",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "word-coat.mp3"
+    },
+    {
+      "text": "abrigo",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-word-abrigo.mp3"
+    },
+    {
+      "text": "shoe",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "word-shoe.mp3"
+    },
+    {
+      "text": "zapato",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-word-zapato.mp3"
+    },
+    {
+      "text": "gift",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "word-gift.mp3"
+    },
+    {
+      "text": "regalo",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-word-regalo.mp3"
+    },
+    {
+      "text": "kite",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "word-kite.mp3"
+    },
+    {
+      "text": "cometa",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-word-cometa.mp3"
+    },
+    {
+      "text": "drum",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "word-drum.mp3"
+    },
+    {
+      "text": "tambor",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-word-tambor.mp3"
+    },
+    {
+      "text": "bone",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "word-bone.mp3"
+    },
+    {
+      "text": "hueso",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-word-hueso.mp3"
+    },
+    {
+      "text": "home",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "word-home.mp3"
+    },
+    {
+      "text": "casa",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-word-casa.mp3"
+    },
+    {
+      "text": "bath",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "word-bath.mp3"
+    },
+    {
+      "text": "baño",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-word-bano.mp3"
+    },
+    {
+      "text": "snow",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "word-snow.mp3"
+    },
+    {
+      "text": "nieve",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-word-nieve.mp3"
+    },
+    {
+      "text": "wind",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "word-wind.mp3"
+    },
+    {
+      "text": "viento",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-word-viento.mp3"
+    },
+    {
+      "text": "sand",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "word-sand.mp3"
+    },
+    {
+      "text": "arena",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-word-arena.mp3"
+    },
+    {
+      "text": "lake",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "word-lake.mp3"
+    },
+    {
+      "text": "lago",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-word-lago.mp3"
+    },
+    {
+      "text": "wave",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "word-wave.mp3"
+    },
+    {
+      "text": "ola",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-word-ola.mp3"
+    },
+    {
+      "text": "vase",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "word-vase.mp3"
+    },
+    {
+      "text": "jarrón",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-word-jarron.mp3"
+    },
+    {
+      "text": "zero",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "word-zero.mp3"
+    },
+    {
+      "text": "cero",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-word-cero.mp3"
+    },
+    {
+      "text": "taxi",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "word-taxi.mp3"
+    },
+    {
+      "text": "taxi",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-word-taxi.mp3"
+    },
+    {
+      "text": "yarn",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "word-yarn.mp3"
+    },
+    {
+      "text": "lana",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-word-lana.mp3"
+    },
+    {
+      "text": "yoga",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "word-yoga.mp3"
+    },
+    {
+      "text": "yoga",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-word-yoga.mp3"
+    },
+    {
+      "text": "king",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "word-king.mp3"
+    },
+    {
+      "text": "rey",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-word-rey.mp3"
+    },
+    {
+      "text": "quiz",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "word-quiz.mp3"
+    },
+    {
+      "text": "prueba",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-word-prueba.mp3"
+    },
+    {
+      "text": "lamp",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "word-lamp.mp3"
+    },
+    {
+      "text": "lámpara",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-word-lampara.mp3"
+    },
+    {
+      "text": "camp",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "word-camp.mp3"
+    },
+    {
+      "text": "campamento",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-word-campamento.mp3"
+    },
+    {
+      "text": "farm",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "word-farm.mp3"
+    },
+    {
+      "text": "granja",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-word-granja.mp3"
+    },
+    {
+      "text": "cat",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "word-cat.mp3"
+    },
+    {
+      "text": "gato",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-word-gato.mp3"
+    },
+    {
+      "text": "moon",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "word-moon.mp3"
+    },
+    {
+      "text": "luna",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-word-luna.mp3"
+    },
+    {
+      "text": "cloud",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "word-cloud.mp3"
+    },
+    {
+      "text": "nube",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-word-nube.mp3"
+    },
+    {
+      "text": "flower",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "word-flower.mp3"
+    },
+    {
+      "text": "flor",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-word-flor.mp3"
+    },
+    {
+      "text": "grapes",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "word-grapes.mp3"
+    },
+    {
+      "text": "uvas",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-word-uvas.mp3"
+    },
+    {
+      "text": "pineapple",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "word-pineapple.mp3"
+    },
+    {
+      "text": "piña",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-word-pina.mp3"
+    },
+    {
+      "text": "boy",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "word-boy.mp3"
+    },
+    {
+      "text": "niño",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-word-nino.mp3"
+    },
+    {
+      "text": "bathroom",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "word-bathroom.mp3"
+    },
+    {
+      "text": "train",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "word-train.mp3"
+    },
+    {
+      "text": "tren",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-word-tren.mp3"
+    },
+    {
+      "text": "feet",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "word-feet.mp3"
+    },
+    {
+      "text": "pies",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-word-pies.mp3"
+    },
+    {
+      "text": "mouth",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "word-mouth.mp3"
+    },
+    {
+      "text": "boca",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-word-boca.mp3"
+    },
+    {
+      "text": "blue",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "word-blue.mp3"
+    },
+    {
+      "text": "azul",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-word-azul.mp3"
+    },
+    {
+      "text": "honey",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "word-honey.mp3"
+    },
+    {
+      "text": "miel",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-word-miel.mp3"
+    },
+    {
+      "text": "magnifying glass",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "word-magnifying-glass.mp3"
+    },
+    {
+      "text": "lupa",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-word-lupa.mp3"
+    },
+    {
+      "text": "glass",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "word-glass.mp3"
+    },
+    {
+      "text": "copa",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-word-copa.mp3"
+    },
+    {
+      "text": "bucket",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "word-bucket.mp3"
+    },
+    {
+      "text": "cubo",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-word-cubo.mp3"
+    },
+    {
+      "text": "seal",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "word-seal.mp3"
+    },
+    {
+      "text": "foca",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-word-foca.mp3"
+    },
+    {
+      "text": "island",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "word-island.mp3"
+    },
+    {
+      "text": "isla",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-word-isla.mp3"
+    },
+    {
+      "text": "thread",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "word-thread.mp3"
+    },
+    {
+      "text": "hilo",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-word-hilo.mp3"
+    },
+    {
+      "text": "juice",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "word-juice.mp3"
+    },
+    {
+      "text": "jugo",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-word-jugo.mp3"
+    },
+    {
+      "text": "clothes",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "word-clothes.mp3"
+    },
+    {
+      "text": "ropa",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-word-ropa.mp3"
+    },
+    {
+      "text": "movie theater",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "word-movie-theater.mp3"
+    },
+    {
+      "text": "cine",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-word-cine.mp3"
+    },
+    {
+      "text": "car",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "word-car.mp3"
+    },
+    {
+      "text": "auto",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-word-auto.mp3"
+    },
+    {
+      "text": "yacht",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "word-yacht.mp3"
+    },
+    {
+      "text": "yate",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-word-yate.mp3"
+    },
+    {
+      "text": "candle",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "word-candle.mp3"
+    },
+    {
+      "text": "vela",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-word-vela.mp3"
+    },
+    {
+      "text": "vaso",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-word-vaso.mp3"
+    },
+    {
+      "text": "turkey",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "word-turkey.mp3"
+    },
+    {
+      "text": "pavo",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-word-pavo.mp3"
+    },
+    {
+      "text": "cross",
+      "lang": "en",
+      "voice_id": "oClOrzqamOXmtcB8iqTj",
+      "file": "word-cross.mp3"
+    },
+    {
+      "text": "cruz",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-word-cruz.mp3"
+    }
+  ]
+}

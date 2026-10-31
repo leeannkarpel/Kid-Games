@@ -1,0 +1,150 @@
+{
+  "game": "light-up-taps",
+  "model": "eleven_v4",
+  "lines": [
+    {
+      "text": "Tap anywhere to make lights!",
+      "lang": "en",
+      "voice_id": "4gnXtzQIIeGuC5hxActn",
+      "file": "tap-anywhere-to-make-lights.mp3"
+    },
+    {
+      "text": "English",
+      "lang": "en",
+      "voice_id": "4gnXtzQIIeGuC5hxActn",
+      "file": "english.mp3"
+    },
+    {
+      "text": "Red!",
+      "lang": "en",
+      "voice_id": "4gnXtzQIIeGuC5hxActn",
+      "file": "red.mp3"
+    },
+    {
+      "text": "Orange!",
+      "lang": "en",
+      "voice_id": "4gnXtzQIIeGuC5hxActn",
+      "file": "orange.mp3"
+    },
+    {
+      "text": "Yellow!",
+      "lang": "en",
+      "voice_id": "4gnXtzQIIeGuC5hxActn",
+      "file": "yellow.mp3"
+    },
+    {
+      "text": "Green!",
+      "lang": "en",
+      "voice_id": "4gnXtzQIIeGuC5hxActn",
+      "file": "green.mp3"
+    },
+    {
+      "text": "Blue!",
+      "lang": "en",
+      "voice_id": "4gnXtzQIIeGuC5hxActn",
+      "file": "blue.mp3"
+    },
+    {
+      "text": "Purple!",
+      "lang": "en",
+      "voice_id": "4gnXtzQIIeGuC5hxActn",
+      "file": "purple.mp3"
+    },
+    {
+      "text": "Pink!",
+      "lang": "en",
+      "voice_id": "4gnXtzQIIeGuC5hxActn",
+      "file": "pink.mp3"
+    },
+    {
+      "text": "Stars!",
+      "lang": "en",
+      "voice_id": "4gnXtzQIIeGuC5hxActn",
+      "file": "stars.mp3"
+    },
+    {
+      "text": "Bubbles!",
+      "lang": "en",
+      "voice_id": "4gnXtzQIIeGuC5hxActn",
+      "file": "bubbles.mp3"
+    },
+    {
+      "text": "Music!",
+      "lang": "en",
+      "voice_id": "4gnXtzQIIeGuC5hxActn",
+      "file": "music.mp3"
+    },
+    {
+      "text": "¡Toca para hacer luces!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-toca-para-hacer-luces.mp3"
+    },
+    {
+      "text": "Español",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-espanol.mp3"
+    },
+    {
+      "text": "¡Rojo!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-rojo.mp3"
+    },
+    {
+      "text": "¡Naranja!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-naranja.mp3"
+    },
+    {
+      "text": "¡Amarillo!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-amarillo.mp3"
+    },
+    {
+      "text": "¡Verde!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-verde.mp3"
+    },
+    {
+      "text": "¡Azul!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-azul.mp3"
+    },
+    {
+      "text": "¡Morado!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-morado.mp3"
+    },
+    {
+      "text": "¡Rosa!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-rosa.mp3"
+    },
+    {
+      "text": "¡Estrellas!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-estrellas.mp3"
+    },
+    {
+      "text": "¡Burbujas!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-burbujas.mp3"
+    },
+    {
+      "text": "¡Música!",
+      "lang": "es",
+      "voice_id": "U9tZtg3uJtVgXPkvosWR",
+      "file": "es-musica.mp3"
+    }
+  ]
+}
