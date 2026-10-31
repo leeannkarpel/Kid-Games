@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Melly Mo’s Games</title>
+<meta name="theme-color" content="#5B2A6E">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐱</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chewy&family=Baloo+2:wght@600;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --plum: #5B2A6E;
+    --plum-deep: #3D1A4B;
+    --pink: #FFB8CF;
+    --pink-deep: #F07FA6;
+    --sun: #FFC93C;
+    --sun-deep: #C98F00;
+    --white: #FFFFFF;
+    --page-bg: var(--plum);
+    --ink: var(--white);
+    --face-ink: var(--plum-deep);
+    color-scheme: light;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) { --page-bg: #43204F; color-scheme: dark; }
+  }
+  :root[data-theme="dark"] { --page-bg: #43204F; color-scheme: dark; }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background-color: var(--page-bg);
+    /* scattered paw prints */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cg fill='%23ffffff' fill-opacity='.07'%3E%3Cg transform='translate(30 34) rotate(-18)'%3E%3Cellipse cx='0' cy='8' rx='11' ry='9'/%3E%3Ccircle cx='-11' cy='-6' r='4.5'/%3E%3Ccircle cx='-4' cy='-12' r='4.5'/%3E%3Ccircle cx='5' cy='-12' r='4.5'/%3E%3Ccircle cx='12' cy='-5' r='4.5'/%3E%3C/g%3E%3Cg transform='translate(112 110) rotate(22)'%3E%3Cellipse cx='0' cy='8' rx='11' ry='9'/%3E%3Ccircle cx='-11' cy='-6' r='4.5'/%3E%3Ccircle cx='-4' cy='-12' r='4.5'/%3E%3Ccircle cx='5' cy='-12' r='4.5'/%3E%3Ccircle cx='12' cy='-5' r='4.5'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    background-size: 160px 160px;
+    background-attachment: fixed;
+    color: var(--ink);
+    font-family: "Baloo 2", "Trebuchet MS", system-ui, sans-serif;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* ---------- Header ---------- */
+  header {
+    padding: clamp(24px, 6vw, 52px) 20px clamp(16px, 4vw, 30px);
+    text-align: center;
+  }
+  .kitty {
+    width: clamp(140px, 32vw, 200px);
+    height: auto;
+    display: block;
+    margin: 0 auto;
+    overflow: visible;
+    filter: drop-shadow(0 8px 0 var(--plum-deep));
+  }
+  .tail { transform-origin: 150px 176px; animation: swish 2.6s ease-in-out infinite; }
+  @keyframes swish { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(-14deg); } }
+  .blink { transform-origin: center 96px; transform-box: fill-box; animation: blink 5s infinite; }
+  @keyframes blink { 0%, 92%, 100% { transform: scaleY(1); } 95% { transform: scaleY(.1); } }
+  h1 {
+    margin: 10px 0 0;
+    font-family: "Chewy", "Comic Sans MS", "Arial Rounded MT Bold", sans-serif;
+    font-weight: 400;
+    font-size: clamp(46px, 12.5vw, 100px);
+    line-height: .95;
+    letter-spacing: .01em;
+    color: var(--white);
+    text-shadow: 0 4px 0 var(--pink-deep), 0 8px 0 var(--plum-deep);
+  }
+  .tagline {
+    margin: 14px auto 0;
+    max-width: 30ch;
+    font-size: clamp(18px, 4.4vw, 24px);
+    font-weight: 600;
+    line-height: 1.3;
+  }
+
+  /* ---------- Cat-head tiles ---------- */
+  main {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 30px 18px 40px;
+  }
+  .grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr));
+    gap: clamp(46px, 7vw, 56px) clamp(18px, 3.5vw, 30px);
+  }
+  .cat {
+    position: relative;
+    display: block;
+    color: var(--face-ink);
+    text-decoration: none;
+    border-radius: 44% 44% 40% 40% / 40% 40% 46% 46%;
+    outline-offset: 8px;
+  }
+  /* ears */
+  .cat::before, .cat::after {
+    content: "";
+    position: absolute;
+    top: -30px;
+    width: 34%;
+    height: 70px;
+    background:
+      linear-gradient(var(--pink-deep), var(--pink-deep)) center 62% / 46% 52% no-repeat,
+      var(--pink);
+    clip-path: polygon(50% 0, 100% 100%, 0 100%);
+    transition: transform 200ms ease;
+  }
+  .cat::before { left: 6%; transform: rotate(-14deg); transform-origin: bottom center; }
+  .cat::after  { right: 6%; transform: rotate(14deg); transform-origin: bottom center; }
+  .face {
+    position: relative;
+    z-index: 1;
+    aspect-ratio: 5 / 4;
+    border-radius: inherit;
+    background: radial-gradient(120% 90% at 50% 20%, #FFD3E1, var(--pink) 60%);
+    box-shadow: 0 8px 0 var(--plum-deep);
+    display: grid;
+    place-items: center;
+    text-align: center;
+    padding: 10px 14px 16px;
+    transition: transform 160ms ease;
+  }
+  /* whiskers */
+  .face::before, .face::after {
+    content: "";
+    position: absolute;
+    top: 52%;
+    width: 22%;
+    height: 22px;
+    background:
+      linear-gradient(var(--plum), var(--plum)) 0 0 / 100% 3px no-repeat,
+      linear-gradient(var(--plum), var(--plum)) 0 100% / 100% 3px no-repeat;
+    opacity: .45;
+  }
+  .face::before { left: -4%; transform: rotate(-6deg); }
+  .face::after  { right: -4%; transform: rotate(6deg); }
+  .icon { font-size: clamp(54px, 12vw, 70px); line-height: 1; display: block; }
+  .name {
+    display: block;
+    margin-top: 6px;
+    font-weight: 800;
+    font-size: clamp(20px, 5vw, 25px);
+    line-height: 1.1;
+  }
+  a.cat:hover .face, a.cat:focus-visible .face { transform: rotate(-2deg) scale(1.03); }
+  a.cat:hover::before, a.cat:focus-visible::before { transform: rotate(-24deg); }
+  a.cat:hover::after, a.cat:focus-visible::after { transform: rotate(24deg); }
+  a.cat:active .face { transform: scale(.96); }
+  a.cat:focus-visible { outline: 4px solid var(--sun); }
+
+  /* ---------- Link to big brother's site ---------- */
+  .sibling {
+    text-align: center;
+    padding: 6px 20px 28px;
+  }
+  .sibling a {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 56px;
+    padding: 8px 22px;
+    border-radius: 999px;
+    background: #C8102E;
+    color: var(--white);
+    font-weight: 800;
+    font-size: clamp(18px, 4.4vw, 22px);
+    text-decoration: none;
+    box-shadow: 0 5px 0 #7E0A1C;
+  }
+  .sibling a span[aria-hidden] { font-size: 1.4em; line-height: 1; }
+  .sibling a:hover { transform: translateY(-2px); }
+  .sibling a:active { transform: translateY(3px); box-shadow: 0 2px 0 #7E0A1C; }
+  .sibling a:focus-visible { outline: 4px solid var(--sun); outline-offset: 4px; }
+
+  footer {
+    text-align: center;
+    padding: 0 20px 32px;
+    font-size: 16px;
+    opacity: .85;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tail, .blink { animation: none; }
+    .face, .cat::before, .cat::after { transition: none; }
+  }
+</style>
+</head>
+<body>
+  <header>
+    <svg class="kitty" viewBox="0 0 200 200" role="img" aria-label="A smiling pink cat wearing a gold crown">
+      <!-- tail -->
+      <path class="tail" d="M150 176 C188 170 192 128 170 112" fill="none" stroke="#F07FA6" stroke-width="16" stroke-linecap="round"/>
+      <!-- body -->
+      <ellipse cx="100" cy="168" rx="56" ry="30" fill="#FFB8CF"/>
+      <!-- ears -->
+      <path d="M44 74 L52 18 L92 50 Z" fill="#FFB8CF"/>
+      <path d="M156 74 L148 18 L108 50 Z" fill="#FFB8CF"/>
+      <path d="M54 60 L58 32 L80 50 Z" fill="#F07FA6"/>
+      <path d="M146 60 L142 32 L120 50 Z" fill="#F07FA6"/>
+      <!-- head -->
+      <ellipse cx="100" cy="98" rx="64" ry="56" fill="#FFB8CF"/>
+      <!-- crown -->
+      <path d="M76 52 L80 24 L92 40 L100 18 L108 40 L120 24 L124 52 Z" fill="#FFC93C" stroke="#C98F00" stroke-width="3" stroke-linejoin="round"/>
+      <circle cx="100" cy="42" r="4.5" fill="#F07FA6"/>
+      <!-- eyes -->
+      <g class="blink">
+        <ellipse cx="76" cy="96" rx="9" ry="12" fill="#3D1A4B"/>
+        <ellipse cx="124" cy="96" rx="9" ry="12" fill="#3D1A4B"/>
+        <circle cx="79" cy="91" r="3.5" fill="#fff"/>
+        <circle cx="127" cy="91" r="3.5" fill="#fff"/>
+      </g>
+      <!-- cheeks -->
+      <ellipse cx="60" cy="118" rx="10" ry="6" fill="#F07FA6" opacity=".55"/>
+      <ellipse cx="140" cy="118" rx="10" ry="6" fill="#F07FA6" opacity=".55"/>
+      <!-- nose and mouth -->
+      <path d="M94 112 H106 L100 119 Z" fill="#F07FA6"/>
+      <path d="M100 119 C100 128 90 130 86 124 M100 119 C100 128 110 130 114 124" fill="none" stroke="#3D1A4B" stroke-width="3" stroke-linecap="round"/>
+      <!-- whiskers -->
+      <g stroke="#3D1A4B" stroke-width="2.5" stroke-linecap="round" opacity=".6">
+        <path d="M30 108 L62 112"/><path d="M32 124 L62 120"/>
+        <path d="M170 108 L138 112"/><path d="M168 124 L138 120"/>
+      </g>
+      <!-- paws -->
+      <ellipse cx="78" cy="190" rx="14" ry="9" fill="#FFD3E1"/>
+      <ellipse cx="122" cy="190" rx="14" ry="9" fill="#FFD3E1"/>
+    </svg>
+    <h1>Melly Mo’s Games</h1>
+    <p class="tagline">Pick a kitty and let’s play!</p>
+  </header>
+
+  <main>
+    <ul class="grid" id="games"></ul>
+  </main>
+
+  <nav class="sibling" aria-label="Other games">
+    <a href="https://mrmos.games/"><span aria-hidden="true">🏎️</span>Visit Mr. Mo’s Games</a>
+  </nav>
+
+  <footer>Made with love, one game at a time.</footer>
+
+<script>
+  // ---- Add new games here. Each game lives at /games/<slug>/index.html ----
+  const GAMES = [
+    { slug: "animal-peekaboo", title: "Animal Peekaboo", icon: "🐄" },
+    { slug: "light-up-taps", title: "Light-Up Taps", icon: "⭐" },
+    { slug: "dance-like-me", title: "Dance Like Me", icon: "💃" },
+  ];
+
+  const list = document.getElementById("games");
+  const tile = (g) => {
+    const li = document.createElement("li");
+    const el = document.createElement(g ? "a" : "div");
+    el.className = "cat";
+    if (g) el.href = "/games/" + g.slug + "/";
+    el.innerHTML =
+      '<div class="face">' +
+      '<div><span class="icon" aria-hidden="true">' + (g ? g.icon : "🐾") + '</span>' +
+      '<span class="name">' + (g ? g.title : "Coming soon!") + '</span></div>' +
+      '</div>';
+    li.appendChild(el);
+    return li;
+  };
+  GAMES.forEach((g) => list.appendChild(tile(g)));
+  if (GAMES.length === 0) list.appendChild(tile(null));
+</script>
+</body>
+</html>

@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<title>Melly Mo’s Animal Peekaboo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --plum:#5b2a6e; --plum-deep:#3d1a4b; --sun:#ffc93c; --rose:#ff8fb1; --cream:#fff8ee;
+  --panel-bg:#fff8ee; --panel-text:#3d1a4b; --panel-muted:#7a5a86; --panel-line:#e6d4ea;
+  --font:"Baloo 2", "Arial Rounded MT Bold", "Trebuchet MS", system-ui, sans-serif;
+  color-scheme: light;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){ --panel-bg:#2a1533; --panel-text:#fdf0ff; --panel-muted:#cbb1d4; --panel-line:#4d2f59; color-scheme:dark; }
+}
+:root[data-theme="dark"]{ --panel-bg:#2a1533; --panel-text:#fdf0ff; --panel-muted:#cbb1d4; --panel-line:#4d2f59; color-scheme:dark; }
+*,*::before,*::after{ box-sizing:border-box; }
+[hidden]{ display:none !important; }
+html,body{ height:100%; margin:0; }
+html{ scroll-padding-top:env(safe-area-inset-top,0px); }
+body{
+  font-family:var(--font); color:var(--plum-deep); overflow:hidden;
+  -webkit-user-select:none; user-select:none; -webkit-touch-callout:none;
+  touch-action:manipulation; overscroll-behavior:none;
+  -webkit-tap-highlight-color:transparent;
+  background:var(--scene-bg); transition:background .5s;
+}
+/* ---------- scenes ---------- */
+body[data-scene="farm"]{
+  --scene-bg:
+    radial-gradient(circle at 86% 12%, #fff6b0 0 34px, #ffe066 35px 46px, transparent 47px),
+    radial-gradient(120% 60% at 20% 112%, #5fb84a 0 60%, transparent 61%),
+    radial-gradient(120% 55% at 85% 115%, #79c95a 0 60%, transparent 61%),
+    linear-gradient(#8fd6ff, #d6f2ff 70%, #a6dd7f 70.1%);
+  --panel:#cf3a2e; --panel-dark:#9e2a21; --trim:#fff; --inside:#4a2410; --roof:#8e2c23;
+}
+body[data-scene="zoo"]{
+  --scene-bg:
+    radial-gradient(circle at 14% 10%, #fff3a6 0 30px, transparent 31px),
+    radial-gradient(90% 40% at 50% 112%, #4e9b3a 0 60%, transparent 61%),
+    linear-gradient(#ffe08a, #ffd06b 55%, #9bcf5f 55.1%, #6fae47);
+  --panel:#3f9a3c; --panel-dark:#2a7a2b; --trim:#9be27a; --inside:#173d17; --roof:transparent;
+}
+body[data-scene="ocean"]{
+  --scene-bg:
+    radial-gradient(circle at 12% 30%, rgba(255,255,255,.35) 0 6px, transparent 7px),
+    radial-gradient(circle at 18% 22%, rgba(255,255,255,.3) 0 4px, transparent 5px),
+    radial-gradient(circle at 88% 40%, rgba(255,255,255,.3) 0 8px, transparent 9px),
+    radial-gradient(circle at 80% 60%, rgba(255,255,255,.25) 0 5px, transparent 6px),
+    radial-gradient(100% 30% at 50% 108%, #e9c98a 0 60%, transparent 61%),
+    linear-gradient(#5ccaf2, #1f7fc6 60%, #0f4f8e);
+  --panel:#ff7f6e; --panel-dark:#e05a4a; --trim:#ffd3c9; --inside:#0b2b52; --roof:transparent;
+}
+
+/* ---------- layout ---------- */
+#app{ height:100%; display:grid; grid-template-rows:auto 1fr auto; gap:6px; padding:8px max(10px, env(safe-area-inset-left,0px)) 10px max(10px, env(safe-area-inset-right,0px)); }
+.top{ display:flex; align-items:center; justify-content:space-between; gap:12px; min-height:48px; }
+.title{ margin:0; font-weight:800; font-size:clamp(1.1rem, 3.6vw, 1.6rem); line-height:1.1; color:#fff; letter-spacing:.01em;
+  text-shadow:0 2px 0 var(--plum), 0 0 12px rgba(61,26,75,.35); display:flex; align-items:center; gap:.35em; }
+.title .crown{ font-size:1.2em; filter:drop-shadow(0 2px 0 var(--plum)); }
+
+#stage{ display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); grid-template-rows:repeat(2, minmax(0,1fr)); gap:clamp(10px, 3vw, 26px); min-height:0; padding:4px 3% 0; }
+@media (min-aspect-ratio: 5/4){ #stage{ grid-template-columns:repeat(4, minmax(0,1fr)); grid-template-rows:minmax(0,1fr); } }
+
+.spot{ all:unset; position:relative; display:flex; flex-direction:column; align-items:center; justify-content:flex-end; min-height:0; min-width:0; cursor:pointer; }
+.spot:focus-visible .house{ outline:5px solid var(--sun); outline-offset:6px; }
+.roof{ width:106%; max-width:calc(var(--h) * 0.86); height:22%; background:var(--roof); clip-path:polygon(50% 0, 100% 100%, 0 100%); flex:none; margin-bottom:-1px; }
+.house{ position:relative; width:100%; max-width:calc(var(--h) * 0.75); flex:1 1 auto; min-height:0; perspective:700px;
+  border-radius:14px; overflow:hidden; background:var(--inside); box-shadow:0 0 0 6px var(--panel-dark), 0 10px 0 rgba(0,0,0,.18); }
+body[data-scene="zoo"] .house{ border-radius:48% 48% 18px 18px / 34% 34% 18px 18px; }
+body[data-scene="ocean"] .house{ border-radius:50% 50% 16px 16px / 40% 40% 16px 16px; }
+body:not([data-scene="farm"]) .roof{ visibility:hidden; }
+
+.inside{ position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; overflow:hidden; border-radius:inherit; }
+.animal{ font-size:min(15vh, 24vw); line-height:1; transform:translateY(60%) scale(.2); opacity:0;
+  transition:transform .45s cubic-bezier(.3,1.7,.5,1) .12s, opacity .2s .12s; filter:drop-shadow(0 4px 0 rgba(0,0,0,.25)); }
+@media (min-aspect-ratio: 5/4){ .animal{ font-size:min(20vh, 12vw); } }
+.name{ margin-top:.2em; text-align:center; color:#fff; font-weight:800; font-size:clamp(1.1rem, 4.2vh, 2rem); line-height:1; opacity:0; transition:opacity .25s .35s; text-shadow:0 2px 0 rgba(0,0,0,.35); }
+.name small{ display:block; font-size:.7em; font-weight:600; opacity:.9; margin-top:.15em; }
+.panel{ position:absolute; top:0; bottom:0; width:50%; background:var(--panel); transition:transform .5s cubic-bezier(.4,0,.2,1); backface-visibility:visible; }
+.panel.l{ left:0; transform-origin:left center; border-radius:inherit; border-top-right-radius:0; border-bottom-right-radius:0; }
+.panel.r{ right:0; transform-origin:right center; border-radius:inherit; border-top-left-radius:0; border-bottom-left-radius:0; }
+/* farm: barn doors with white X trim */
+body[data-scene="farm"] .panel{
+  background:
+    linear-gradient(to top right, transparent calc(50% - 5px), var(--trim) calc(50% - 5px) calc(50% + 5px), transparent calc(50% + 5px)),
+    linear-gradient(to bottom right, transparent calc(50% - 5px), var(--trim) calc(50% - 5px) calc(50% + 5px), transparent calc(50% + 5px)),
+    repeating-linear-gradient(90deg, var(--panel) 0 22px, var(--panel-dark) 22px 24px);
+  box-shadow:inset 0 0 0 7px var(--trim);
+}
+/* zoo: leafy bush */
+body[data-scene="zoo"] .panel{
+  background:
+    radial-gradient(circle at 30% 20%, var(--trim) 0 9%, transparent 10%),
+    radial-gradient(circle at 70% 45%, var(--trim) 0 8%, transparent 9%),
+    radial-gradient(circle at 35% 70%, var(--trim) 0 10%, transparent 11%),
+    radial-gradient(circle at 75% 85%, var(--panel-dark) 0 12%, transparent 13%),
+    var(--panel);
+}
+/* ocean: coral cave */
+body[data-scene="ocean"] .panel{
+  background:
+    radial-gradient(circle at 30% 25%, var(--trim) 0 7%, transparent 8%),
+    radial-gradient(circle at 65% 55%, var(--trim) 0 6%, transparent 7%),
+    radial-gradient(circle at 40% 82%, var(--panel-dark) 0 10%, transparent 11%),
+    var(--panel);
+}
+.spot.open .panel.l{ transform:rotateY(-96deg); }
+.spot.open .panel.r{ transform:rotateY(96deg); }
+.spot.open .animal{ transform:none; opacity:1; }
+.spot.open .name{ opacity:1; }
+.spot.wiggle .animal{ animation:wiggle .5s ease; }
+@keyframes wiggle{ 0%,100%{transform:rotate(0)} 25%{transform:rotate(-12deg) scale(1.08)} 75%{transform:rotate(12deg) scale(1.08)} }
+.spot.closed:active .house{ transform:scale(.97); }
+
+/* ---------- scene picker ---------- */
+.scenes{ display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:10px; max-width:640px; width:100%; margin:0 auto; }
+.scene-btn{ all:unset; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:.4em; min-height:64px; padding:4px 8px;
+  border-radius:20px; background:rgba(255,248,238,.88); color:var(--plum-deep); font-weight:800; font-size:clamp(1rem, 3.4vw, 1.3rem); line-height:1;
+  box-shadow:0 5px 0 rgba(61,26,75,.25); text-align:center; }
+.scene-btn .em{ font-size:1.9em; }
+.scene-btn small{ display:block; font-weight:600; font-size:.75em; opacity:.8; margin-top:.15em; }
+.scene-btn[aria-pressed="true"]{ background:var(--sun); box-shadow:0 0 0 4px var(--plum), 0 5px 0 var(--plum); }
+.scene-btn:focus-visible, .gear:focus-visible, .btn:focus-visible, select:focus-visible{ outline:4px solid var(--plum); outline-offset:3px; }
+.scene-btn:active{ transform:translateY(3px); box-shadow:0 2px 0 rgba(61,26,75,.25); }
+
+/* ---------- grown-up gear ---------- */
+.gear{ all:unset; position:relative; width:48px; height:48px; flex:none; border-radius:50%; display:grid; place-items:center; cursor:pointer;
+  background:rgba(255,248,238,.8); color:var(--plum); font-size:24px; box-shadow:0 3px 0 rgba(61,26,75,.25); }
+.gear::after{ content:""; position:absolute; inset:-4px; border-radius:50%; background:conic-gradient(var(--plum) calc(var(--p,0) * 1turn), transparent 0); 
+  -webkit-mask:radial-gradient(circle, transparent 25px, #000 26px); mask:radial-gradient(circle, transparent 25px, #000 26px); }
+.gear-tip{ position:absolute; right:0; top:54px; white-space:nowrap; background:var(--plum-deep); color:#fff; font-size:.95rem; font-weight:600; padding:6px 12px; border-radius:12px; z-index:5; }
+
+/* ---------- start overlay ---------- */
+.start{ position:fixed; inset:0; z-index:20; display:grid; place-items:center; padding:24px;
+  background:radial-gradient(circle at 50% 40%, rgba(255,201,60,.35), transparent 60%), rgba(61,26,75,.82); }
+.start-card{ text-align:center; color:#fff; max-width:30rem; }
+.start-card .big{ font-size:clamp(3rem, 14vw, 5.5rem); line-height:1; letter-spacing:.05em; }
+.start-card h2{ margin:.2em 0 .1em; font-size:clamp(1.8rem, 7vw, 2.8rem); line-height:1.05; font-weight:800; }
+.start-card p{ margin:0 0 1.1em; font-size:1.15rem; font-weight:600; opacity:.9; }
+.play{ all:unset; cursor:pointer; display:inline-grid; place-items:center; width:min(52vw, 220px); aspect-ratio:1; border-radius:50%;
+  background:var(--sun); color:var(--plum-deep); font-size:clamp(2rem, 9vw, 3rem); font-weight:800; box-shadow:0 8px 0 #c98f00, 0 0 0 10px rgba(255,201,60,.3);
+  animation:breathe 1.8s ease-in-out infinite; }
+.play:focus-visible{ outline:5px solid #fff; outline-offset:8px; }
+@keyframes breathe{ 50%{ transform:scale(1.06); } }
+@media (max-height:520px){ .start-card .big{ font-size:2.6rem; } .start-card h2{ font-size:1.6rem; } .start-card p{ margin-bottom:.5em; } .play{ width:120px; font-size:1.8rem; } }
+
+/* ---------- grown-up panel ---------- */
+.sheet-wrap{ position:fixed; inset:0; z-index:30; display:grid; place-items:center; padding:16px; background:rgba(30,10,40,.55); }
+.sheet{ width:min(100%, 30rem); max-height:100%; overflow:auto; background:var(--panel-bg); color:var(--panel-text); border-radius:24px; padding:20px 20px 18px;
+  box-shadow:0 20px 50px rgba(0,0,0,.35); -webkit-user-select:text; user-select:text; }
+.sheet h2{ margin:0 0 4px; font-size:1.5rem; line-height:1.1; }
+.sheet .hint{ margin:0 0 14px; color:var(--panel-muted); font-size:1rem; line-height:1.35; font-weight:600; }
+.field{ margin:0 0 14px; border:0; padding:0; }
+.field > legend, .field > label{ display:block; font-weight:800; font-size:1.05rem; margin-bottom:6px; padding:0; }
+.seg{ display:grid; grid-template-columns:repeat(3,1fr); gap:6px; }
+.seg button, .btn{ all:unset; cursor:pointer; text-align:center; min-height:46px; border-radius:14px; padding:4px 10px; display:grid; place-items:center;
+  border:2px solid var(--panel-line); font-weight:800; font-size:1rem; color:var(--panel-text); }
+.seg button[aria-pressed="true"]{ background:var(--plum); border-color:var(--plum); color:#fff; }
+.row{ display:flex; gap:8px; align-items:center; }
+select{ flex:1; min-width:0; font:600 16px/1.2 var(--font); min-height:46px; border-radius:14px; border:2px solid var(--panel-line); background:var(--panel-bg); color:var(--panel-text); padding:4px 10px; }
+.btn.primary{ background:var(--sun); border-color:var(--sun); color:#3d1a4b; width:100%; box-sizing:border-box; margin-top:4px; font-size:1.15rem; }
+.toggle{ display:flex; align-items:center; gap:10px; font-weight:800; font-size:1.05rem; min-height:46px; cursor:pointer; }
+.toggle input{ width:26px; height:26px; accent-color:var(--plum); }
+.credits{ margin:4px 0 12px; color:var(--panel-muted); font-size:.9rem; line-height:1.35; font-weight:600; }
+.credits summary{ cursor:pointer; min-height:40px; display:flex; align-items:center; font-weight:800; color:var(--panel-text); }
+.credits ul{ margin:4px 0 0; padding-left:1.1em; }
+.credits a{ color:inherit; }
+
+.nosound{ position:fixed; left:50%; top:calc(env(safe-area-inset-top,0px) + 64px); transform:translateX(-50%); z-index:15; width:min(92vw, 28rem);
+  background:var(--plum-deep); color:#fff; border-radius:16px; padding:10px 14px; font-weight:600; font-size:1rem; line-height:1.35; text-align:center; box-shadow:0 8px 20px rgba(0,0,0,.3); }
+
+@media (max-height:520px){
+  #app{ gap:4px; padding-top:4px; padding-bottom:6px; }
+  .top{ min-height:40px; }
+  .title{ font-size:1rem; }
+  .scene-btn{ min-height:50px; font-size:.95rem; } .scene-btn .em{ font-size:1.5em; }
+  .gear{ width:44px; height:44px; }
+  .name{ font-size:1rem; }
+}
+@media (prefers-reduced-motion: reduce){
+  .panel, .animal, .name{ transition-duration:.01s !important; transition-delay:0s !important; }
+  .spot.wiggle .animal, .play{ animation:none !important; }
+}
+</style>
+</head>
+<body data-scene="farm">
+<div id="app">
+  <header class="top">
+    <h1 class="title"><span class="crown" aria-hidden="true">🐱</span><span>Melly Mo’s Peekaboo</span></h1>
+    <div style="position:relative">
+      <button class="gear" id="gear" aria-label="Grown-up settings (press and hold)">⚙︎</button>
+      <div class="gear-tip" id="gearTip" hidden>Grown-ups: press and hold</div>
+    </div>
+  </header>
+  <main id="stage" aria-label="Peekaboo doors"></main>
+  <nav class="scenes" id="scenes" aria-label="Pick a place"></nav>
+</div>
+
+<div class="start" id="start">
+  <div class="start-card">
+    <div class="big" aria-hidden="true">🐄🦁🐙</div>
+    <h2>Melly Mo’s Animal Peekaboo</h2>
+    <p>Tap a door. Who’s hiding?</p>
+    <button class="play" id="play" aria-label="Play">Play</button>
+  </div>
+</div>
+
+<div class="nosound" id="nosound" role="status" hidden>No sound came out. Check that the phone isn’t on silent and the volume is up, then tap a door again.</div>
+
+<div class="sheet-wrap" id="sheetWrap" hidden>
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+    <h2 id="sheetTitle">Grown-up settings</h2>
+    <p class="hint">Pick the language and voices. Changes are saved on this device.</p>
+    <fieldset class="field">
+      <legend>Language</legend>
+      <div class="seg" id="langSeg">
+        <button type="button" data-lang="en">English</button>
+        <button type="button" data-lang="es">Español</button>
+        <button type="button" data-lang="both">Both</button>
+      </div>
+    </fieldset>
+    <div class="field">
+      <label for="enVoice">English voice</label>
+      <div class="row"><select id="enVoice"></select><button class="btn" type="button" data-test="en" aria-label="Test English voice">▶︎ Test</button></div>
+    </div>
+    <div class="field">
+      <label for="esVoice">Spanish voice</label>
+      <div class="row"><select id="esVoice"></select><button class="btn" type="button" data-test="es" aria-label="Test Spanish voice">▶︎ Test</button></div>
+    </div>
+    <label class="toggle"><input type="checkbox" id="realSnd"> Real animal sounds</label>
+    <label class="toggle"><input type="checkbox" id="sfx"> Sound effects</label>
+    <details class="credits">
+      <summary>Animal sound credits</summary>
+      <p>Real recordings from Wikimedia Commons, all public domain or CC0. Animals without a recording use the spoken sound.</p>
+      <ul id="creditList"></ul>
+    </details>
+    <a class="btn" href="/" style="width:100%;margin-bottom:8px">Back to all games</a>
+    <button class="btn primary" type="button" id="done">Done</button>
+  </div>
+</div>
+
+<script>
+(() => {
+"use strict";
+/* ================= settings ================= */
+const LS_KEY = "mellymo-settings";
+function loadSettings(){ try{ return JSON.parse(localStorage.getItem(LS_KEY) || "{}") || {}; }catch(e){ return {}; } }
+const settings = Object.assign({ lang:"en", enVoice:"", esVoice:"", sfx:true, sayColors:true, realSounds:true }, loadSettings());
+function saveSettings(){ try{ localStorage.setItem(LS_KEY, JSON.stringify(settings)); }catch(e){} }
+const reduceMotion = (() => { try{ return matchMedia("(prefers-reduced-motion: reduce)").matches; }catch(e){ return false; } })();
+
+/* ================= speech ================= */
+let voices = [];
+const langOf = v => (v.lang || "").replace("_","-").toLowerCase();
+function loadVoices(){ try{ voices = (window.speechSynthesis && speechSynthesis.getVoices()) || []; }catch(e){ voices = []; } fillVoiceSelects(); }
+function voiceFor(lang){
+  const pref = settings[lang === "en" ? "enVoice" : "esVoice"];
+  let v = voices.find(x => x.voiceURI === pref);
+  if (v) return v;
+  const list = voices.filter(x => langOf(x).startsWith(lang));
+  const first = lang === "en" ? "en-us" : "es-es", second = lang === "en" ? "en-gb" : "es-mx";
+  return list.find(x => langOf(x) === first) || list.find(x => langOf(x) === second) || list[0] || null;
+}
+let speakToken = 0, spokeOnce = false, silentTimer = null;
+function speak(parts){
+  if (!parts.length) return;
+  const tok = ++speakToken;
+  try{ if (!window.speechSynthesis) { showNoSound(); return; } speechSynthesis.cancel(); }catch(e){ return; }
+  let i = 0;
+  const next = () => {
+    if (tok !== speakToken || i >= parts.length) return;
+    const p = parts[i++];
+    try{
+      const u = new SpeechSynthesisUtterance(p.text);
+      const v = voiceFor(p.lang);
+      if (v){ u.voice = v; u.lang = v.lang; } else { u.lang = p.lang === "en" ? "en-US" : "es-ES"; }
+      u.rate = 0.85; u.pitch = 1.1;
+      let done = false;
+      const fin = () => { if (done) return; done = true; clearTimeout(safety); setTimeout(next, 250); };
+      const safety = setTimeout(fin, 8000);
+      u.onstart = () => { spokeOnce = true; hideNoSound(); };
+      u.onend = fin; u.onerror = fin;
+      speechSynthesis.speak(u);
+    }catch(e){}
+  };
+  next();
+  if (!spokeOnce){ clearTimeout(silentTimer); silentTimer = setTimeout(() => { if (!spokeOnce) showNoSound(); }, 1800); }
+}
+function lines(en, es){
+  const m = settings.lang, out = [];
+  if (m !== "es" && en) out.push({ lang:"en", text:en });
+  if (m !== "en" && es) out.push({ lang:"es", text:es });
+  return out;
+}
+const noSoundEl = document.getElementById("nosound");
+let noSoundHide = null;
+function showNoSound(){ noSoundEl.hidden = false; clearTimeout(noSoundHide); noSoundHide = setTimeout(hideNoSound, 7000); }
+function hideNoSound(){ noSoundEl.hidden = true; }
+try{ if (window.speechSynthesis) speechSynthesis.onvoiceschanged = loadVoices; }catch(e){}
+
+/* ================= sound effects ================= */
+let ac = null;
+function ctx(){
+  try{
+    if (!ac) ac = new (window.AudioContext || window.webkitAudioContext)();
+    if (ac.state === "suspended") ac.resume();
+    return ac;
+  }catch(e){ return null; }
+}
+function audio(){
+  if (!settings.sfx) return null;
+  return ctx();
+}
+function tone(freq, dur, type = "sine", vol = .2, when = 0, slideTo = 0){
+  const a = audio(); if (!a) return;
+  try{
+    const t = a.currentTime + when, o = a.createOscillator(), g = a.createGain();
+    o.type = type; o.frequency.setValueAtTime(freq, t);
+    if (slideTo) o.frequency.exponentialRampToValueAtTime(slideTo, t + dur * .8);
+    g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(vol, t + .02); g.gain.exponentialRampToValueAtTime(.0001, t + dur);
+    o.connect(g).connect(a.destination); o.start(t); o.stop(t + dur + .05);
+  }catch(e){}
+}
+const sfx = {
+  peek(){ tone(420, .28, "sine", .22, 0, 1050); tone(1320, .22, "triangle", .1, .2); tone(1760, .25, "triangle", .08, .28); },
+  close(){ tone(330, .22, "sine", .1, 0, 220); },
+  boop(){ tone(700, .15, "sine", .15, 0, 900); },
+  scene(){ tone(660, .3, "sine", .16); tone(880, .3, "sine", .14, .1); tone(1320, .45, "sine", .12, .2); }
+};
+
+/* ================= real animal sounds ================= */
+// Recordings live next to this page; each is trimmed to about 2 seconds and evened out in volume.
+const SOUND_DIR = "/games/animal-peekaboo/sounds/";
+const SOUND_VOL = 0.9;
+const buffers = {}, loading = {};
+let curSrc = null;
+function loadSound(name){
+  if (buffers[name]) return Promise.resolve(buffers[name]);
+  if (loading[name]) return loading[name];
+  const a = ctx(); if (!a) return Promise.resolve(null);
+  loading[name] = fetch(SOUND_DIR + name + ".mp3")
+    .then(r => { if (!r.ok) throw new Error("missing"); return r.arrayBuffer(); })
+    .then(b => new Promise((res, rej) => a.decodeAudioData(b, res, rej)))
+    .then(buf => { buffers[name] = buf; return buf; })
+    .catch(() => { delete loading[name]; return null; });
+  return loading[name];
+}
+function preloadSounds(){
+  if (!settings.realSounds) return;
+  const order = [scene].concat(Object.keys(SCENES).filter(k => k !== scene));
+  for (const k of order) for (const an of SCENES[k].animals) if (an.snd) loadSound(an.snd);
+}
+function stopAnimalSound(){ if (curSrc){ try{ curSrc.stop(); }catch(e){} curSrc = null; } }
+// Plays a recording after `delay` seconds. Returns when it will finish (seconds from now), or -1 if it isn't ready.
+function playAnimalSound(name, delay){
+  const buf = buffers[name], a = ctx();
+  if (!buf || !a || a.state === "closed") return -1;
+  try{
+    stopAnimalSound();
+    const src = a.createBufferSource(), g = a.createGain();
+    src.buffer = buf; g.gain.value = SOUND_VOL;
+    src.connect(g).connect(a.destination);
+    src.start(a.currentTime + delay);
+    curSrc = src; src.onended = () => { if (curSrc === src) curSrc = null; };
+    return delay + buf.duration;
+  }catch(e){ return -1; }
+}
+
+/* ================= data ================= */
+const SCENES = {
+  farm: { emoji:"🚜", en:"Farm", es:"Granja", sayEn:"The farm!", sayEs:"¡La granja!", animals:[
+    { e:"🐄", en:"Cow", es:"Vaca", sEn:"Moo!", sEs:"¡Muu!", aEn:"a cow", aEs:"una vaca", snd:"cow" },
+    { e:"🐷", en:"Pig", es:"Cerdo", sEn:"Oink oink!", sEs:"¡Oinc oinc!", aEn:"a pig", aEs:"un cerdo", snd:"pig" },
+    { e:"🐑", en:"Sheep", es:"Oveja", sEn:"Baa baa!", sEs:"¡Beee!", aEn:"a sheep", aEs:"una oveja", snd:"sheep" },
+    { e:"🐴", en:"Horse", es:"Caballo", sEn:"Neigh!", sEs:"¡Iiiiih!", aEn:"a horse", aEs:"un caballo", snd:"horse" },
+    { e:"🦆", en:"Duck", es:"Pato", sEn:"Quack quack!", sEs:"¡Cuac cuac!", aEn:"a duck", aEs:"un pato", snd:"duck" },
+    { e:"🐔", en:"Chicken", es:"Gallina", sEn:"Cluck cluck!", sEs:"¡Coc co co!", aEn:"a chicken", aEs:"una gallina", snd:"chicken" },
+    { e:"🐶", en:"Dog", es:"Perro", sEn:"Woof woof!", sEs:"¡Guau guau!", aEn:"a dog", aEs:"un perro", snd:"dog" },
+    { e:"🐱", en:"Cat", es:"Gato", sEn:"Meow!", sEs:"¡Miau!", aEn:"a cat", aEs:"un gato", snd:"cat" }
+  ]},
+  zoo: { emoji:"🦁", en:"Zoo", es:"Zoológico", sayEn:"The zoo!", sayEs:"¡El zoológico!", animals:[
+    { e:"🦁", en:"Lion", es:"León", sEn:"Roar!", sEs:"¡Groar!", aEn:"a lion", aEs:"un león", snd:"lion" },
+    { e:"🐘", en:"Elephant", es:"Elefante", sEn:"Toot toot!", sEs:"¡Pruu pruu!", aEn:"an elephant", aEs:"un elefante", snd:"elephant" },
+    { e:"🐵", en:"Monkey", es:"Mono", sEn:"Ooh ooh, ah ah!", sEs:"¡U u, a a!", aEn:"a monkey", aEs:"un mono", snd:"monkey" },
+    { e:"🐯", en:"Tiger", es:"Tigre", sEn:"Rawr!", sEs:"¡Rrrau!", aEn:"a tiger", aEs:"un tigre", snd:"tiger" },
+    { e:"🦒", en:"Giraffe", es:"Jirafa", sEn:"Munch munch!", sEs:"¡Ñam ñam!", aEn:"a giraffe", aEs:"una jirafa" },
+    { e:"🦓", en:"Zebra", es:"Cebra", sEn:"Clip clop!", sEs:"¡Clop clop!", aEn:"a zebra", aEs:"una cebra" },
+    { e:"🐻", en:"Bear", es:"Oso", sEn:"Grrr!", sEs:"¡Grrr!", aEn:"a bear", aEs:"un oso", snd:"bear" },
+    { e:"🐍", en:"Snake", es:"Serpiente", sEn:"Hisss!", sEs:"¡Sssss!", aEn:"a snake", aEs:"una serpiente", snd:"snake" }
+  ]},
+  ocean: { emoji:"🐠", en:"Ocean", es:"Mar", sayEn:"The ocean!", sayEs:"¡El mar!", animals:[
+    { e:"🐟", en:"Fish", es:"Pez", sEn:"Blub blub!", sEs:"¡Glu glu!", aEn:"a fish", aEs:"un pez" },
+    { e:"🐳", en:"Whale", es:"Ballena", sEn:"Splash!", sEs:"¡Chof!", aEn:"a whale", aEs:"una ballena", snd:"whale" },
+    { e:"🐙", en:"Octopus", es:"Pulpo", sEn:"Wiggle wiggle!", sEs:"¡Chiqui chiqui!", aEn:"an octopus", aEs:"un pulpo" },
+    { e:"🦀", en:"Crab", es:"Cangrejo", sEn:"Snip snip!", sEs:"¡Clic clac!", aEn:"a crab", aEs:"un cangrejo" },
+    { e:"🐢", en:"Turtle", es:"Tortuga", sEn:"Swish swish!", sEs:"¡Chis chas!", aEn:"a turtle", aEs:"una tortuga" },
+    { e:"🐬", en:"Dolphin", es:"Delfín", sEn:"Eee eee!", sEs:"¡Iii iii!", aEn:"a dolphin", aEs:"un delfín", snd:"dolphin" },
+    { e:"🦭", en:"Seal", es:"Foca", sEn:"Arf arf!", sEs:"¡Arf arf!", aEn:"a seal", aEs:"una foca" },
+    { e:"🦈", en:"Shark", es:"Tiburón", sEn:"Chomp chomp!", sEs:"¡Ñam ñam!", aEn:"a shark", aEs:"un tiburón" }
+  ]}
+};
+const CREDITS = [
+  ["Cow", "Cow in Cantabria", "Nicolas Vigier", "CC0", "Cow_in_Cantabria.webm"],
+  ["Pig", "Piglet squeal", "Foleyhaven", "CC0", "618483_foleyhaven_piglet-squeal-01.flac"],
+  ["Sheep", "Sheep bleating", "earthcalling", "Public domain", "Sheep_bleating.ogg"],
+  ["Horse", "Wiehern", "Hü.", "Public domain", "Wiehern.ogg"],
+  ["Duck", "Ducks snatching", "Bert76", "CC0", "Ducks_snatching.ogg"],
+  ["Chicken", "Hen announcing she’s lain an egg", "alys", "Public domain", "Hen_announcing_shes_lain_an_egg.ogg"],
+  ["Dog", "Ladrido perro", "Edo.pt2", "CC0", "Ladrido_perro.ogg"],
+  ["Cat", "Meow of a Siamese cat", "freemaster2", "CC0", "Meow_of_a_Siamese_cat_-_freemaster2.wav"],
+  ["Lion", "Lion roaring", "த*உழவன்", "Public domain", "Lion_raring-sound1TamilNadu178.ogg"],
+  ["Elephant", "Elephant voice – trumpeting", "தகவலுழவன்", "CC0", "Elephant_voice_-_trumpeting.ogg"],
+  ["Monkey", "Siamangs calling (an ape cousin of monkeys)", "Dori", "Public domain", "Hylobates_syndactylus_calling_3588.ogg"],
+  ["Tiger", "Angry tiger", "schots", "CC0", "439280_schots_angry-tiger.wav"],
+  ["Bear", "Grizzly bears roar", "NPS & MSU Acoustic Atlas / Jennifer Jerrett", "Public domain", "Yellowstone_sound_library_-_Grizzly_Bears_Roar_-_001.mp3"],
+  ["Snake", "Rattlesnake", "U.S. Fish and Wildlife Service", "Public domain", "Rattlesnake.ogg"],
+  ["Whale", "Humpback whale moo", "U.S. National Park Service", "Public domain", "Humpback_whale_moo.ogg"],
+  ["Dolphin", "Dolphins calling", "Felix Blume", "CC0", "161691_felixblume_dolphin-screaming-underwater-in-caribbean-sea-mexico.wav"]
+];
+const DOORS = 4, OPEN_MS = 4500;
+
+/* ================= game ================= */
+const stage = document.getElementById("stage");
+const scenesNav = document.getElementById("scenes");
+let scene = "farm";
+const recent = [];
+const spots = [];
+
+function sizeHouses(){
+  // used by CSS max-width so houses keep a door-like shape
+  for (const s of spots){ const h = s.el.clientHeight; s.el.style.setProperty("--h", h + "px"); }
+}
+function buildDoors(){
+  for (let i = 0; i < DOORS; i++){
+    const el = document.createElement("button");
+    el.className = "spot closed"; el.type = "button";
+    el.innerHTML = '<span class="roof" aria-hidden="true"></span><span class="house"><span class="inside"><span class="animal" aria-hidden="true"></span><span class="name"></span></span><span class="panel l" aria-hidden="true"></span><span class="panel r" aria-hidden="true"></span></span>';
+    const s = { el, animalEl: el.querySelector(".animal"), nameEl: el.querySelector(".name"), animal:null, timer:null, n:i+1 };
+    setDoorLabel(s);
+    el.addEventListener("click", () => tapDoor(s));
+    stage.appendChild(el); spots.push(s);
+  }
+}
+function placeWord(){ return scene === "farm" ? "door" : scene === "zoo" ? "bush" : "cave"; }
+function setDoorLabel(s){
+  s.el.setAttribute("aria-label", s.animal ? (s.animal.en + ". Tap to hear again") : ("Hiding spot " + s.n + ". Tap to peek"));
+}
+function pickAnimal(){
+  const pool = SCENES[scene].animals;
+  const showing = spots.filter(s => s.animal).map(s => s.animal.e);
+  let options = pool.filter(a => !showing.includes(a.e) && !recent.includes(a.e));
+  if (!options.length) options = pool.filter(a => !showing.includes(a.e));
+  const a = options[Math.floor(Math.random() * options.length)];
+  recent.push(a.e); while (recent.length > 4) recent.shift();
+  return a;
+}
+function nameHTML(a){
+  if (settings.lang === "es") return a.es;
+  if (settings.lang === "both") return a.en + "<small>" + a.es + "</small>";
+  return a.en;
+}
+let announceTimer = null;
+function hush(){
+  clearTimeout(announceTimer); stopAnimalSound();
+  speakToken++; try{ if (window.speechSynthesis) speechSynthesis.cancel(); }catch(e){}
+}
+function announce(a, first){
+  hush();
+  // Real recording first, then the voice says "It's a cow!"
+  if (settings.realSounds && a.snd){
+    const ends = playAnimalSound(a.snd, first ? 0.3 : 0.05);
+    if (ends >= 0){
+      announceTimer = setTimeout(() => speak(lines("It’s " + a.aEn + "!", "¡Es " + a.aEs + "!")), (ends + 0.15) * 1000);
+      return;
+    }
+    loadSound(a.snd); // not ready yet: use the spoken sound this time
+  }
+  if (settings.lang === "both"){
+    speak([{ lang:"en", text:(first ? "Peekaboo! " : "") + a.sEn + " It’s " + a.aEn + "!" }, { lang:"es", text:a.sEs + " ¡Es " + a.aEs + "!" }]);
+  } else {
+    speak(lines((first ? "Peekaboo! " : "") + a.sEn + " It’s " + a.aEn + "!", (first ? "¡Aquí está! " : "") + a.sEs + " ¡Es " + a.aEs + "!"));
+  }
+}
+function tapDoor(s){
+  unlock();
+  if (s.animal){
+    sfx.boop();
+    s.el.classList.remove("wiggle"); void s.el.offsetWidth; s.el.classList.add("wiggle");
+    announce(s.animal, false);
+    clearTimeout(s.timer); s.timer = setTimeout(() => closeDoor(s), OPEN_MS);
+    return;
+  }
+  const a = pickAnimal();
+  s.animal = a; s.animalEl.textContent = a.e; s.nameEl.innerHTML = nameHTML(a);
+  s.el.classList.remove("closed"); s.el.classList.add("open");
+  setDoorLabel(s);
+  sfx.peek(); announce(a, true);
+  clearTimeout(s.timer); s.timer = setTimeout(() => closeDoor(s), OPEN_MS);
+}
+function closeDoor(s, quiet){
+  clearTimeout(s.timer);
+  if (!s.animal) return;
+  s.el.classList.remove("open", "wiggle"); s.el.classList.add("closed");
+  if (!quiet) sfx.close();
+  s.animal = null; setDoorLabel(s);
+  setTimeout(() => { if (!s.animal){ s.animalEl.textContent = ""; s.nameEl.textContent = ""; } }, 500);
+}
+function buildScenes(){
+  scenesNav.innerHTML = "";
+  for (const key of Object.keys(SCENES)){
+    const sc = SCENES[key];
+    const b = document.createElement("button");
+    b.type = "button"; b.className = "scene-btn"; b.dataset.scene = key;
+    b.setAttribute("aria-pressed", String(key === scene));
+    const label = settings.lang === "es" ? sc.es : settings.lang === "both" ? sc.en + "<small>" + sc.es + "</small>" : sc.en;
+    b.innerHTML = '<span class="em" aria-hidden="true">' + sc.emoji + "</span><span>" + label + "</span>";
+    b.addEventListener("click", () => setScene(key, true));
+    scenesNav.appendChild(b);
+  }
+}
+function setScene(key, say){
+  unlock();
+  const changed = key !== scene;
+  scene = key; document.body.dataset.scene = key; recent.length = 0;
+  for (const s of spots) closeDoor(s, true);
+  for (const b of scenesNav.children) b.setAttribute("aria-pressed", String(b.dataset.scene === key));
+  for (const s of spots) setDoorLabel(s);
+  if (say){ hush(); sfx.scene(); speak(lines(SCENES[key].sayEn, SCENES[key].sayEs)); }
+  if (changed) requestAnimationFrame(sizeHouses);
+}
+
+/* ================= unlock / start ================= */
+let unlocked = false;
+function unlock(){
+  if (unlocked) return; unlocked = true;
+  // Let the recordings play like the voice does, even with the ringer switch off (newer iPhones).
+  try{ if (navigator.audioSession) navigator.audioSession.type = "playback"; }catch(e){}
+  ctx(); preloadSounds();
+}
+document.getElementById("play").addEventListener("click", () => {
+  unlock();
+  document.getElementById("start").hidden = true;
+  sfx.scene();
+  speak(lines("Let’s play peekaboo! Tap a door.", "¡Vamos a jugar! Toca una puerta."));
+  stage.querySelector(".spot").focus({ preventScroll:true });
+});
+
+/* ================= grown-up panel ================= */
+const gear = document.getElementById("gear"), gearTip = document.getElementById("gearTip");
+const sheetWrap = document.getElementById("sheetWrap");
+let holdRaf = 0, holdStart = 0, tipTimer = null;
+function holdTick(){
+  const p = Math.min(1, (performance.now() - holdStart) / 900);
+  gear.style.setProperty("--p", p);
+  if (p >= 1){ endHold(); openSheet(); return; }
+  holdRaf = requestAnimationFrame(holdTick);
+}
+function endHold(){ cancelAnimationFrame(holdRaf); holdRaf = 0; gear.style.setProperty("--p", 0); }
+gear.addEventListener("pointerdown", e => { e.preventDefault(); holdStart = performance.now(); cancelAnimationFrame(holdRaf); holdRaf = requestAnimationFrame(holdTick); });
+["pointerup","pointerleave","pointercancel"].forEach(t => gear.addEventListener(t, () => {
+  if (holdRaf){ endHold(); gearTip.hidden = false; clearTimeout(tipTimer); tipTimer = setTimeout(() => gearTip.hidden = true, 2200); }
+}));
+gear.addEventListener("contextmenu", e => e.preventDefault());
+gear.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " "){ e.preventDefault(); openSheet(); } });
+
+function openSheet(){
+  gearTip.hidden = true; loadVoices(); syncSheet();
+  sheetWrap.hidden = false; document.getElementById("done").focus();
+}
+function closeSheet(){ sheetWrap.hidden = true; gear.focus(); }
+document.getElementById("done").addEventListener("click", closeSheet);
+sheetWrap.addEventListener("click", e => { if (e.target === sheetWrap) closeSheet(); });
+document.addEventListener("keydown", e => { if (e.key === "Escape" && !sheetWrap.hidden) closeSheet(); });
+
+function syncSheet(){
+  for (const b of document.querySelectorAll("#langSeg button")) b.setAttribute("aria-pressed", String(b.dataset.lang === settings.lang));
+  document.getElementById("sfx").checked = !!settings.sfx;
+  document.getElementById("realSnd").checked = !!settings.realSounds;
+}
+document.getElementById("langSeg").addEventListener("click", e => {
+  const b = e.target.closest("button"); if (!b) return;
+  settings.lang = b.dataset.lang; saveSettings(); syncSheet(); buildScenes();
+  for (const s of spots) if (s.animal) s.nameEl.innerHTML = nameHTML(s.animal);
+  hush(); speak(lines("English", "Español"));
+});
+document.getElementById("sfx").addEventListener("change", e => { settings.sfx = e.target.checked; saveSettings(); if (settings.sfx) sfx.boop(); });
+document.getElementById("realSnd").addEventListener("change", e => {
+  settings.realSounds = e.target.checked; saveSettings();
+  if (settings.realSounds){ ctx(); preloadSounds(); } else { stopAnimalSound(); }
+});
+(function fillCredits(){
+  const ul = document.getElementById("creditList");
+  for (const [animal, title, who, lic, file] of CREDITS){
+    const li = document.createElement("li"), a = document.createElement("a");
+    a.href = "https://commons.wikimedia.org/wiki/File:" + file; a.target = "_blank"; a.rel = "noopener";
+    a.textContent = title;
+    li.append(animal + ": ", a, " by " + who + " (" + lic + ")");
+    ul.appendChild(li);
+  }
+})();
+
+function fillVoiceSelects(){
+  for (const lang of ["en","es"]){
+    const sel = document.getElementById(lang + "Voice"); if (!sel) continue;
+    const list = voices.filter(v => langOf(v).startsWith(lang));
+    const key = lang + "Voice";
+    sel.innerHTML = "";
+    const auto = document.createElement("option"); auto.value = ""; auto.textContent = list.length ? "Automatic" : "No " + (lang === "en" ? "English" : "Spanish") + " voices on this device";
+    sel.appendChild(auto);
+    for (const v of list){ const o = document.createElement("option"); o.value = v.voiceURI; o.textContent = v.name + " (" + v.lang + ")"; sel.appendChild(o); }
+    sel.value = list.some(v => v.voiceURI === settings[key]) ? settings[key] : "";
+  }
+}
+for (const lang of ["en","es"]){
+  document.getElementById(lang + "Voice").addEventListener("change", e => {
+    settings[lang + "Voice"] = e.target.value; saveSettings(); testVoice(lang);
+  });
+}
+function testVoice(lang){ hush(); speak([ lang === "en" ? { lang:"en", text:"Moo! It’s a cow!" } : { lang:"es", text:"¡Muu! ¡Es una vaca!" } ]); }
+document.querySelectorAll("[data-test]").forEach(b => b.addEventListener("click", () => testVoice(b.dataset.test)));
+
+/* ================= init ================= */
+document.addEventListener("contextmenu", e => { if (!e.target.closest(".sheet")) e.preventDefault(); });
+document.addEventListener("dblclick", e => e.preventDefault());
+document.addEventListener("gesturestart", e => e.preventDefault());
+buildDoors(); buildScenes(); loadVoices();
+sizeHouses();
+window.addEventListener("resize", sizeHouses);
+try{ new ResizeObserver(sizeHouses).observe(stage); }catch(e){}
+})();
+</script>
+</body>
+</html>

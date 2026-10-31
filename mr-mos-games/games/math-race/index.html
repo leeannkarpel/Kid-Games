@@ -1,0 +1,1358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#e10600">
+<meta name="color-scheme" content="light">
+<title>Math Race</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    color-scheme: light;
+    --red: #e10600;
+    --yellow: #ffd400;
+    --charcoal: #232323;
+    --ink: #111;
+    --white: #fff;
+    --green: #1fa64a;
+    --gray: #c9c9c9;
+    --focus: #0a58ff;
+    --font: "Fredoka", "Trebuchet MS", system-ui, sans-serif;
+
+    /* sizes, tuned per layout below */
+    --pad: 14px;
+    --addend-car: clamp(22px, calc((100vw - 200px) / 5.2), 44px);
+    --answer-car: clamp(18px, calc((100vw - 210px) / 5.2), 36px);
+    --problem-num: clamp(44px, 13vw, 72px);
+    --answer-num: clamp(36px, 10vw, 52px);
+    --racer-w: 64px;
+    --lane: calc(var(--racer-w) * .6);
+    --curb: 9px;
+    --picker-car: 52px;
+  }
+  body { --lanes: 1; }
+  body.rivals { --lanes: 3; }
+
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  html { height: 100%; }
+  body {
+    margin: 0;
+    min-height: 100%;
+    font-family: var(--font);
+    color: var(--ink);
+    background-color: #0d0d0d;
+    background-image: conic-gradient(var(--charcoal) 25%, #0d0d0d 0 50%, var(--charcoal) 0 75%, #0d0d0d 0);
+    background-size: 56px 56px;
+    display: flex;
+    flex-direction: column;
+    padding: 0 env(safe-area-inset-right, 0px) env(safe-area-inset-bottom, 0px) env(safe-area-inset-left, 0px);
+    -webkit-tap-highlight-color: transparent;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+  button { font: inherit; color: inherit; cursor: pointer; touch-action: manipulation; }
+  :focus-visible { outline: 4px solid var(--focus); outline-offset: 3px; }
+  .sr-only {
+    position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
+    overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+  }
+
+  /* ---------- header ---------- */
+  header {
+    position: relative;
+    background: var(--red);
+    color: var(--white);
+    padding: calc(env(safe-area-inset-top, 0px) + 10px) 16px 20px;
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    flex-wrap: wrap;
+  }
+  header::after {
+    content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 12px;
+    background: conic-gradient(#000 25%, #fff 0 50%, #000 0 75%, #fff 0);
+    background-size: 12px 12px;
+  }
+  h1 {
+    margin: 0; font-size: clamp(26px, 7vw, 38px); font-weight: 700; font-style: italic;
+    letter-spacing: .01em; display: flex; align-items: center; gap: 6px;
+    text-shadow: 3px 3px 0 #000;
+  }
+  h1 svg { width: .85em; height: .85em; fill: var(--yellow); stroke: #000; stroke-width: 1.4; flex: none; }
+  .pills { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill {
+    background: var(--yellow); color: #000; border: 2px solid #000; border-radius: 999px;
+    padding: 4px 12px; font-weight: 600; font-size: 16px; white-space: nowrap;
+    box-shadow: 0 3px 0 #000;
+  }
+  button.pill { background: #fff; }
+  button.pill:active { transform: translateY(2px); box-shadow: 0 1px 0 #000; }
+
+  /* ---------- main card ---------- */
+  main { flex: 1; display: flex; flex-direction: column; padding: 14px 8px 16px; }
+  .card {
+    background: var(--white);
+    border: 3px solid #000;
+    border-radius: 20px;
+    box-shadow: 0 0 0 5px var(--red), 0 0 0 9px var(--white), 0 0 0 13px var(--red);
+    margin: 13px;
+    padding: var(--pad);
+    display: flex; flex-direction: column;
+    flex: 1; min-width: 0;
+  }
+
+  .tip {
+    display: none;
+    align-items: center; justify-content: center; gap: 8px;
+    color: #fff; font-size: 14px; margin: 0 0 4px; text-align: center;
+  }
+  .tip svg { width: 22px; height: 22px; fill: none; stroke: var(--yellow); stroke-width: 2; }
+  @media (orientation: portrait) and (max-width: 599px) { .tip { display: flex; } }
+
+  /* ---------- arena: race track + play area ---------- */
+  .arena { --ring: calc(var(--lane) * var(--lanes) + var(--curb) * 2); position: relative; flex: 1; display: flex; flex-direction: column; gap: 12px; }
+  .band { position: relative; flex: none; height: var(--ring); }
+  .track-svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; overflow: visible; pointer-events: none; }
+
+  .car {
+    position: absolute; left: 0; top: 0;
+    width: var(--racer-w); height: calc(var(--racer-w) * 40 / 72);
+    transform-origin: 50% 50%;
+    filter: drop-shadow(0 3px 0 rgba(0,0,0,.4));
+  }
+  .car.rival { width: calc(var(--racer-w) * .85); height: calc(var(--racer-w) * .85 * 40 / 72); z-index: 2; }
+  .car > svg { width: 100%; height: 100%; display: block; }
+  .racer { cursor: pointer; z-index: 3; }
+  body:not(.rivals) .rival { display: none; }
+
+  /* exhaust fire: hidden until a right answer, bigger on the first try */
+  .flame {
+    position: absolute; right: 95%; top: 50%;
+    width: 0; height: 0; opacity: 0;
+    transform-origin: right center; pointer-events: none;
+    filter: drop-shadow(0 0 6px #ff9500);
+  }
+  .flame svg { width: 100%; height: 100%; display: block; animation: flicker .12s ease-in-out infinite alternate; transform-origin: right center; }
+  @keyframes flicker {
+    from { transform: scale(1, 1); }
+    to { transform: scale(.82, 1.12); }
+  }
+  .racer.boost-1 .flame { opacity: 1; width: calc(var(--racer-w) * 1.05); height: calc(var(--racer-w) * .36); margin-top: calc(var(--racer-w) * -.13); }
+  .racer.boost-2 .flame { opacity: 1; width: calc(var(--racer-w) * .62); height: calc(var(--racer-w) * .26); margin-top: calc(var(--racer-w) * -.09); }
+  .racer.boost-3 .flame { opacity: 1; width: calc(var(--racer-w) * .34); height: calc(var(--racer-w) * .18); margin-top: calc(var(--racer-w) * -.06); }
+  .racer.bump > svg { animation: bump .45s ease; }
+  .racer.rev > svg { animation: rev .5s ease; }
+  @keyframes bump {
+    0% { transform: translateX(0) rotate(0); }
+    20% { transform: translateX(-7px) rotate(-7deg); }
+    45% { transform: translateX(5px) rotate(4deg); }
+    70% { transform: translateX(-3px) rotate(-2deg); }
+    100% { transform: none; }
+  }
+  @keyframes rev {
+    0%, 100% { transform: none; }
+    30% { transform: translateY(-4px) rotate(-3deg); }
+    60% { transform: translateY(1px); }
+  }
+
+  /* ---------- play area ---------- */
+  .play {
+    display: grid; gap: 10px; align-items: center; justify-items: stretch;
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .problem {
+    background: #fff; border: 4px dashed #000; border-radius: 18px;
+    padding: 10px 10px 8px; display: flex; flex-direction: column; align-items: center; gap: 6px;
+    transition: background-color .15s;
+  }
+  .problem:active { background: #fff7c2; }
+  .sum-row {
+    display: grid; grid-template-columns: auto auto auto; align-items: center;
+    column-gap: 8px; row-gap: 2px;
+  }
+  .num, .plus { font-size: var(--problem-num); font-weight: 700; line-height: 1.05; text-align: center; }
+  .plus { min-width: .6em; }
+  .addend { display: contents; }
+  .hear { display: flex; align-items: center; gap: 6px; font-size: 15px; font-weight: 600; color: #333; }
+  .hear svg { width: 22px; height: 22px; }
+
+  .cars {
+    display: flex; flex-wrap: wrap; justify-content: center; gap: 3px;
+    max-width: 100%;
+  }
+  .addend .cars { width: calc(var(--addend-car) * 5 + 12px); justify-content: flex-start; margin-left: 4px; }
+  .cars svg { flex: none; }
+  .addend .cars svg { width: var(--addend-car); height: calc(var(--addend-car) * 40 / 72); }
+  .answer .cars { width: calc(var(--answer-car) * 5 + 12px); }
+  .answer .cars svg { width: var(--answer-car); height: calc(var(--answer-car) * 40 / 72); }
+
+  .equals {
+    font-size: calc(var(--problem-num) * 1.1); font-weight: 700; color: var(--red);
+    line-height: .8; text-align: center; text-shadow: 2px 2px 0 #000;
+  }
+
+  .answers { display: grid; gap: 12px; grid-template-columns: 1fr; padding-bottom: 6px; }
+  .answer {
+    background: #fff; border: 3px solid #000; border-radius: 16px;
+    box-shadow: 0 6px 0 var(--red);
+    padding: 8px 14px; min-height: 64px;
+    display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 12px;
+    transition: transform .08s, box-shadow .08s, background-color .15s;
+  }
+  .answer .n { font-size: var(--answer-num); font-weight: 700; line-height: 1; min-width: 1.3em; text-align: center; }
+  .answer .cars { justify-self: end; justify-content: flex-start; }
+  .answer:active:not(:disabled) { transform: translateY(4px); box-shadow: 0 2px 0 var(--red); }
+  .answer.right { background: var(--green); color: #fff; box-shadow: 0 6px 0 #0d6b2b; }
+  .answer.wrong { background: var(--gray); color: #666; box-shadow: 0 6px 0 #888; cursor: default; }
+  .answer.wrong svg { opacity: .35; filter: grayscale(1); }
+  .answer:disabled:not(.right):not(.wrong) { cursor: default; }
+
+  /* hard mode: no counting cars, bigger numbers */
+  body.hard .problem .cars, body.hard .answer .cars { display: none; }
+  body.hard .answer { grid-template-columns: 1fr; justify-items: center; }
+  body.hard .num, body.hard .plus { font-size: calc(var(--problem-num) * 1.15); }
+  body.hard .answer .n { font-size: calc(var(--answer-num) * 1.25); }
+  body.hard .sum-row { display: flex; align-items: center; justify-content: center; gap: 10px; }
+  body.hard .addend:first-child .plus { display: none; }
+
+  /* ---------- landscape ---------- */
+  @media (min-width: 600px) {
+    :root {
+      --addend-car: clamp(22px, min(4vw, 6.5vh), 46px);
+      --answer-car: 40px;
+      --problem-num: clamp(44px, min(6vw, 11vh), 84px);
+      --answer-num: clamp(36px, min(5vw, 11vh), 72px);
+    }
+    .play {
+      flex: 1; align-items: stretch;
+      grid-template-columns: auto auto minmax(0, 1fr); gap: clamp(6px, 1.4vw, 18px);
+    }
+    .equals { align-self: center; }
+    .answers { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(6px, 1.2vw, 14px); padding-bottom: 6px; }
+    .answer {
+      grid-template-columns: 1fr; justify-items: center; align-content: center;
+      padding: 10px 4px; gap: 8px; min-height: 0; height: 100%;
+      container-type: inline-size;
+    }
+    .answer .cars { gap: 2px; width: 100%; justify-self: center; justify-content: center; }
+    .answer .cars svg {
+      --w: min(var(--answer-car), calc((100cqi - 16px) / 5));
+      width: var(--w); height: calc(var(--w) * 40 / 72);
+    }
+    .problem { height: 100%; justify-content: center; }
+  }
+  /* compact landscape (phones on their side) */
+  @media (min-width: 600px) and (max-height: 600px) {
+    :root {
+      --pad: 10px;
+      --addend-car: clamp(20px, min(4.4vw, 10vh), 40px);
+      --answer-car: 34px;
+      --problem-num: clamp(34px, 11vh, 54px);
+      --answer-num: clamp(30px, 12vh, 56px);
+      --racer-w: 46px;
+      --curb: 7px;
+      --picker-car: 40px;
+    }
+    header { padding: calc(env(safe-area-inset-top, 0px) + 4px) 14px 14px; }
+    header::after { height: 8px; background-size: 8px 8px; }
+    h1 { font-size: 24px; }
+    .pill { font-size: 14px; padding: 2px 10px; box-shadow: 0 2px 0 #000; }
+    main { padding: 10px 10px 8px; }
+    .card { margin: 9px; box-shadow: 0 0 0 3px var(--red), 0 0 0 6px var(--white), 0 0 0 9px var(--red); }
+    .arena { gap: 8px; }
+    .problem { padding: 6px 8px 4px; gap: 4px; border-width: 3px; }
+    .hear { font-size: 13px; }
+    .hear svg { width: 18px; height: 18px; }
+    .answer { box-shadow: 0 4px 0 var(--red); border-radius: 12px; }
+    .answer.right { box-shadow: 0 4px 0 #0d6b2b; }
+    .answer.wrong { box-shadow: 0 4px 0 #888; }
+  }
+
+  /* ---------- big screens (iPad): the track loops around the math ---------- */
+  @media (min-width: 700px) and (min-height: 600px) {
+    :root {
+      --pad: 12px;
+      --racer-w: clamp(58px, 8vmin, 96px);
+      --curb: 10px;
+    }
+    body { height: 100dvh; }
+    main { min-height: 0; padding: 12px 8px 14px; }
+    .card { min-height: 0; }
+    h1 { font-size: clamp(30px, 4vw, 44px); }
+    .pill { font-size: 18px; padding: 5px 16px; }
+    .arena { display: block; flex: 1; min-height: 0; }
+    .band { position: absolute; inset: 0; height: auto; }
+    .play {
+      position: absolute; inset: calc(var(--ring) + 12px); z-index: 1;
+      container: play / size;
+      grid-template-columns: auto auto;
+      grid-template-rows: auto minmax(0, 1fr);
+      grid-template-areas: "prob eq" "ans ans";
+      justify-content: center; align-items: center;
+      column-gap: 18px; row-gap: 12px;
+      --problem-num: clamp(34px, min(14cqh, 11cqw), 120px);
+      --answer-num: clamp(34px, min(16cqh, 12cqw), 130px);
+      --addend-car: clamp(18px, min(calc((100cqw - 150px) / 5.5), 8cqh), 60px);
+      --answer-car: clamp(12px, min(calc(((100cqw - 40px) / 3 - 30px) / 5), 10cqh), 70px);
+    }
+    .problem { grid-area: prob; height: auto; padding: 6px 18px; gap: 2px; }
+    .equals { grid-area: eq; }
+    .answers { grid-area: ans; align-self: stretch; justify-self: stretch; gap: 14px; padding-bottom: 6px; }
+    .answer { container-type: normal; gap: 8px; padding: 8px 6px; }
+    .answer .cars { gap: 3px; }
+    .answer .cars svg { --w: var(--answer-car); }
+    .hear { font-size: 16px; }
+    body.hard .play {
+      grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+      grid-template-areas: ". prob eq" "ans ans ans";
+      justify-content: stretch;
+    }
+    body.hard .equals { justify-self: start; }
+  }
+  /* a wide middle (iPad on its side): the problem sits on one line */
+  @container play (min-width: 600px) {
+    .sum-row { grid-template-columns: repeat(5, auto); column-gap: 12px; }
+    .addend:first-child .plus { display: none; }
+    .addend .cars { gap: 4px; width: calc(var(--addend-car) * 5 + 16px); margin-left: 0; }
+    .addend:first-child .cars { margin-right: 6px; }
+    .problem { --addend-car: clamp(22px, min(calc((100cqw - 330px) / 11), 10cqh), 70px); }
+  }
+  /* a tall, narrow middle (iPad upright): answers become rows so the cars stay big */
+  @container play (max-width: 599px) {
+    .answers { grid-template-columns: 1fr; }
+    .answers { --answer-car: clamp(16px, min(calc((100cqw - 170px) / 5.4), 6.5cqh), 60px); }
+    .answer { grid-template-columns: auto 1fr; justify-items: stretch; padding: 8px 16px; }
+    .answer .cars { justify-self: end; justify-content: flex-start; width: calc(var(--answer-car) * 5 + 15px); }
+    body.hard .answer { grid-template-columns: 1fr; justify-items: center; }
+  }
+
+  /* ---------- dialogs ---------- */
+  dialog {
+    border: 3px solid #000; border-radius: 22px; padding: 22px 20px 20px;
+    width: min(92vw, 460px); max-height: 92vh; overflow: auto;
+    text-align: center; background: #fff; color: var(--ink);
+    box-shadow: 0 0 0 5px var(--red), 0 0 0 9px #fff, 0 0 0 13px var(--red);
+  }
+  dialog::backdrop { background: rgba(0, 0, 0, .55); }
+  dialog[open] { animation: pop .45s cubic-bezier(.2, 1.4, .4, 1); }
+  @keyframes pop { from { transform: scale(.6); opacity: 0; } to { transform: none; opacity: 1; } }
+  .win-title {
+    margin: 0 0 8px; font-size: clamp(24px, 7vw, 32px); font-weight: 700; font-style: italic;
+    display: flex; align-items: center; justify-content: center; gap: 6px; color: var(--red);
+    text-shadow: 2px 2px 0 #000;
+  }
+  .win-title svg { width: 1em; height: 1em; fill: var(--yellow); stroke: #000; stroke-width: 1.4; flex: none; }
+  .stars { display: flex; justify-content: center; gap: 8px; margin: 4px 0 8px; }
+  .stars svg { width: 46px; height: 46px; fill: #e6e6e6; stroke: #000; stroke-width: 1.2; }
+  .stars svg.on { fill: var(--yellow); animation: starpop .5s backwards cubic-bezier(.2, 1.6, .4, 1); }
+  .stars svg.on:nth-child(2) { animation-delay: .15s; }
+  .stars svg.on:nth-child(3) { animation-delay: .3s; }
+  @keyframes starpop { from { transform: scale(0) rotate(-40deg); } to { transform: none; } }
+  .result { font-size: 22px; font-weight: 600; margin: 0 0 4px; }
+  .note { font-size: 17px; margin: 0 0 10px; color: #333; }
+  .note strong { color: var(--red); }
+  .bouncer { width: 110px; height: calc(110px * 40 / 72); margin: 4px auto 14px; display: block; animation: hop .7s ease-in-out infinite alternate; }
+  @keyframes hop { from { transform: translateY(0); } to { transform: translateY(-12px); } }
+  .again {
+    background: var(--yellow); color: #000; border: 3px solid #000; border-radius: 999px;
+    padding: 12px 28px; font-size: 22px; font-weight: 700; box-shadow: 0 6px 0 var(--red);
+  }
+  .again:active { transform: translateY(4px); box-shadow: 0 2px 0 var(--red); }
+
+  /* garage: pick a car and the race options */
+  .picker { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 6px 0 14px; }
+  .pick {
+    background: #f4f4f4; border: 3px solid #000; border-radius: 14px;
+    padding: 6px 4px 4px; display: flex; flex-direction: column; align-items: center; gap: 2px;
+    font-size: 13px; font-weight: 600; line-height: 1.1;
+    transition: transform .15s, box-shadow .15s, background-color .15s;
+  }
+  .pick svg { width: var(--picker-car); height: calc(var(--picker-car) * 40 / 72); }
+  .pick[aria-checked="true"] {
+    background: #fff7c2;
+    box-shadow: 0 0 0 3px var(--red), 0 0 18px 6px var(--yellow);
+    transform: translateY(-2px);
+  }
+  .switches { display: grid; gap: 10px; margin: 0 0 18px; }
+  .switch {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    background: #fff; border: 3px solid #000; border-radius: 14px;
+    padding: 10px 12px 10px 16px; font-size: 18px; font-weight: 600; text-align: left;
+  }
+  .knob {
+    flex: none; min-width: 64px; padding: 4px 10px; border-radius: 999px; border: 2px solid #000;
+    background: #e6e6e6; font-size: 15px; font-weight: 700; text-align: center;
+  }
+  .knob::after { content: "Off"; }
+  .switch[aria-checked="true"] .knob { background: var(--green); color: #fff; }
+  .switch[aria-checked="true"] .knob::after { content: "On"; }
+
+  .voicerow {
+    display: flex; align-items: center; gap: 8px; margin: 0 0 18px;
+    background: #fff; border: 3px solid #000; border-radius: 14px;
+    padding: 8px 8px 8px 16px; font-size: 18px; font-weight: 600; text-align: left;
+  }
+  .voicerow label { flex: none; }
+  .voicerow select {
+    flex: 1; min-width: 0; min-height: 44px; font: inherit; font-size: 16px; font-weight: 600;
+    border: 2px solid #000; border-radius: 10px; padding: 6px 8px; background: #f4f4f4; color: var(--ink);
+  }
+  #voiceTest {
+    flex: none; width: 44px; height: 44px; border: 2px solid #000; border-radius: 50%;
+    background: var(--yellow); display: grid; place-items: center; padding: 0; box-shadow: 0 3px 0 #000;
+  }
+  #voiceTest svg { width: 24px; height: 24px; }
+
+  @media (max-height: 600px) {
+    dialog { padding: 12px 16px 14px; }
+    .win-title { margin-bottom: 4px; }
+    .stars svg { width: 34px; height: 34px; }
+    .bouncer { width: 80px; height: calc(80px * 40 / 72); margin: 0 auto 8px; }
+    .result { font-size: 18px; }
+    .note { font-size: 15px; margin-bottom: 8px; }
+    .again { font-size: 18px; padding: 8px 22px; }
+    .picker { margin: 2px 0 8px; }
+    .pick span { display: none; }
+    .switches { grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
+    .switch { font-size: 15px; padding: 6px 8px 6px 12px; }
+    .voicerow { margin-bottom: 10px; padding: 4px 6px 4px 12px; font-size: 15px; }
+    .voicerow select, #voiceTest { min-height: 40px; height: 40px; }
+    #voiceTest { width: 40px; }
+  }
+
+  #fx { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1000; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Shared artwork: four player cars, a rival car (body colour from CSS) (viewBox 0 0 72 40, facing right), bolt, star, speaker -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="car-ferrari" viewBox="0 0 72 40">
+      <path d="M2 13h11v3H9.5v6h-3v-6H2z" fill="#111"/>
+      <path d="M4 29 5.5 21.5 21 18.5 31 11.5H45l12.5 6.8L68 21l1.5 8z" fill="#e10600" stroke="#111" stroke-width="1.5" stroke-linejoin="round"/>
+      <path d="M33.5 13.5h10.8l8 5.2H30.5z" fill="#9fd8ff" stroke="#111" stroke-width="1.2" stroke-linejoin="round"/>
+      <path d="M8 24.5h56" stroke="#a30400" stroke-width="1.2"/>
+      <circle cx="41" cy="23" r="2.6" fill="#ffd400" stroke="#111" stroke-width=".9"/>
+      <path d="M64 21.4 68.4 22v2.4H64z" fill="#fff6a0" stroke="#111" stroke-width=".6"/>
+      <circle cx="17" cy="29.5" r="6.2" fill="#111"/><circle cx="17" cy="29.5" r="2.6" fill="#ccc"/>
+      <circle cx="56" cy="29.5" r="6.2" fill="#111"/><circle cx="56" cy="29.5" r="2.6" fill="#ccc"/>
+    </symbol>
+    <symbol id="car-truck" viewBox="0 0 72 40">
+      <rect x="2" y="5" width="42" height="24" rx="2" fill="#1d6fe0" stroke="#111" stroke-width="1.5"/>
+      <path d="M8 11h30M8 17h30M8 23h30" stroke="#5aa0ff" stroke-width="1.4"/>
+      <path d="M46 29V12.5h12.5L66 20.5l3 2V29z" fill="#ffd400" stroke="#111" stroke-width="1.5" stroke-linejoin="round"/>
+      <path d="M50 15h7.8l5.4 5.8H50z" fill="#9fd8ff" stroke="#111" stroke-width="1.1" stroke-linejoin="round"/>
+      <rect x="66" y="23.5" width="3.2" height="2.6" fill="#fff6a0" stroke="#111" stroke-width=".6"/>
+      <rect x="43.5" y="26" width="4" height="3" fill="#111"/>
+      <circle cx="13" cy="30.5" r="5.8" fill="#111"/><circle cx="13" cy="30.5" r="2.3" fill="#ccc"/>
+      <circle cx="31" cy="30.5" r="5.8" fill="#111"/><circle cx="31" cy="30.5" r="2.3" fill="#ccc"/>
+      <circle cx="58" cy="30.5" r="5.8" fill="#111"/><circle cx="58" cy="30.5" r="2.3" fill="#ccc"/>
+    </symbol>
+    <symbol id="car-fire" viewBox="0 0 72 40">
+      <rect x="6" y="6.5" width="40" height="4" fill="#d9d9d9" stroke="#111" stroke-width="1"/>
+      <path d="M10 6.5v4M16 6.5v4M22 6.5v4M28 6.5v4M34 6.5v4M40 6.5v4" stroke="#111" stroke-width="1"/>
+      <path d="M2 29V14h46V9.5h11l7 9.5 3 2.5V29z" fill="#e10600" stroke="#111" stroke-width="1.5" stroke-linejoin="round"/>
+      <rect x="2.8" y="20.5" width="65.5" height="3.4" fill="#fff"/>
+      <path d="M50.5 12h7.3l5 6.8H50.5z" fill="#9fd8ff" stroke="#111" stroke-width="1.1" stroke-linejoin="round"/>
+      <rect x="51" y="5" width="6" height="4.5" rx="1.3" fill="#ffd400" stroke="#111" stroke-width="1"/>
+      <path d="M8 15.5h6v4H8zM18 15.5h6v4h-6zM28 15.5h6v4h-6z" fill="#a30400"/>
+      <circle cx="12" cy="30.5" r="5.8" fill="#111"/><circle cx="12" cy="30.5" r="2.3" fill="#ccc"/>
+      <circle cx="28" cy="30.5" r="5.8" fill="#111"/><circle cx="28" cy="30.5" r="2.3" fill="#ccc"/>
+      <circle cx="58" cy="30.5" r="5.8" fill="#111"/><circle cx="58" cy="30.5" r="2.3" fill="#ccc"/>
+    </symbol>
+    <symbol id="car-police" viewBox="0 0 72 40">
+      <rect x="28" y="6.5" width="5.5" height="4" rx="1.2" fill="#e10600" stroke="#111" stroke-width=".9"/>
+      <rect x="33.5" y="6.5" width="5.5" height="4" rx="1.2" fill="#1d6fe0" stroke="#111" stroke-width=".9"/>
+      <path d="M3 29v-7.5l3-2.5 14-1.5 7-7h17.5l8 7 13 2 3 3V29z" fill="#fff" stroke="#111" stroke-width="1.5" stroke-linejoin="round"/>
+      <path d="M3.8 23.5h64.5V28.2H3.8z" fill="#1b2a4a"/>
+      <path d="M28.5 12h8.5v6.2h-14zM39.5 12h4.5l6.5 6.2h-11z" fill="#9fd8ff" stroke="#111" stroke-width="1.1" stroke-linejoin="round"/>
+      <path d="M38.2 11.5v12" stroke="#111" stroke-width="1"/>
+      <rect x="65" y="20.6" width="3.4" height="2.4" fill="#fff6a0" stroke="#111" stroke-width=".6"/>
+      <circle cx="16" cy="29.5" r="6.2" fill="#111"/><circle cx="16" cy="29.5" r="2.6" fill="#ccc"/>
+      <circle cx="55" cy="29.5" r="6.2" fill="#111"/><circle cx="55" cy="29.5" r="2.6" fill="#ccc"/>
+    </symbol>
+    <symbol id="car-rival" viewBox="0 0 72 40">
+      <path d="M2 14h10v3H8.5v5h-3v-5H2z" fill="#111"/>
+      <path d="M4 29 5.5 22 20 19 30 12h15l12 6.5 11 2.5 1.5 8z" fill="currentColor" stroke="#111" stroke-width="1.5" stroke-linejoin="round"/>
+      <path d="M33 14h11l7.5 4.8H30z" fill="#9fd8ff" stroke="#111" stroke-width="1.2" stroke-linejoin="round"/>
+      <circle cx="24" cy="23.5" r="4" fill="#fff" stroke="#111" stroke-width="1"/>
+      <circle cx="17" cy="29.5" r="6" fill="#111"/><circle cx="17" cy="29.5" r="2.5" fill="#ccc"/>
+      <circle cx="56" cy="29.5" r="6" fill="#111"/><circle cx="56" cy="29.5" r="2.5" fill="#ccc"/>
+    </symbol>
+    <symbol id="bolt" viewBox="0 0 24 24">
+      <path d="M14 1.5 4 14h6.5L8.5 22.5 20 9h-6.5z" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="star" viewBox="0 0 24 24">
+      <path d="M12 1.8l3 6.6 7.2.8-5.4 4.9 1.5 7.1L12 17.6l-6.3 3.6 1.5-7.1L1.8 9.2 9 8.4z" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="speaker" viewBox="0 0 24 24">
+      <path d="M4 9h4l5-4v14l-5-4H4z" fill="#111"/>
+      <path d="M16 8.5a5 5 0 0 1 0 7M18.6 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="#111" stroke-width="2" stroke-linecap="round"/>
+    </symbol>
+  </defs>
+</svg>
+
+<header>
+  <h1><svg aria-hidden="true"><use href="#bolt"/></svg>Math Race<svg aria-hidden="true"><use href="#bolt"/></svg></h1>
+  <div class="pills">
+    <span class="pill" id="movePill">Move 1/15</span>
+    <span class="pill" id="bestPill">Best: –</span>
+    <button class="pill" id="garageBtn" type="button">Car &amp; modes</button>
+  </div>
+</header>
+
+<main>
+  <p class="tip"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="2.5" width="10" height="19" rx="2"/><path d="M3 15a9 9 0 0 0 6 6M21 9a9 9 0 0 0-6-6"/></svg>Turn your phone sideways for the best view</p>
+
+  <div class="card">
+    <div class="arena" id="arena">
+      <div class="band" id="band" role="img" aria-label="Race track">
+        <svg class="track-svg" id="trackSvg" aria-hidden="true"></svg>
+      </div>
+
+      <div class="play">
+        <button class="problem" id="problem" type="button">
+          <span class="sum-row" aria-hidden="true">
+            <span class="addend"><span class="plus"></span><span class="num" id="numA">3</span><span class="cars" id="carsA"></span></span>
+            <span class="addend"><span class="plus">+</span><span class="num" id="numB">4</span><span class="cars" id="carsB"></span></span>
+          </span>
+          <span class="hear" aria-hidden="true"><svg><use href="#speaker"/></svg>Tap to hear</span>
+        </button>
+        <div class="equals" aria-hidden="true">=</div>
+        <div class="answers" id="answers" role="group" aria-label="Answers"></div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<p class="sr-only" aria-live="polite" id="live"></p>
+
+<dialog id="finish" aria-labelledby="finishTitle">
+  <h2 class="win-title" id="finishTitle"></h2>
+  <div class="stars" id="stars"></div>
+  <p class="result" id="result"></p>
+  <p class="note" id="note"></p>
+  <svg class="bouncer" aria-hidden="true"><use class="cur-car" href="#car-ferrari"/></svg>
+  <button class="again" id="again" type="button">Race again</button>
+</dialog>
+
+<dialog id="garage" aria-labelledby="garageTitle">
+  <h2 class="win-title" id="garageTitle"><svg aria-hidden="true"><use href="#bolt"/></svg>Ready, set, go!<svg aria-hidden="true"><use href="#bolt"/></svg></h2>
+  <div class="picker" role="radiogroup" aria-label="Pick your car" id="picker"></div>
+  <div class="switches">
+    <button class="switch" id="rivalsSw" type="button" role="switch" aria-checked="true"><span>Race other cars</span><span class="knob" aria-hidden="true"></span></button>
+    <button class="switch" id="hardSw" type="button" role="switch" aria-checked="false"><span>Hard mode</span><span class="knob" aria-hidden="true"></span></button>
+  </div>
+  <div class="voicerow">
+    <label for="voiceSel">Voice</label>
+    <select id="voiceSel"><option value="">Device voice</option></select>
+    <button id="voiceTest" type="button" aria-label="Test the voice"><svg aria-hidden="true"><use href="#speaker"/></svg></button>
+  </div>
+  <button class="again" id="go" type="button">Start race</button>
+</dialog>
+
+<canvas id="fx" aria-hidden="true"></canvas>
+
+<script>
+(() => {
+  "use strict";
+
+  const MAX_MOVES = 15;
+  const STEP = [20, 10, 3];             // % of the race for a 1st, 2nd, 3rd try
+  const RIVAL_STEP = [4, 16];           // other cars move a random % each turn
+  const WORDS = ["zero","one","two","three","four","five","six","seven","eight","nine","ten"];
+  const KEY_BEST = "mathRace.best";
+  const KEY_BEST_HARD = "mathRace.bestHard";
+  const KEY_CAR = "mathRace.car";
+  const KEY_HARD = "mathRace.hard";
+  const KEY_RIVALS = "mathRace.rivals";
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const loopMQ = window.matchMedia("(min-width: 700px) and (min-height: 600px)");
+
+  const CARS = [
+    { id: "ferrari", name: "Ferrari",     sound: () => vroom() },
+    { id: "truck",   name: "Truck",       sound: () => airHorn() },
+    { id: "fire",    name: "Fire engine", sound: () => siren() },
+    { id: "police",  name: "Police car",  sound: () => yelp() },
+  ];
+  const RIVALS = [
+    { name: "green", color: "#1fa64a" },
+    { name: "purple", color: "#8b3dff" },
+  ];
+
+  const $ = (id) => document.getElementById(id);
+  const el = {
+    arena: $("arena"), band: $("band"), svg: $("trackSvg"), problem: $("problem"),
+    numA: $("numA"), numB: $("numB"), carsA: $("carsA"), carsB: $("carsB"),
+    answers: $("answers"), live: $("live"), movePill: $("movePill"), bestPill: $("bestPill"),
+    finish: $("finish"), finishTitle: $("finishTitle"), stars: $("stars"),
+    result: $("result"), note: $("note"), again: $("again"), fx: $("fx"),
+    garage: $("garage"), go: $("go"), garageBtn: $("garageBtn"), picker: $("picker"),
+    rivalsSw: $("rivalsSw"), hardSw: $("hardSw"),
+  };
+
+  /* ---------- storage (always guarded) ---------- */
+  function load(key) {
+    try { return window.localStorage.getItem(key); } catch (e) { return null; }
+  }
+  function save(key, value) {
+    try { window.localStorage.setItem(key, String(value)); } catch (e) { /* storage unavailable */ }
+  }
+  function loadBest(key) {
+    const n = parseInt(load(key), 10);
+    return n >= 1 && n <= MAX_MOVES ? n : null;
+  }
+
+  let hard = load(KEY_HARD) === "1";
+  let rivalsOn = load(KEY_RIVALS) !== "0";      // racing other cars is on unless turned off
+  let best = loadBest(hard ? KEY_BEST_HARD : KEY_BEST);
+  let carId = load(KEY_CAR);
+  if (!CARS.some(c => c.id === carId)) carId = "ferrari";
+
+  const state = {
+    moves: 0, progress: 0, rivals: [0, 0], order: [], announce: "",
+    wrong: 0, a: 0, b: 0, sum: 0, busy: false, over: false, lastKey: "", started: false,
+  };
+
+  /* ---------- audio ---------- */
+  let ctx = null, master = null, keepAlive = null;
+  function audio() {
+    if (!ctx || ctx.state === "closed") {
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) return null;
+      try { ctx = new AC(); } catch (e) { return null; }
+      // everything plays through one compressor so sounds are loud but never clip
+      const comp = ctx.createDynamicsCompressor();
+      comp.threshold.value = -18; comp.knee.value = 12; comp.ratio.value = 4;
+      master = ctx.createGain(); master.gain.value = 1.4;
+      master.connect(comp).connect(ctx.destination);
+    }
+    // iOS can leave the context "suspended" or "interrupted" (e.g. after speech or a call)
+    if (ctx.state !== "running") { try { ctx.resume(); } catch (e) { /* ignore */ } }
+    return ctx;
+  }
+  const out = () => master;
+
+  // A short silent WAV, built in code, played on a loop through an <audio> element.
+  // On iPhone/iPad this moves the page into the "playback" audio session, so game
+  // sounds play even when the ringer switch is on silent (speech already did).
+  function silentWavUrl() {
+    const rate = 8000, n = 4000, buf = new ArrayBuffer(44 + n * 2), v = new DataView(buf);
+    const w = (o, str) => { for (let i = 0; i < str.length; i++) v.setUint8(o + i, str.charCodeAt(i)); };
+    w(0, "RIFF"); v.setUint32(4, 36 + n * 2, true); w(8, "WAVE"); w(12, "fmt ");
+    v.setUint32(16, 16, true); v.setUint16(20, 1, true); v.setUint16(22, 1, true);
+    v.setUint32(24, rate, true); v.setUint32(28, rate * 2, true); v.setUint16(32, 2, true); v.setUint16(34, 16, true);
+    w(36, "data"); v.setUint32(40, n * 2, true);
+    return URL.createObjectURL(new Blob([buf], { type: "audio/wav" }));
+  }
+  function unlockAudio() {
+    try { if (navigator.audioSession) navigator.audioSession.type = "playback"; } catch (e) { /* not supported */ }
+    try {
+      if (!keepAlive) {
+        keepAlive = new Audio(silentWavUrl());
+        keepAlive.loop = true;
+        keepAlive.setAttribute("playsinline", "");
+      }
+      if (keepAlive.paused) { const p = keepAlive.play(); if (p) p.catch(() => {}); }
+    } catch (e) { /* ignore */ }
+    const c = audio(); if (!c) return;
+    try {
+      const b = c.createBuffer(1, 1, 22050), src = c.createBufferSource();
+      src.buffer = b; src.connect(c.destination); src.start(0);
+    } catch (e) { /* ignore */ }
+  }
+  ["pointerdown", "touchend", "keydown"].forEach(t =>
+    document.addEventListener(t, unlockAudio, { capture: true, passive: true }));
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) { if (keepAlive) keepAlive.pause(); }
+    else if (ctx && ctx.state !== "running") { try { ctx.resume(); } catch (e) { /* ignore */ } }
+  });
+  function note(freq, start, dur, type, vol) {
+    const c = audio(); if (!c) return;
+    const t = c.currentTime + start;
+    const o = c.createOscillator(), g = c.createGain();
+    o.type = type; o.frequency.setValueAtTime(freq, t);
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(vol, t + 0.015);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    o.connect(g).connect(out());
+    o.start(t); o.stop(t + dur + 0.05);
+  }
+  function chimeRight() {
+    [523.25, 659.25, 783.99, 1046.5].forEach((f, i) => note(f, i * 0.09, i === 3 ? 0.5 : 0.22, "triangle", 0.4));
+  }
+  function chimeWrong() {
+    note(233, 0, 0.26, "square", 0.08);
+    note(175, 0.26, 0.42, "square", 0.08);
+  }
+  function voice(osc, dur, vol, cutoff) {
+    // shared envelope + lowpass for car sounds
+    const c = audio(), t = c.currentTime;
+    const g = c.createGain(), f = c.createBiquadFilter();
+    f.type = "lowpass"; f.frequency.setValueAtTime(cutoff, t);
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(vol, t + 0.05);
+    g.gain.setValueAtTime(vol, t + dur - 0.15);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    osc.connect(f).connect(g).connect(out());
+    osc.start(t); osc.stop(t + dur + 0.05);
+    return { t, f };
+  }
+  function vroom(dur = 1.4, peak = 300, vol = 0.3) {
+    const c = audio(); if (!c) return;
+    const t = c.currentTime, up = dur * 0.43;
+    const f = c.createBiquadFilter(), g = c.createGain();
+    f.type = "lowpass"; f.Q.value = 6;
+    f.frequency.setValueAtTime(700, t);
+    f.frequency.exponentialRampToValueAtTime(3200, t + up);
+    f.frequency.exponentialRampToValueAtTime(600, t + dur);
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(vol, t + 0.05);
+    g.gain.setValueAtTime(vol, t + dur - 0.2);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    f.connect(g).connect(out());
+    // engine: a sawtooth plus a square one octave up, so small speakers can hear it
+    [["sawtooth", 1], ["square", 2]].forEach(([type, mult]) => {
+      const o = c.createOscillator(); o.type = type;
+      o.frequency.setValueAtTime(90 * mult, t);
+      o.frequency.exponentialRampToValueAtTime(peak * mult, t + up);
+      o.frequency.exponentialRampToValueAtTime(100 * mult, t + dur);
+      const og = c.createGain(); og.gain.value = mult === 1 ? 1 : 0.35;
+      o.connect(og).connect(f);
+      o.start(t); o.stop(t + dur + 0.05);
+    });
+  }
+  function airHorn() {
+    const c = audio(); if (!c) return;
+    [0, 0.55].forEach((delay, i) => {
+      [196, 247].forEach(freq => {
+        const o = c.createOscillator(), g = c.createGain(), f = c.createBiquadFilter();
+        const t = c.currentTime + delay, dur = i ? 0.75 : 0.42;
+        o.type = "sawtooth"; o.frequency.setValueAtTime(freq, t);
+        f.type = "lowpass"; f.frequency.setValueAtTime(1400, t);
+        g.gain.setValueAtTime(0.0001, t);
+        g.gain.exponentialRampToValueAtTime(0.16, t + 0.03);
+        g.gain.setValueAtTime(0.16, t + dur - 0.06);
+        g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+        o.connect(f).connect(g).connect(out());
+        o.start(t); o.stop(t + dur + 0.05);
+      });
+    });
+  }
+  function siren() {
+    const c = audio(); if (!c) return;
+    const o = c.createOscillator(); o.type = "square";
+    const { t } = voice(o, 2.2, 0.07, 1800);
+    o.frequency.setValueAtTime(480, t);
+    o.frequency.linearRampToValueAtTime(980, t + 1.1);
+    o.frequency.linearRampToValueAtTime(480, t + 2.2);
+  }
+  function yelp() {
+    const c = audio(); if (!c) return;
+    const o = c.createOscillator(); o.type = "square";
+    const { t } = voice(o, 1.45, 0.07, 2200);
+    for (let i = 0; i < 12; i++) o.frequency.setValueAtTime(i % 2 ? 1050 : 700, t + i * 0.12);
+  }
+
+  /* ---------- voice: "Device voice" lets the phone use its own chosen voice ---------- */
+  // shared with the other Mr. Mo games on this site: pick a voice once and every game uses it
+  const KEY_VOICE = "mrmo.voice.en";
+  let allVoices = [];
+  const voiceSel = $("voiceSel");
+  const isEn = (v) => (v.lang || "").toLowerCase().replace("_", "-").startsWith("en");
+  function chosenVoice() {
+    const n = load(KEY_VOICE);
+    return n ? allVoices.find(v => v.voiceURI === n || v.name === n) || null : null;
+  }
+  function fillVoices() {
+    try { allVoices = window.speechSynthesis.getVoices() || []; } catch (e) { allVoices = []; }
+    const cur = load(KEY_VOICE) || "";
+    voiceSel.textContent = "";
+    voiceSel.add(new Option("Device voice", ""));
+    allVoices.filter(isEn).sort((a, b) => a.name.localeCompare(b.name))
+      .forEach(v => voiceSel.add(new Option(`${v.name} (${v.lang})${v.default ? " ★" : ""}`, v.voiceURI)));
+    voiceSel.value = cur;
+    if (voiceSel.value !== cur) voiceSel.value = "";
+  }
+  if ("speechSynthesis" in window) {
+    fillVoices();
+    try { window.speechSynthesis.addEventListener("voiceschanged", fillVoices); } catch (e) { /* ignore */ }
+  }
+  voiceSel.addEventListener("change", () => { save(KEY_VOICE, voiceSel.value); audio(); speak("Ready, set, go!"); });
+  $("voiceTest").addEventListener("click", () => { audio(); speak("Ready, set, go!"); });
+
+  function speak(text) {
+    if (!("speechSynthesis" in window)) return;
+    try {
+      window.speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      u.rate = 0.85; u.pitch = 1.1;
+      const v = chosenVoice();
+      const dv = allVoices.find(x => x.default && isEn(x));
+      if (v) u.voice = v;
+      u.lang = v ? v.lang : (dv ? dv.lang : "en-US");
+      window.speechSynthesis.speak(u);
+    } catch (e) { /* speech unavailable */ }
+  }
+
+  /* ---------- helpers ---------- */
+  const rand = (lo, hi) => lo + Math.floor(Math.random() * (hi - lo + 1));
+  function shuffle(arr) {
+    for (let i = arr.length - 1; i > 0; i--) { const j = rand(0, i); [arr[i], arr[j]] = [arr[j], arr[i]]; }
+    return arr;
+  }
+  const svgNS = "http://www.w3.org/2000/svg";
+  function carIcon() {
+    const s = document.createElementNS(svgNS, "svg");
+    s.setAttribute("aria-hidden", "true");
+    s.setAttribute("focusable", "false");
+    const u = document.createElementNS(svgNS, "use");
+    u.setAttribute("class", "cur-car");
+    u.setAttribute("href", "#car-" + carId);
+    s.appendChild(u);
+    return s;
+  }
+  function fillCars(container, n) {
+    container.textContent = "";
+    for (let i = 0; i < n; i++) container.appendChild(carIcon());
+  }
+  function say(msg) { el.live.textContent = ""; setTimeout(() => { el.live.textContent = msg; }, 30); }
+  const ordinal = (n) => ["", "1st", "2nd", "3rd"][n];
+  const ordinalWord = (n) => ["", "first", "second", "third"][n];
+
+  /* ---------- cars on the track ---------- */
+  const racer = document.createElement("div");
+  racer.className = "car racer";
+  racer.setAttribute("role", "button");
+  racer.tabIndex = 0;
+  racer.appendChild(carIcon());
+  const flame = document.createElement("span");
+  flame.className = "flame";
+  flame.setAttribute("aria-hidden", "true");
+  flame.innerHTML =
+    '<svg viewBox="0 0 100 40" preserveAspectRatio="none">' +
+    '<path d="M100 3C70 1 38 9 0 20c38 11 70 19 100 17z" fill="#e10600"/>' +
+    '<path d="M100 8C76 7 50 13 20 20c30 7 56 13 80 12z" fill="#ff8a00"/>' +
+    '<path d="M100 13c-16 0-32 3-48 7 16 4 32 7 48 7z" fill="#ffe14d"/>' +
+    '</svg>';
+  racer.appendChild(flame);
+
+  const rivalEls = RIVALS.map((r) => {
+    const d = document.createElement("div");
+    d.className = "car rival";
+    d.style.color = r.color;
+    d.setAttribute("aria-hidden", "true");
+    d.innerHTML = '<svg focusable="false"><use href="#car-rival"/></svg>';
+    el.band.appendChild(d);
+    return d;
+  });
+  el.band.appendChild(racer);
+
+  let boostTimer = 0;
+  function boost(level) {
+    racer.classList.remove("boost-1", "boost-2", "boost-3");
+    void racer.offsetWidth;
+    racer.classList.add("boost-" + level);
+    clearTimeout(boostTimer);
+    boostTimer = setTimeout(() => racer.classList.remove("boost-1", "boost-2", "boost-3"), level === 1 ? 1400 : 1050);
+  }
+  function wiggle(cls) {
+    racer.classList.remove("bump", "rev");
+    void racer.offsetWidth;
+    racer.classList.add(cls);
+  }
+  racer.addEventListener("animationend", (e) => { if (e.target.parentNode === racer) racer.classList.remove("bump", "rev"); });
+  function tapRacer() { honk(currentCar()); wiggle("rev"); }
+  racer.addEventListener("click", tapRacer);
+  racer.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" || e.key === " ") { e.preventDefault(); tapRacer(); }
+  });
+
+  /* ---------- the track: a straight strip on phones, a loop around the math on big screens ---------- */
+  let lanes = [];                       // [{ path, len }] outermost lane first
+  const shown = { player: 0, rivals: [0, 0] };
+
+  function drawTrack() {
+    const W = el.band.clientWidth, H = el.band.clientHeight;
+    if (!W || !H) return;
+    const loop = loopMQ.matches;
+    const n = rivalsOn ? 3 : 1;
+    const curb = parseFloat(getComputedStyle(el.band).getPropertyValue("--curb")) || 9;
+    const c = 6;
+    let s = `<defs><pattern id="chk" width="${2 * c}" height="${2 * c}" patternUnits="userSpaceOnUse">` +
+      `<rect width="${2 * c}" height="${2 * c}" fill="#fff"/><rect width="${c}" height="${c}" fill="#000"/>` +
+      `<rect x="${c}" y="${c}" width="${c}" height="${c}" fill="#000"/></pattern></defs>`;
+    const bolt = (x, y, size) =>
+      `<use href="#bolt" x="${x - size / 2}" y="${y - size / 2}" width="${size}" height="${size}" fill="#ffd400" opacity=".16"/>`;
+    const dashed = (d, w, color, dash) => `<path d="${d}" fill="none" stroke="${color}" stroke-width="${w}"${dash ? ` stroke-dasharray="${dash}"` : ""}/>`;
+
+    if (loop) {
+      const lane = racer.offsetWidth * 0.6;
+      const R = curb * 2 + n * lane;                        // ring thickness
+      const Rc = Math.min(R + 44, Math.min(W, H) / 2 - 1);  // outer corner radius
+      const cx = W / 2;
+      // a rounded rectangle at inset d, drawn clockwise from the top middle (the start line)
+      const rr = (d) => {
+        const r = Math.max(2, Rc - d);
+        return `M${cx} ${d}H${W - d - r}A${r} ${r} 0 0 1 ${W - d} ${d + r}V${H - d - r}` +
+          `A${r} ${r} 0 0 1 ${W - d - r} ${H - d}H${d + r}A${r} ${r} 0 0 1 ${d} ${H - d - r}` +
+          `V${d + r}A${r} ${r} 0 0 1 ${d + r} ${d}H${cx}`;
+      };
+      s += dashed(rr(R / 2), R, "#6e6e6e");
+      s += dashed(rr(curb / 2), curb, "#fff") + dashed(rr(curb / 2), curb, "#e10600", "16 16");
+      s += dashed(rr(R - curb / 2), curb, "#fff") + dashed(rr(R - curb / 2), curb, "#e10600", "16 16");
+      s += dashed(rr(1.5), 3, "#000") + dashed(rr(R - 1.5), 3, "#000");
+      if (n > 1) for (let k = 1; k < n; k++) s += dashed(rr(curb + k * lane), 3, "#ffd400", "14 12");
+      else s += dashed(rr(R / 2), 4, "#ffd400", "16 14");
+      const b = lane * 0.8;
+      [[W * .3, R / 2], [W * .7, R / 2], [W * .3, H - R / 2], [W * .7, H - R / 2], [R / 2, H / 2], [W - R / 2, H / 2]]
+        .forEach(([x, y]) => { s += bolt(x, y, b); });
+      s += `<rect x="${cx - 8}" y="${curb}" width="16" height="${R - 2 * curb}" fill="url(#chk)" stroke="#000" stroke-width="2"/>`;
+      for (let i = 0; i < n; i++) s += `<path class="lane" d="${rr(curb + lane * (i + .5))}" fill="none" stroke="none"/>`;
+    } else {
+      const lane = (H - 2 * curb) / n;
+      const fx = W - 24;                                     // finish line x
+      s += `<rect x="1.5" y="1.5" width="${W - 3}" height="${H - 3}" rx="10" fill="#6e6e6e" stroke="#000" stroke-width="3"/>`;
+      [curb / 2 + 1.5, H - curb / 2 - 1.5].forEach((y) => {
+        s += dashed(`M3 ${y}H${W - 3}`, curb, "#fff") + dashed(`M3 ${y}H${W - 3}`, curb, "#e10600", "16 16");
+      });
+      if (n > 1) for (let k = 1; k < n; k++) s += dashed(`M4 ${curb + k * lane}H${fx}`, 3, "#ffd400", "14 12");
+      else s += dashed(`M4 ${H / 2}H${fx}`, 4, "#ffd400", "18 16");
+      const b = Math.min(26, lane * .8);
+      [[.18, 0], [.42, n - 1], [.63, 0], [.82, n - 1]].forEach(([fxp, li]) => {
+        s += bolt(W * fxp, curb + lane * (li + .5), b);
+      });
+      s += `<rect x="${fx + 2}" y="${curb}" width="18" height="${H - 2 * curb}" fill="url(#chk)" stroke="#000" stroke-width="2"/>`;
+      for (let i = 0; i < n; i++) s += `<path class="lane" d="M4 ${curb + lane * (i + .5)}H${fx}" fill="none" stroke="none"/>`;
+    }
+    el.svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
+    el.svg.innerHTML = s;
+    lanes = [...el.svg.querySelectorAll("path.lane")].map((p) => ({ path: p, len: p.getTotalLength() }));
+    renderCars();
+  }
+
+  // place a car p% of the way along its lane, turned to follow the track
+  function pose(carEl, laneIdx, p) {
+    const L = lanes[laneIdx];
+    if (!L) return;
+    const w = carEl.offsetWidth, h = carEl.offsetHeight, m = loopMQ.matches ? 10 : 0;
+    const s = w / 2 + m + Math.max(0, Math.min(100, p)) / 100 * (L.len - w - 2 * m);
+    const pt = L.path.getPointAtLength(s);
+    const a = L.path.getPointAtLength(Math.max(0, s - 2));
+    const b = L.path.getPointAtLength(Math.min(L.len, s + 2));
+    const ang = Math.atan2(b.y - a.y, b.x - a.x) * 180 / Math.PI;
+    const flip = Math.cos(ang * Math.PI / 180) < -0.01 ? " scaleY(-1)" : "";   // keep wheels down when driving left
+    carEl.style.transform = `translate(${pt.x - w / 2}px, ${pt.y - h / 2}px) rotate(${ang}deg)${flip}`;
+  }
+  function renderCars() {
+    const three = lanes.length === 3;
+    pose(racer, three ? 1 : 0, shown.player);
+    if (three) { pose(rivalEls[0], 0, shown.rivals[0]); pose(rivalEls[1], 2, shown.rivals[1]); }
+  }
+
+  let anim = 0;
+  function driveCars() {
+    cancelAnimationFrame(anim);
+    const from = { p: shown.player, r: shown.rivals.slice() };
+    const to = { p: state.progress, r: state.rivals.slice() };
+    const dur = reduceMotion.matches ? 0 : 900, delays = [0, 200, 360];
+    const t0 = performance.now();
+    const step = (now) => {
+      let done = true;
+      const ease = (i) => {
+        const t = dur ? Math.min(1, Math.max(0, (now - t0 - delays[i]) / dur)) : 1;
+        if (t < 1) done = false;
+        return 1 - Math.pow(1 - t, 3);
+      };
+      shown.player = from.p + (to.p - from.p) * ease(0);
+      shown.rivals = from.r.map((v, i) => v + (to.r[i] - v) * ease(i + 1));
+      renderCars();
+      if (!done) anim = requestAnimationFrame(step);
+    };
+    anim = requestAnimationFrame(step);
+  }
+  function snapCars() {
+    cancelAnimationFrame(anim);
+    shown.player = state.progress;
+    shown.rivals = state.rivals.slice();
+    renderCars();
+  }
+  if ("ResizeObserver" in window) new ResizeObserver(() => drawTrack()).observe(el.band);
+  window.addEventListener("resize", drawTrack);
+
+  function describeTrack() {
+    let t = `Race track. You are ${state.progress}% of the way.`;
+    if (rivalsOn) t += ` Green car ${state.rivals[0]}%, purple car ${state.rivals[1]}%.`;
+    el.band.setAttribute("aria-label", t);
+  }
+
+  /* ---------- car picker (in the garage) ---------- */
+  const pickButtons = CARS.map((car) => {
+    const b = document.createElement("button");
+    b.type = "button"; b.className = "pick";
+    b.setAttribute("role", "radio");
+    b.setAttribute("aria-label", car.name);
+    b.dataset.car = car.id;
+    const s = document.createElementNS(svgNS, "svg");
+    s.setAttribute("aria-hidden", "true"); s.setAttribute("focusable", "false");
+    const u = document.createElementNS(svgNS, "use"); u.setAttribute("href", "#car-" + car.id);
+    s.appendChild(u);
+    const label = document.createElement("span"); label.textContent = car.name;
+    b.append(s, label);
+    b.addEventListener("click", () => { chooseCar(car.id); honk(car); });
+    b.addEventListener("keydown", (e) => {
+      const i = CARS.indexOf(car);
+      let next = null;
+      if (e.key === "ArrowRight" || e.key === "ArrowDown") next = (i + 1) % CARS.length;
+      if (e.key === "ArrowLeft" || e.key === "ArrowUp") next = (i + CARS.length - 1) % CARS.length;
+      if (next !== null) {
+        e.preventDefault();
+        chooseCar(CARS[next].id);
+        pickButtons[next].focus();
+        honk(CARS[next]);
+      }
+    });
+    el.picker.appendChild(b);
+    return b;
+  });
+
+  const currentCar = () => CARS.find(c => c.id === carId);
+  function chooseCar(id) {
+    carId = id;
+    save(KEY_CAR, id);
+    pickButtons.forEach(b => {
+      const on = b.dataset.car === id;
+      b.setAttribute("aria-checked", on ? "true" : "false");
+      b.tabIndex = on ? 0 : -1;
+    });
+    document.querySelectorAll("use.cur-car").forEach(u => u.setAttribute("href", "#car-" + id));
+    racer.setAttribute("aria-label", "Your " + currentCar().name + ". Tap to hear it.");
+  }
+  function honk(car) {
+    audio();
+    speak(car.name);
+    car.sound();
+  }
+
+  /* ---------- pills ---------- */
+  function updatePills() {
+    const shownMove = state.over ? state.moves : Math.min(state.moves + 1, MAX_MOVES);
+    el.movePill.textContent = `Move ${shownMove}/${MAX_MOVES}`;
+    el.bestPill.textContent = `Best: ${best ?? "–"}`;
+  }
+
+  /* ---------- problems ---------- */
+  function newProblem(speakIt = true) {
+    let a, b;
+    do { a = rand(1, 5); b = rand(1, 5); } while (`${a}+${b}` === state.lastKey);
+    state.lastKey = `${a}+${b}`;
+    state.a = a; state.b = b; state.sum = a + b; state.wrong = 0;
+
+    el.numA.textContent = a; el.numB.textContent = b;
+    fillCars(el.carsA, a); fillCars(el.carsB, b);
+    el.problem.setAttribute("aria-label", `${a} plus ${b}. Tap to hear.`);
+
+    const pool = shuffle([2,3,4,5,6,7,8,9,10].filter(n => n !== state.sum));
+    const choices = shuffle([state.sum, pool[0], pool[1]]);
+    el.answers.textContent = "";
+    choices.forEach(n => {
+      const btn = document.createElement("button");
+      btn.type = "button"; btn.className = "answer";
+      btn.setAttribute("aria-label", String(n));
+      const num = document.createElement("span"); num.className = "n"; num.textContent = n; num.setAttribute("aria-hidden", "true");
+      const cars = document.createElement("span"); cars.className = "cars"; fillCars(cars, n);
+      btn.append(num, cars);
+      btn.addEventListener("click", () => answer(btn, n));
+      el.answers.appendChild(btn);
+    });
+    updatePills();
+    // read every new problem aloud (browsers only allow speech after the first tap)
+    if (state.started && speakIt) setTimeout(speakProblem, 250);
+  }
+
+  function speakProblem() {
+    const lead = state.announce ? state.announce + " " : "";
+    state.announce = "";
+    speak(`${lead}${WORDS[state.a]} plus ${WORDS[state.b]} equals`);
+  }
+  el.problem.addEventListener("click", () => {
+    audio();
+    speakProblem();
+  });
+
+  function answer(btn, n) {
+    if (state.busy || state.over || btn.disabled) return;
+    audio();
+    speak(WORDS[n]);
+
+    if (n !== state.sum) {
+      state.wrong++;
+      btn.classList.add("wrong");
+      btn.disabled = true;
+      btn.setAttribute("aria-label", `${n}, not right`);
+      chimeWrong();
+      wiggle("bump");
+      say(`${n} is not right. Try again!`);
+      return;
+    }
+
+    // right answer: fire, vroom, and everyone drives
+    state.busy = true;
+    const level = Math.min(state.wrong, 2) + 1;
+    const gain = STEP[level - 1];
+    btn.classList.add("right");
+    el.answers.querySelectorAll("button").forEach(b => { b.disabled = true; });
+    chimeRight();
+    boost(level);
+    setTimeout(() => level === 1 ? vroom(1.3, 380, 0.34) : level === 2 ? vroom(1.0, 300, 0.28) : vroom(0.8, 230, 0.22), 120);
+
+    state.moves++;
+    const before = state.progress;
+    state.progress = Math.min(100, before + gain);
+    // who crosses the line this turn, and in what order (a tie goes to the player)
+    const arrivals = [];
+    if (state.progress >= 100) arrivals.push({ who: "you", at: (100 - before) / gain });
+    if (rivalsOn) {
+      state.rivals = state.rivals.map((v, i) => {
+        if (v >= 100) return v;
+        const stepBy = rand(RIVAL_STEP[0], RIVAL_STEP[1]);
+        const next = Math.min(100, v + stepBy);
+        if (next >= 100) arrivals.push({ who: i, at: (100 - v) / stepBy });
+        return next;
+      });
+    }
+    arrivals.sort((x, y) => (x.at - y.at) || (x.who === "you" ? -1 : 1));
+    arrivals.forEach(a => state.order.push(a.who));
+    const rivalsIn = arrivals.filter(a => a.who !== "you").map(a => `the ${RIVALS[a.who].name} car`);
+    if (rivalsIn.length && state.progress < 100) {
+      const msg = `${rivalsIn.join(" and ")} finished. Keep going!`;
+      state.announce = msg.charAt(0).toUpperCase() + msg.slice(1);
+    }
+
+    driveCars();
+    describeTrack();
+    say(`Yes! ${state.a} plus ${state.b} equals ${state.sum}. Your car zooms ahead ${gain} percent.`);
+
+    const wait = reduceMotion.matches ? 700 : 1300;
+    setTimeout(() => {
+      if (state.progress >= 100) win();
+      else if (state.moves >= MAX_MOVES) outOfMoves();
+      else { state.busy = false; newProblem(); }
+    }, wait);
+  }
+
+  /* ---------- end of race ---------- */
+  const boltSvg = '<svg aria-hidden="true"><use href="#bolt"/></svg>';
+  function starRow(count) {
+    el.stars.innerHTML = [1, 2, 3].map(i =>
+      `<svg class="${i <= count ? "on" : ""}" aria-hidden="true"><use href="#star"/></svg>`).join("");
+    el.stars.setAttribute("role", "img");
+    el.stars.setAttribute("aria-label", `${count} out of 3 stars`);
+  }
+
+  function win() {
+    state.over = true;
+    const m = state.moves;
+    const place = rivalsOn ? state.order.indexOf("you") + 1 : 1;
+    const isBest = best === null || m < best;
+    if (isBest) { best = m; save(hard ? KEY_BEST_HARD : KEY_BEST, m); }
+    updatePills();
+    const movesText = hard ? `${m} moves in hard mode` : `${m} moves`;
+    const bestNote = isBest ? " <strong>New best!</strong>" : "";
+
+    if (place === 1) {
+      const stars = m <= 7 ? 3 : m <= 11 ? 2 : 1;
+      el.finishTitle.innerHTML = `${boltSvg}You win the race!${boltSvg}`;
+      starRow(stars);
+      el.stars.hidden = false;
+      el.result.textContent = rivalsOn ? `1st place in ${movesText}` : movesText;
+      const cheer = stars === 3 ? "Lightning fast! What a driver!"
+                  : stars === 2 ? "Great driving! Can you go even faster?"
+                  : "You crossed the finish line! Keep racing to get faster.";
+      el.note.innerHTML = cheer + bestNote;
+      openCard();
+      celebrate();
+      speak(rivalsOn ? `You won the race! First place, in ${m} moves!` : `You won the race in ${m} moves!`);
+    } else {
+      el.finishTitle.textContent = `You came in ${ordinal(place)}!`;
+      el.stars.hidden = true;
+      el.result.textContent = `${ordinal(place)} place in ${movesText}`;
+      el.note.innerHTML = "Great racing! Get answers right on the first try for the biggest boost." + bestNote;
+      openCard();
+      speak(`You came in ${ordinalWord(place)} place! Great racing! Let's race again!`);
+    }
+  }
+
+  function outOfMoves() {
+    state.over = true;
+    updatePills();
+    el.finishTitle.textContent = "Out of moves";
+    el.stars.hidden = true;
+    el.result.textContent = `You drove ${state.progress}% of the track`;
+    el.note.textContent = "So close! Let’s race again.";
+    openCard();
+    speak(`Out of moves. You drove ${state.progress} percent of the way. Let's race again!`);
+  }
+
+  function openCard() {
+    try { el.finish.showModal(); } catch (e) { el.finish.setAttribute("open", ""); }
+    el.again.focus();
+  }
+  el.finish.addEventListener("cancel", (e) => e.preventDefault());
+
+  function reset(quiet = false) {
+    stopFx();
+    if (el.finish.open) el.finish.close();
+    state.moves = 0; state.progress = 0; state.rivals = [0, 0]; state.order = []; state.announce = "";
+    state.busy = false; state.over = false; state.lastKey = "";
+    snapCars();
+    describeTrack();
+    newProblem(!quiet);
+    el.problem.focus();
+    say("New race! Pick an answer.");
+  }
+  el.again.addEventListener("click", () => { audio(); reset(); });
+
+  /* ---------- celebration canvas ---------- */
+  const COLORS = ["#ffd400", "#ff9500", "#e10600", "#ffffff", "#2f8bff", "#22c55e", "#a855f7"];
+  const g2d = el.fx.getContext("2d");
+  let parts = [], raf = 0, timers = [], last = 0;
+
+  function sizeFx() {
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    el.fx.width = Math.round(innerWidth * dpr);
+    el.fx.height = Math.round(innerHeight * dpr);
+    g2d.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  function burst() {
+    const x = innerWidth * (0.15 + Math.random() * 0.7);
+    const y = innerHeight * (0.15 + Math.random() * 0.35);
+    for (let i = 0; i < 60; i++) {
+      const ang = Math.random() * Math.PI * 2, sp = 2 + Math.random() * 6;
+      const bolt = Math.random() < 0.3;
+      parts.push({
+        x, y, vx: Math.cos(ang) * sp, vy: Math.sin(ang) * sp - 1.5,
+        r: bolt ? 9 + Math.random() * 6 : 5 + Math.random() * 6,
+        rot: Math.random() * Math.PI * 2, vr: (Math.random() - 0.5) * 0.3,
+        color: bolt ? "#ffd400" : COLORS[rand(0, COLORS.length - 1)],
+        bolt, life: 1, decay: 0.008 + Math.random() * 0.008,
+      });
+    }
+  }
+  function drawStar(r) {
+    g2d.beginPath();
+    for (let i = 0; i < 10; i++) {
+      const rad = i % 2 ? r * 0.45 : r, a = -Math.PI / 2 + i * Math.PI / 5;
+      g2d.lineTo(Math.cos(a) * rad, Math.sin(a) * rad);
+    }
+    g2d.closePath();
+  }
+  function drawBolt(r) {
+    const s = r / 12;
+    const pts = [[2,-12],[-8,1],[-1.5,1],[-3.5,12],[8,-3],[1.5,-3]];
+    g2d.beginPath();
+    pts.forEach(([px, py], i) => i ? g2d.lineTo(px * s, py * s) : g2d.moveTo(px * s, py * s));
+    g2d.closePath();
+  }
+  function frame(now) {
+    const dt = Math.min(3, (now - last) / 16.67 || 1);
+    last = now;
+    g2d.clearRect(0, 0, innerWidth, innerHeight);
+    parts = parts.filter(p => p.life > 0);
+    for (const p of parts) {
+      p.vy += 0.12 * dt; p.vx *= Math.pow(0.99, dt);
+      p.x += p.vx * dt; p.y += p.vy * dt;
+      p.rot += p.vr * dt; p.life -= p.decay * dt;
+      g2d.save();
+      g2d.globalAlpha = Math.max(0, p.life);
+      g2d.translate(p.x, p.y); g2d.rotate(p.rot);
+      g2d.shadowColor = p.color; g2d.shadowBlur = 12;
+      g2d.fillStyle = p.color;
+      if (p.bolt) {
+        drawBolt(p.r); g2d.fill();
+        g2d.shadowBlur = 0; g2d.lineWidth = 1.5; g2d.strokeStyle = "#1a1a1a"; g2d.stroke();
+      } else { drawStar(p.r); g2d.fill(); }
+      g2d.restore();
+    }
+    if (parts.length || timers.length) raf = requestAnimationFrame(frame);
+    else { raf = 0; g2d.clearRect(0, 0, innerWidth, innerHeight); }
+  }
+  function celebrate() {
+    if (reduceMotion.matches) return;
+    sizeFx();
+    [0, 350, 700, 1050, 1450].forEach(d => {
+      const t = setTimeout(() => { timers = timers.filter(x => x !== t); burst(); }, d);
+      timers.push(t);
+    });
+    if (!raf) { last = performance.now(); raf = requestAnimationFrame(frame); }
+  }
+  function stopFx() {
+    timers.forEach(clearTimeout); timers = []; parts = [];
+    if (raf) cancelAnimationFrame(raf); raf = 0;
+    g2d.clearRect(0, 0, el.fx.width, el.fx.height);
+  }
+  window.addEventListener("resize", () => { if (raf) sizeFx(); });
+
+  /* ---------- garage: car, other cars, hard mode ---------- */
+  function setSwitch(btn, on) { btn.setAttribute("aria-checked", on ? "true" : "false"); }
+  function applyModes() {
+    document.body.classList.toggle("hard", hard);
+    document.body.classList.toggle("rivals", rivalsOn);
+    setSwitch(el.hardSw, hard);
+    setSwitch(el.rivalsSw, rivalsOn);
+    best = loadBest(hard ? KEY_BEST_HARD : KEY_BEST);
+    updatePills();
+    drawTrack();
+    describeTrack();
+  }
+  let modesChanged = false;
+  el.rivalsSw.addEventListener("click", () => {
+    rivalsOn = !rivalsOn; save(KEY_RIVALS, rivalsOn ? "1" : "0");
+    modesChanged = true; applyModes();
+    speak(rivalsOn ? "Race the green car and the purple car!" : "Just you on the track.");
+  });
+  el.hardSw.addEventListener("click", () => {
+    hard = !hard; save(KEY_HARD, hard ? "1" : "0");
+    modesChanged = true; applyModes();
+    speak(hard ? "Hard mode! No counting cars." : "Easy mode, with counting cars.");
+  });
+
+  function openGarage() {
+    if (state.busy) return;
+    modesChanged = false;
+    try { el.garage.showModal(); } catch (e) { el.garage.setAttribute("open", ""); }
+    const sel = pickButtons.find(b => b.dataset.car === carId);
+    (state.started ? el.go : sel || el.go).focus();
+  }
+  function startRace() {
+    audio();
+    if (el.garage.open) el.garage.close();
+    const fresh = modesChanged || state.over;
+    modesChanged = false;
+    state.started = true;
+    if (fresh) reset(true);
+    el.problem.focus();
+    speakProblem();
+  }
+  el.garageBtn.addEventListener("click", openGarage);
+  el.go.addEventListener("click", startRace);
+  el.garage.addEventListener("cancel", (e) => { e.preventDefault(); startRace(); });
+
+  /* ---------- start ---------- */
+  chooseCar(carId);
+  applyModes();
+  newProblem();
+  snapCars();
+  openGarage();
+  el.go.focus();
+})();
+</script>
+</body>
+</html>

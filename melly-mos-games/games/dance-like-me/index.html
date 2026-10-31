@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<title>Melly Mo’s Dance Like Me</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&display=swap">
+<style>
+/* Layout: one full-height screen — title bar, a big stage with the kitty, chunky toddler controls below. Single committed "living-room disco" look. */
+:root{
+  --plum:#2d1640; --plum-2:#4a2366; --berry:#ee4d86; --sun:#ffcf3f; --mint:#3fd0b0;
+  --sky:#5fb2ff; --cream:#fff5e6; --ink:#2a1433; --ice:#bfe9ff;
+  --fur:#f7a04a; --fur-dark:#d97a2b; --belly:#ffeccf; --pink:#ff9fba;
+  --display:'Baloo 2','Arial Rounded MT Bold','Trebuchet MS',system-ui,sans-serif;
+  color-scheme:dark;
+}
+[hidden]{display:none!important}
+html,body{height:100%}
+body{margin:0;background:var(--plum);color:var(--cream);font-family:var(--display);overflow:hidden;
+  -webkit-user-select:none;user-select:none;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+button{font-family:inherit;color:inherit;cursor:pointer;border:0}
+button:focus-visible,select:focus-visible,input:focus-visible{outline:4px solid var(--sun);outline-offset:3px}
+.app{height:100%;box-sizing:border-box;display:flex;flex-direction:column;gap:10px;
+  padding-block:10px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.top{display:flex;align-items:center;gap:12px}
+.top h1{margin:0;font-size:clamp(24px,5vw,38px);font-weight:800;line-height:1;color:var(--sun);letter-spacing:.01em;flex:1;text-wrap:balance}
+.top h1 small{display:block;font-size:.42em;color:var(--pink);font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.gear{width:44px;height:44px;border-radius:50%;background:var(--plum-2);font-size:22px;opacity:.75}
+.gear:hover{opacity:1}
+
+.stage{flex:1;min-height:0;position:relative;border-radius:28px;overflow:hidden;
+  background:radial-gradient(120% 90% at 50% 15%,#6a2f8c 0%,var(--plum-2) 45%,#241034 100%)}
+.rug{position:absolute;left:50%;bottom:-6%;width:min(95%,640px);aspect-ratio:3/1;transform:translateX(-50%);border-radius:50%;
+  background:repeating-radial-gradient(ellipse at center,var(--berry) 0 14px,#f36d9b 14px 28px,var(--sun) 28px 36px,#f36d9b 36px 50px)}
+.ball{position:absolute;top:-4px;right:18px;width:62px;height:62px;border-radius:50%;
+  background:repeating-linear-gradient(90deg,#d9d2ea 0 9px,#9c90b8 9px 11px),#d9d2ea;
+  box-shadow:inset -10px -10px 0 rgba(0,0,0,.25),0 0 30px rgba(255,255,255,.3)}
+.ball::before{content:"";position:absolute;inset:0;border-radius:50%;background:repeating-linear-gradient(0deg,transparent 0 9px,rgba(60,40,90,.6) 9px 11px)}
+.ball::after{content:"";position:absolute;left:50%;top:-40px;width:3px;height:40px;background:#9c90b8}
+.light{position:absolute;width:45%;aspect-ratio:1;border-radius:50%;filter:blur(40px);opacity:.0;transition:opacity .6s}
+.light.a{background:var(--berry);left:-10%;top:10%}
+.light.b{background:var(--sky);right:-10%;top:5%}
+.light.c{background:var(--mint);left:30%;top:40%}
+.stage.playing .light{opacity:.55;animation:drift 4s ease-in-out infinite alternate}
+.stage.playing .light.b{animation-duration:5s}
+.stage.playing .light.c{animation-duration:3.3s}
+.stage.playing .ball{animation:spinball 3s linear infinite}
+@keyframes drift{from{transform:translate(0,0) scale(1)}to{transform:translate(30%,15%) scale(1.25)}}
+@keyframes spinball{to{background-position:44px 0}}
+
+.catwrap{position:absolute;left:50%;bottom:4%;height:min(78%,520px);aspect-ratio:200/270;transform:translateX(-50%);max-width:92%}
+.poker{width:100%;height:100%;cursor:pointer}
+.poker.poke{animation:poke .6s ease-out}
+@keyframes poke{0%{transform:scale(1)}30%{transform:scale(1.12,.9)}60%{transform:scale(.95,1.08)}100%{transform:scale(1)}}
+.cat{width:100%;height:100%;overflow:visible;display:block}
+.cat g{transform-box:view-box}
+.cat .whole{transform-origin:100px 255px}
+.cat .head{transform-origin:100px 140px}
+.cat .armL{transform-origin:63px 158px}
+.cat .armR{transform-origin:137px 158px}
+.cat .legL{transform-origin:85px 208px}
+.cat .legR{transform-origin:115px 208px}
+.cat .tail{transform-origin:140px 212px}
+.cat .eyes{transform-origin:100px 88px;animation:blink 4.2s infinite}
+@keyframes blink{0%,92%,100%{transform:scaleY(1)}95%{transform:scaleY(.1)}}
+/* idle */
+.cat.idle .whole{animation:breathe 3s ease-in-out infinite}
+.cat.idle .tail{animation:wag 2.4s ease-in-out infinite}
+.cat.idle .head{animation:tilt 5s ease-in-out infinite}
+@keyframes breathe{0%,100%{transform:scale(1,1)}50%{transform:scale(1.015,1.03)}}
+@keyframes wag{0%,100%{transform:rotate(-12deg)}50%{transform:rotate(14deg)}}
+@keyframes tilt{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(8deg)}}
+
+.notes{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.note{position:absolute;bottom:20%;font-size:clamp(26px,5vw,44px);font-weight:800;animation:floatup 3s ease-out forwards}
+@keyframes floatup{0%{transform:translateY(0) rotate(-10deg);opacity:0}15%{opacity:1}100%{transform:translateY(-260px) rotate(15deg);opacity:0}}
+
+.overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center;padding:16px;box-sizing:border-box}
+.bigbtn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+  width:clamp(170px,42vw,250px);aspect-ratio:1;border-radius:50%;background:var(--sun);color:var(--ink);
+  font-size:clamp(26px,6vw,38px);font-weight:800;line-height:1;box-shadow:0 10px 0 #c99a12,0 18px 40px rgba(0,0,0,.4);
+  animation:pulse 1.6s ease-in-out infinite}
+.bigbtn:active{transform:translateY(6px);box-shadow:0 4px 0 #c99a12}
+.bigbtn .paw{width:46%;height:auto}
+@keyframes pulse{0%,100%{scale:1}50%{scale:1.06}}
+
+.panel{position:fixed;inset:0;background:rgba(20,8,30,.7);display:flex;align-items:center;justify-content:center;z-index:20;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.panel .box{color-scheme:light;background:var(--cream);color:var(--ink);border-radius:22px;padding:22px;width:min(420px,100%);box-sizing:border-box;display:flex;flex-direction:column;gap:14px}
+.panel h2{margin:0;font-size:24px}
+.panel label{display:flex;flex-direction:column;gap:6px;font-weight:700;font-size:15px}
+.panel label.row{flex-direction:row;align-items:center;gap:10px}
+.panel select{font:inherit;font-size:15px;padding:10px;border-radius:12px;border:2px solid #d8c9e6;background:#fff;color:var(--ink);max-width:100%}
+.panel input[type=checkbox]{width:24px;height:24px;accent-color:var(--berry)}
+.panel .btns{display:flex;gap:10px;flex-wrap:wrap}
+.panel .btns button{flex:1;padding:12px 16px;border-radius:14px;font-size:17px;font-weight:800;background:var(--plum-2);color:var(--cream)}
+.panel .btns button.alt{background:#eadff3;color:var(--ink)}
+.panel p{margin:0;font-size:13px;color:#6b5878}
+
+@media (prefers-reduced-motion:reduce){.bigbtn{animation:none}.stage.playing .light{animation:none}}
+
+.panel .back{display:block;text-align:center;padding:12px;border-radius:14px;border:2px solid #d8c9e6;color:var(--ink);font-weight:800;text-decoration:none}
+</style>
+<style>:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}*,*::before,*::after{box-sizing:border-box}img{max-width:100%}</style>
+</head>
+<body>
+
+<style>
+.prompt{position:absolute;top:14px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:12px;
+  background:var(--cream);color:var(--ink);border-radius:999px;padding:8px 24px 8px 10px;box-shadow:0 6px 0 rgba(0,0,0,.25);
+  font-size:clamp(26px,6vw,44px);font-weight:800;white-space:nowrap;max-width:calc(100% - 32px);box-sizing:border-box;cursor:pointer}
+.prompt .ic{width:1.5em;height:1.5em;border-radius:50%;background:var(--sun);display:flex;align-items:center;justify-content:center;font-size:.8em}
+.prompt.pop{animation:zoom .45s cubic-bezier(.3,1.6,.6,1)}
+@keyframes zoom{from{transform:translateX(-50%) scale(.4);opacity:0}to{transform:translateX(-50%) scale(1);opacity:1}}
+.timer{position:absolute;left:16px;right:16px;bottom:12px;height:10px;border-radius:5px;background:rgba(255,255,255,.15);overflow:hidden}
+.timer i{display:block;height:100%;width:100%;background:var(--mint);border-radius:5px;transition:width .4s linear}
+.tray{display:grid;grid-template-columns:repeat(8,1fr);gap:8px}
+.mv{aspect-ratio:1;max-height:78px;border-radius:20px;background:var(--plum-2);font-size:clamp(26px,6vw,38px);display:flex;align-items:center;justify-content:center;
+  box-shadow:0 5px 0 rgba(0,0,0,.35);transition:transform .15s}
+.mv.on{background:var(--berry);transform:scale(1.08)}
+.mv:active{transform:translateY(4px)}
+.controls{display:flex;align-items:center;justify-content:center;gap:clamp(8px,2.5vw,18px)}
+.song{width:clamp(54px,14vw,78px);aspect-ratio:1;border-radius:50%;font-size:clamp(22px,6vw,34px);font-weight:800;color:var(--ink);
+  box-shadow:0 6px 0 rgba(0,0,0,.3);transition:transform .15s;display:flex;align-items:center;justify-content:center}
+.song[data-i="0"]{background:var(--berry)}.song[data-i="1"]{background:var(--mint)}.song[data-i="2"]{background:var(--sky)}.song[data-i="3"]{background:var(--sun)}
+.song.on{transform:scale(1.15);outline:5px solid var(--cream);outline-offset:3px}
+.song:active{transform:translateY(4px)}
+.stopbtn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;width:clamp(62px,16vw,86px);aspect-ratio:1;border-radius:22px;
+  background:var(--cream);color:var(--ink);font-size:clamp(15px,3.5vw,19px);font-weight:800;box-shadow:0 6px 0 rgba(0,0,0,.35)}
+.stopbtn .sq{width:38%;aspect-ratio:1;border-radius:5px;background:#d33a4a}
+.stopbtn:disabled{opacity:.35;cursor:default}
+.stopbtn:not(:disabled):active{transform:translateY(4px)}
+.start h2{margin:0;font-size:clamp(22px,5vw,30px);color:var(--cream);text-wrap:balance}
+.next{align-self:center;display:flex;align-items:center;gap:10px;padding:12px 34px;border-radius:999px;background:var(--sun);color:var(--ink);
+  font-size:clamp(24px,5.5vw,34px);font-weight:800;box-shadow:0 7px 0 #c99a12}
+.next:active{transform:translateY(5px);box-shadow:0 2px 0 #c99a12}
+.next.ready{animation:pulse 1.2s ease-in-out infinite}
+.next svg{width:1.2em;height:1.2em}
+.star{position:absolute;left:50%;top:45%;font-size:clamp(30px,6vw,48px);color:var(--sun);pointer-events:none;animation:burst 1.3s ease-out forwards}
+@keyframes burst{0%{transform:translate(-50%,-50%) scale(.2);opacity:1}100%{transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy))) scale(1.2) rotate(180deg);opacity:0}}
+@media (max-width:560px){.tray{grid-template-columns:repeat(4,1fr);gap:6px}.mv{max-height:50px;border-radius:14px;font-size:24px}}
+@media (max-height:620px){.tray{grid-template-columns:repeat(8,1fr)}.mv{max-height:52px;border-radius:14px}}
+
+/* moves — timings are whole beats so sound effects land on the motion */
+.cat{--beat:.5s}
+.cat[class*="mv-"] .tail{animation:wag var(--beat) ease-in-out infinite}
+.cat.mv-clap .armL{animation:clapL var(--beat) ease-in-out infinite}
+.cat.mv-clap .armR{animation:clapR var(--beat) ease-in-out infinite}
+.cat.mv-clap .whole{animation:bob var(--beat) ease-in-out infinite}
+@keyframes clapL{0%,100%{transform:rotate(-56deg)}50%{transform:rotate(30deg)}}
+@keyframes clapR{0%,100%{transform:rotate(56deg)}50%{transform:rotate(-30deg)}}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+
+.cat.mv-wave .armR{animation:wave var(--beat) ease-in-out infinite}
+.cat.mv-wave .armL{transform:rotate(10deg)}
+.cat.mv-wave .head{animation:tilt calc(var(--beat)*2) ease-in-out infinite}
+@keyframes wave{0%,100%{transform:rotate(-150deg)}50%{transform:rotate(-112deg)}}
+
+.cat.mv-jump .whole{animation:jump calc(var(--beat)*2) ease-out infinite}
+.cat.mv-jump .armL{animation:jumpL calc(var(--beat)*2) ease-out infinite}
+.cat.mv-jump .armR{animation:jumpR calc(var(--beat)*2) ease-out infinite}
+@keyframes jump{0%{transform:translateY(0) scale(1.08,.9)}12%{transform:translateY(0) scale(.95,1.06)}45%{transform:translateY(-60px) scale(.96,1.05)}80%{transform:translateY(0) scale(1,1)}90%{transform:translateY(0) scale(1.07,.92)}100%{transform:translateY(0) scale(1.08,.9)}}
+@keyframes jumpL{0%,85%,100%{transform:rotate(25deg)}45%{transform:rotate(150deg)}}
+@keyframes jumpR{0%,85%,100%{transform:rotate(-25deg)}45%{transform:rotate(-150deg)}}
+
+.cat.mv-spin .whole{animation:turn calc(var(--beat)*4) ease-in-out infinite}
+.cat.mv-spin .armL{transform:rotate(80deg)}
+.cat.mv-spin .armR{transform:rotate(-80deg)}
+@keyframes turn{0%{transform:scaleX(1) translateY(0)}25%{transform:scaleX(.05) translateY(-10px)}50%{transform:scaleX(-1) translateY(0)}75%{transform:scaleX(.05) translateY(-10px)}100%{transform:scaleX(1) translateY(0)}}
+
+.cat.mv-stomp .legL{animation:stomp calc(var(--beat)*2) ease-in infinite calc(var(--beat)*-1)}
+.cat.mv-stomp .legR{animation:stomp calc(var(--beat)*2) ease-in infinite}
+.cat.mv-stomp .whole{animation:shake var(--beat) ease-out infinite}
+.cat.mv-stomp .armL{animation:pumpL var(--beat) ease-in-out infinite}
+.cat.mv-stomp .armR{animation:pumpR var(--beat) ease-in-out infinite}
+@keyframes stomp{0%,100%{transform:translateY(0)}25%{transform:translateY(-26px)}45%{transform:translateY(0)}}
+@keyframes shake{0%{transform:translateY(4px)}30%{transform:translateY(-3px)}100%{transform:translateY(0)}}
+@keyframes pumpL{0%,100%{transform:rotate(45deg)}50%{transform:rotate(15deg)}}
+@keyframes pumpR{0%,100%{transform:rotate(-15deg)}50%{transform:rotate(-45deg)}}
+
+.cat.mv-reach .armL{animation:reachL calc(var(--beat)*4) ease-in-out infinite}
+.cat.mv-reach .armR{animation:reachR calc(var(--beat)*4) ease-in-out infinite}
+.cat.mv-reach .whole{animation:stretch calc(var(--beat)*4) ease-in-out infinite}
+@keyframes reachL{0%,100%{transform:rotate(25deg)}40%,60%{transform:rotate(168deg)}}
+@keyframes reachR{0%,100%{transform:rotate(-25deg)}40%,60%{transform:rotate(-168deg)}}
+@keyframes stretch{0%,100%{transform:scale(1,1)}40%,60%{transform:scale(.96,1.1) translateY(-14px)}}
+
+.cat.mv-wiggle .whole{animation:wig var(--beat) ease-in-out infinite}
+.cat.mv-wiggle .tail{animation:wag calc(var(--beat)/2) ease-in-out infinite}
+.cat.mv-wiggle .armL{animation:outL calc(var(--beat)/2) ease-in-out infinite}
+.cat.mv-wiggle .armR{animation:outR calc(var(--beat)/2) ease-in-out infinite}
+.cat.mv-wiggle .head{animation:tilt var(--beat) ease-in-out infinite reverse}
+@keyframes wig{0%,100%{transform:rotate(-10deg)}50%{transform:rotate(10deg)}}
+@keyframes outL{0%,100%{transform:rotate(60deg)}50%{transform:rotate(85deg)}}
+@keyframes outR{0%,100%{transform:rotate(-85deg)}50%{transform:rotate(-60deg)}}
+
+.cat.mv-nod .head{animation:nod var(--beat) ease-in-out infinite}
+.cat.mv-nod .whole{animation:bob var(--beat) ease-in-out infinite}
+@keyframes nod{0%,100%{transform:translateY(9px) scale(1,.94)}50%{transform:translateY(-5px) scale(1,1.02)}}
+</style>
+
+<div class="app">
+  <header class="top">
+    <h1><small>Melly Mo's Games</small>Dance Like Me</h1>
+    <button id="gear" class="gear" aria-label="Grown-up settings">⚙</button>
+  </header>
+
+  <main class="stage" id="stage">
+    <div class="light a"></div><div class="light b"></div><div class="light c"></div>
+    <div class="ball"></div>
+    <div class="rug"></div>
+    <div class="notes" id="notes"></div>
+    <div class="catwrap"><div class="poker" id="poker"><svg class="cat idle" id="cat" viewBox="0 0 200 270" role="img" aria-label="Dancing kitty">
+  <g class="whole">
+    <g class="tail"><path d="M136 208 C 172 204, 186 168, 174 136 C 170 124, 182 116, 187 128 C 200 168, 184 218, 140 224 Z" fill="var(--fur)" stroke="var(--ink)" stroke-width="4" stroke-linejoin="round"/>
+      <path d="M180 140 l9 -3 M183 158 l10 0 M180 178 l10 4" stroke="var(--fur-dark)" stroke-width="5" stroke-linecap="round"/></g>
+    <g class="legL"><rect x="71" y="204" width="28" height="44" rx="14" fill="var(--fur)" stroke="var(--ink)" stroke-width="4"/>
+      <ellipse cx="82" cy="249" rx="18" ry="10" fill="var(--belly)" stroke="var(--ink)" stroke-width="4"/></g>
+    <g class="legR"><rect x="101" y="204" width="28" height="44" rx="14" fill="var(--fur)" stroke="var(--ink)" stroke-width="4"/>
+      <ellipse cx="118" cy="249" rx="18" ry="10" fill="var(--belly)" stroke="var(--ink)" stroke-width="4"/></g>
+    <g class="body"><ellipse cx="100" cy="188" rx="45" ry="47" fill="var(--fur)" stroke="var(--ink)" stroke-width="4"/>
+      <ellipse cx="100" cy="196" rx="27" ry="31" fill="var(--belly)"/>
+      <path d="M60 172 q8 3 12 -1 M58 192 q8 3 12 -1 M140 172 q-8 3 -12 -1 M142 192 q-8 3 -12 -1" stroke="var(--fur-dark)" stroke-width="5" fill="none" stroke-linecap="round"/></g>
+    <g class="head">
+      <path d="M48 82 L56 20 L98 52 Z" fill="var(--fur)" stroke="var(--ink)" stroke-width="4" stroke-linejoin="round"/>
+      <path d="M152 82 L144 20 L102 52 Z" fill="var(--fur)" stroke="var(--ink)" stroke-width="4" stroke-linejoin="round"/>
+      <path d="M60 64 L63 34 L84 52 Z M140 64 L137 34 L116 52 Z" fill="var(--pink)"/>
+      <ellipse cx="100" cy="92" rx="63" ry="53" fill="var(--fur)" stroke="var(--ink)" stroke-width="4"/>
+      <path d="M100 42 v16 M86 45 l3 13 M114 45 l-3 13" stroke="var(--fur-dark)" stroke-width="5" stroke-linecap="round"/>
+      <g class="eyes">
+        <ellipse cx="78" cy="88" rx="9.5" ry="12.5" fill="var(--ink)"/><circle cx="81.5" cy="83" r="3.8" fill="#fff"/>
+        <ellipse cx="122" cy="88" rx="9.5" ry="12.5" fill="var(--ink)"/><circle cx="125.5" cy="83" r="3.8" fill="#fff"/>
+      </g>
+      <ellipse cx="62" cy="109" rx="10" ry="6.5" fill="var(--pink)" opacity=".8"/>
+      <ellipse cx="138" cy="109" rx="10" ry="6.5" fill="var(--pink)" opacity=".8"/>
+      <path d="M93 103 L107 103 L100 111 Z" fill="var(--pink)" stroke="var(--ink)" stroke-width="3" stroke-linejoin="round"/>
+      <path d="M100 111 Q100 121 90 120 M100 111 Q100 121 110 120" stroke="var(--ink)" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+      <path d="M48 100 L28 96 M48 108 L27 110 M152 100 L172 96 M152 108 L173 110" stroke="var(--ink)" stroke-width="2.5" stroke-linecap="round"/>
+    </g>
+    <g class="armL"><rect x="52" y="150" width="22" height="52" rx="11" fill="var(--fur)" stroke="var(--ink)" stroke-width="4"/>
+      <circle cx="63" cy="204" r="12.5" fill="var(--belly)" stroke="var(--ink)" stroke-width="4"/></g>
+    <g class="armR"><rect x="126" y="150" width="22" height="52" rx="11" fill="var(--fur)" stroke="var(--ink)" stroke-width="4"/>
+      <circle cx="137" cy="204" r="12.5" fill="var(--belly)" stroke="var(--ink)" stroke-width="4"/></g>
+  </g>
+</svg>
+</div></div>
+    <button class="prompt" id="prompt" hidden aria-label="Hear it again"><span class="ic" id="pIcon"></span><span id="pWord"></span></button>
+    <div class="timer" id="timer" hidden><i id="timerBar"></i></div>
+    <div class="overlay start" id="start">
+      <h2 id="startMsg">Pick a song and dance like kitty!</h2>
+      <button class="bigbtn" id="startBtn" aria-label="Start Dance Like Me">
+        <svg class="paw" viewBox="0 0 100 100" aria-hidden="true"><g fill="var(--ink)"><ellipse cx="50" cy="66" rx="24" ry="20"/><circle cx="22" cy="40" r="10"/><circle cx="39" cy="24" r="10"/><circle cx="61" cy="24" r="10"/><circle cx="78" cy="40" r="10"/></g></svg>
+        Play!
+      </button>
+    </div>
+  </main>
+
+  <div class="tray" id="tray" aria-label="Pick a move"></div>
+  <nav class="controls" aria-label="Songs">
+    <button class="song" data-i="0" aria-label="Song: Can-Can">💃</button>
+    <button class="song" data-i="1" aria-label="Song: Mountain King">⛰️</button>
+    <button class="song" data-i="2" aria-label="Song: Pop Goes the Weasel">🎈</button>
+    <button class="song" data-i="3" aria-label="Song: The Entertainer">🎹</button>
+    <button class="stopbtn" id="stopBtn" aria-label="Stop dancing" disabled><span class="sq"></span>Stop</button>
+  </nav>
+
+  <div class="panel" id="settings" hidden>
+    <div class="box" role="dialog" aria-label="Grown-up settings">
+      <h2>Grown-up settings</h2>
+      <label>Kitty's voice<select id="voiceSel"></select></label>
+      <label>Voice style
+        <select id="voiceStyle"><option value="natural">Natural</option><option value="kitty">Kitty (higher and squeakier)</option></select>
+      </label>
+      <p>★ marks the best-sounding voices on this device. Different phones and computers have different voices.</p>
+      <label>How often kitty changes moves
+        <select id="moveLen">
+          <option value="5">Quick (about 5 seconds)</option>
+          <option value="6">Short (about 6 seconds)</option>
+          <option value="10">Medium (about 10 seconds)</option>
+          <option value="15">Long (about 15 seconds)</option>
+        </select>
+      </label>
+      <p>Tip: tap a round button to pick a song. Each song lasts about a minute. Kitty picks random moves and says each one. Tap a picture to choose a move yourself, or the word bubble to hear it again. Stop ends the dance.</p>
+      <a class="back" href="/">Back to all games</a>
+      <div class="btns"><button class="alt" id="testVoice">Test voice</button><button data-close>Done</button></div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ---------- Music + sound effects (all made in the browser, no files) ---------- */
+const Music = (() => {
+  let ctx, master, bus, noise, timer = null, playing = false, step = 0, nextT = 0, song = null, onStep = null;
+  const api = { onSchedule: null };
+  function init() {
+    if (!ctx) {
+      const AC = window.AudioContext || window.webkitAudioContext;
+      ctx = new AC();
+      const comp = ctx.createDynamicsCompressor();
+      comp.connect(ctx.destination);
+      master = ctx.createGain(); master.gain.value = 0.9; master.connect(comp);
+      bus = ctx.createGain(); bus.gain.value = 0.6; bus.connect(master);   // music bus (ducked for voice)
+      noise = ctx.createBuffer(1, ctx.sampleRate, ctx.sampleRate);
+      const d = noise.getChannelData(0);
+      for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+    }
+    if (ctx.state !== 'running') ctx.resume();
+    return ctx;
+  }
+  const mtof = m => 440 * Math.pow(2, (m - 69) / 12);
+  function tone(t, freq, dur, type, vol, dest, freqEnd) {
+    const o = ctx.createOscillator(), g = ctx.createGain();
+    o.type = type; o.frequency.setValueAtTime(freq, t);
+    if (freqEnd) o.frequency.exponentialRampToValueAtTime(freqEnd, t + dur);
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(vol, t + 0.012);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    o.connect(g); g.connect(dest || bus); o.start(t); o.stop(t + dur + 0.05);
+  }
+  function noiseHit(t, dur, vol, ftype, freq, dest, freqEnd) {
+    const s = ctx.createBufferSource(); s.buffer = noise;
+    const f = ctx.createBiquadFilter(); f.type = ftype; f.frequency.setValueAtTime(freq, t);
+    if (freqEnd) f.frequency.exponentialRampToValueAtTime(freqEnd, t + dur);
+    const g = ctx.createGain(); g.gain.setValueAtTime(vol, t); g.gain.exponentialRampToValueAtTime(0.001, t + dur);
+    s.connect(f); f.connect(g); g.connect(dest || bus); s.start(t, Math.random() * 0.4); s.stop(t + dur + 0.02);
+  }
+  function kick(t) {
+    const o = ctx.createOscillator(), g = ctx.createGain();
+    o.frequency.setValueAtTime(150, t); o.frequency.exponentialRampToValueAtTime(45, t + 0.12);
+    g.gain.setValueAtTime(0.9, t); g.gain.exponentialRampToValueAtTime(0.001, t + 0.28);
+    o.connect(g); g.connect(bus); o.start(t); o.stop(t + 0.3);
+  }
+  const clapDrum = t => { noiseHit(t, 0.12, 0.45, 'bandpass', 1500); noiseHit(t + 0.012, 0.1, 0.3, 'bandpass', 1100); };
+  const hat = (t, v) => noiseHit(t, 0.045, v || 0.16, 'highpass', 7000);
+
+  // Songs: melody is a list of [midi note, length in 16th-steps] (0 = rest); chords change every chordSteps.
+  // Each song plays as a ~1 minute "set": a short drum intro, the tune several times (with a lift on later passes), then a big ending.
+  const TARGET_SEC = 60;
+  function prep(sg) {
+    if (!sg._on) {
+      sg.beatSteps = sg.beatSteps || 4; sg.stepsPerBar = sg.stepsPerBar || 16; sg.chordSteps = sg.chordSteps || 8;
+      sg.introBars = sg.introBars || 1;
+      sg._on = {}; let p = 0;
+      sg.mel.forEach(([m, d]) => { if (m) sg._on[p] = [m, d]; p += d; });
+      sg.loop = p; sg.intro = sg.introBars * sg.stepsPerBar;
+      // how many times through the tune makes about a minute (accounts for songs that speed up)
+      const sec = (steps, bpm) => steps * 60 / bpm / sg.beatSteps;
+      let bpm = sg.bpm, t = sec(sg.intro, bpm), passes = 0;
+      while (passes < 2 || t + sec(sg.loop, bpm) / 2 < TARGET_SEC) {
+        t += sec(sg.loop, bpm); passes++;
+        if (sg.accel) bpm = Math.min(sg.accelMax, bpm + sg.accel);
+        if (passes > 40) break;
+      }
+      sg.passes = passes; sg.totalSec = t;
+    }
+    return sg;
+  }
+  let curBpm = 120, ended = false, playedSec = 0;
+  const stepDur = () => 60 / curBpm / song.beatSteps;
+  function chordTones(t, root, minor, len, vol) { [12, minor ? 15 : 16, 19].forEach(iv => tone(t, mtof(root + 12 + iv), len, 'triangle', vol)); }
+  function playStep(s, t) {
+    const bs = song.beatSteps, half = bs / 2, intro = s < song.intro;
+    const ms = s - song.intro, L = song.loop;
+    const pass = intro ? 0 : Math.floor(ms / L), ls = intro ? s % song.stepsPerBar : ms % L;
+    if (!intro && ls === 0 && pass > 0 && song.accel) curBpm = Math.min(song.accelMax, curBpm + song.accel);
+    const lift = (!intro && song.passes >= 3 && pass === song.passes - 1 && !song.accel) ? 2 : 0;   // key change on the last time through
+    if (!intro && pass >= song.passes) { finale(t, (song.passes >= 3 && !song.accel) ? 2 : 0); return; }
+    const p = ls % bs, beatNo = Math.floor((ls % song.stepsPerBar) / bs);
+    let [root, minor] = intro ? song.chords[0] : song.chords[Math.floor(ls / song.chordSteps) % song.chords.length];
+    root += lift;
+    // drums: four-on-the-floor kick, clap on 2 and 4, open hat on the off-beat
+    if (p === 0) kick(t);
+    if (p === 0 && beatNo % 2 === 1) clapDrum(t);
+    if (p === half) hat(t, 0.22); else if (p % 2 === 0) hat(t, 0.07);
+    // bouncy octave bass
+    if (p === 0) tone(t, mtof(root), stepDur() * half * 0.9, 'triangle', 0.5);
+    if (p === half) tone(t, mtof(root + 12), stepDur() * half * 0.8, 'triangle', 0.4);
+    if (intro) { if (api.onSchedule) api.onSchedule(s, t); return; }
+    // chord stab on each chord change
+    if (ls % song.chordSteps === 0) chordTones(t, root, minor, stepDur() * song.chordSteps * 0.9, 0.04);
+    // melody (every other time through, a sparkly octave-up copy joins in)
+    const n = song._on[ls];
+    if (n) {
+      const m = n[0] + lift, dur = Math.max(0.12, n[1] * stepDur() * 0.92);
+      if (song.lead === 'piano') { tone(t, mtof(m), Math.min(dur + 0.25, 1.2), 'triangle', 0.26); tone(t, mtof(m + 12), 0.25, 'sine', 0.06); }
+      else { tone(t, mtof(m), dur, 'square', 0.07); tone(t, mtof(m), dur + 0.05, 'triangle', 0.17); }
+      if (pass % 2 === 1) tone(t, mtof(m + 12), Math.min(dur, 0.4), 'sine', 0.07);
+    }
+    if (song.pops && song.pops.includes(ls)) api.sfx.pop(t);
+    if (api.onSchedule) api.onSchedule(s, t);
+  }
+  function finale(t, lift) {
+    ended = true;
+    const root = song.chords[0][0] + lift, minor = song.chords[0][1];
+    kick(t); noiseHit(t, 1.6, 0.35, 'highpass', 5000);
+    tone(t, mtof(root), 1.4, 'triangle', 0.5);
+    chordTones(t, root, minor, 1.5, 0.12);
+    tone(t, mtof(root + 24), 1.4, 'square', 0.06); tone(t, mtof(root + 24), 1.5, 'triangle', 0.18);
+    setTimeout(() => { if (!ended) return; api.stop(); if (api.onEnd) api.onEnd(); }, Math.max(0, (t - ctx.currentTime) * 1000) + 1700);
+  }
+  function tick() {
+    while (!ended && nextT < ctx.currentTime + 0.12) {
+      playStep(step, nextT);
+      if (ended) break;
+      const st = step, tt = nextT;
+      if (onStep) setTimeout(() => { if (playing && !ended) onStep(st); }, Math.max(0, (tt - ctx.currentTime) * 1000));
+      playedSec += stepDur();
+      step++; nextT += stepDur();
+    }
+  }
+  function run() { playing = true; nextT = ctx.currentTime + 0.08; timer = setInterval(tick, 25); tick(); }
+  api.init = init;
+  api.start = (s, cb) => {            // start a song from the top
+    init(); api.stop();
+    song = prep(s); onStep = cb || onStep;
+    curBpm = song.bpm; step = 0; ended = false; playedSec = 0;
+    run();
+  };
+  api.resume = () => { if (playing || !song || ended) return; init(); run(); };   // carry on where it paused
+  api.stop = () => { playing = false; clearInterval(timer); timer = null; };
+  api.setSong = s => api.start(s);
+  api.beatSec = () => 60 / curBpm;
+  api.song = () => song;
+  api.isEnded = () => ended;
+  api.progress = () => (song ? Math.min(1, playedSec / song.totalSec) : 0);
+  api.isPop = s => !!(song && song.pops && s >= song.intro && song.pops.includes((s - song.intro) % song.loop));
+  api.isPhrase = s => !!(song && s >= song.intro && (s - song.intro) % (song.stepsPerBar * 4) === 0);
+  api.isPlaying = () => playing;
+  api.duck = on => { if (!ctx) return; bus.gain.cancelScheduledValues(ctx.currentTime); bus.gain.setTargetAtTime(on ? 0.2 : 0.6, ctx.currentTime, 0.08); };
+  api.now = () => (ctx ? ctx.currentTime : 0);
+
+  /* sound effects */
+  api.sfx = {
+    meow(t) {
+      init(); t = t || ctx.currentTime;
+      const o = ctx.createOscillator(), f = ctx.createBiquadFilter(), g = ctx.createGain();
+      o.type = 'sawtooth'; f.type = 'bandpass'; f.Q.value = 2.5;
+      o.frequency.setValueAtTime(560, t); o.frequency.linearRampToValueAtTime(860, t + 0.16); o.frequency.linearRampToValueAtTime(470, t + 0.6);
+      f.frequency.setValueAtTime(900, t); f.frequency.linearRampToValueAtTime(2200, t + 0.2); f.frequency.linearRampToValueAtTime(800, t + 0.6);
+      g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.7, t + 0.05);
+      g.gain.setValueAtTime(0.7, t + 0.42); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.65);
+      o.connect(f); f.connect(g); g.connect(master); o.start(t); o.stop(t + 0.7);
+    },
+    clap(t) { noiseHit(t, 0.14, 0.9, 'bandpass', 1800, master); noiseHit(t + 0.015, 0.12, 0.6, 'bandpass', 1300, master); },
+    boing(t) { tone(t, 180, 0.35, 'sine', 0.6, master, 700); },
+    whoosh(t) { noiseHit(t, 0.7, 0.6, 'bandpass', 300, master, 3500); },
+    thud(t) { tone(t, 110, 0.22, 'sine', 0.9, master, 45); noiseHit(t, 0.08, 0.3, 'lowpass', 500, master); },
+    chime(t) { tone(t, 1318, 0.6, 'sine', 0.25, master); tone(t + 0.12, 1760, 0.6, 'sine', 0.2, master); },
+    slide(t) { tone(t, 330, 0.9, 'sine', 0.3, master, 1320); },
+    shaker(t) { noiseHit(t, 0.06, 0.3, 'highpass', 5000, master); },
+    block(t) { tone(t, 900, 0.07, 'square', 0.15, master); tone(t, 1800, 0.05, 'sine', 0.2, master); },
+    sparkle(t) {
+      init(); t = t || ctx.currentTime;
+      [84, 88, 91, 96, 100].forEach((m, i) => tone(t + i * 0.08, mtof(m), 0.5, 'sine', 0.22, master));
+    },
+    pop(t) { init(); t = t || ctx.currentTime; tone(t, 380, 0.14, 'sine', 0.8, master, 1500); noiseHit(t, 0.04, 0.5, 'bandpass', 2500, master); },
+    freeze(t) { init(); t = t || ctx.currentTime; tone(t, 1600, 0.5, 'sine', 0.25, master, 400); noiseHit(t, 0.3, 0.25, 'highpass', 6000, master); }
+  };
+  return api;
+})();
+
+/* ---------- Songs (shared by the dance games) ---------- */
+const e = (notes, d) => notes.map(n => [n, d]);          // helper: run of equal-length notes
+const SONGS = [
+  { name: 'Can-Can', icon: '💃', bpm: 132, chords: [[48,0],[48,0],[48,0],[48,0],[43,0],[43,0],[48,0],[43,0], [48,0],[48,0],[48,0],[48,0],[43,0],[43,0],[48,0],[48,0]],
+    mel: [
+      [72,8],[74,2],[77,2],[76,2],[74,2],
+      [79,4],[79,4],[79,2],[81,2],[76,2],[77,2],
+      [74,4],[74,4],[74,2],[77,2],[76,2],[74,2],
+      ...e([72,84,83,81,79,77,76,74], 2),
+      [72,8],[74,2],[77,2],[76,2],[74,2],
+      [79,4],[79,4],[79,2],[81,2],[76,2],[77,2],
+      [74,4],[74,4],[74,2],[77,2],[76,2],[74,2],
+      [72,2],[79,2],[76,2],[74,2],[72,4],[0,4] ] },
+  { name: 'Mountain King', icon: '⛰️', bpm: 96, accel: 18, accelMax: 176,
+    chords: [[45,1],[45,1],[47,0],[46,0],[45,1],[45,1],[48,0],[48,0], [40,1],[40,1],[42,0],[41,0],[40,1],[40,1],[43,0],[43,0]],
+    mel: [
+      ...e([69,71,72,74,76,72],2),[76,4],
+      [75,2],[71,2],[75,4],[74,2],[70,2],[74,4],
+      ...e([69,71,72,74,76,72,76,81],2),
+      ...e([79,76,72,76],2),[79,8],
+      ...e([76,78,79,81,83,79],2),[83,4],
+      [82,2],[78,2],[82,4],[81,2],[77,2],[81,4],
+      ...e([76,78,79,81,83,79,83,88],2),
+      ...e([86,83,79,83],2),[86,8] ] },
+  { name: 'Pop Goes the Weasel', icon: '🎈', bpm: 112, introBars: 2, beatSteps: 6, stepsPerBar: 12, chordSteps: 6, pops: [72],
+    chords: [[48,0],[48,0],[48,0],[48,0],[48,0],[43,0],[48,0],[48,0], [48,0],[48,0],[48,0],[48,0],[41,0],[43,0],[48,0],[48,0]],
+    mel: [
+      [72,4],[72,2],[74,4],[74,2],
+      [76,4],[79,2],[76,4],[72,2],
+      [72,4],[72,2],[74,4],[74,2],
+      [76,6],[72,6],
+      [72,4],[72,2],[74,4],[74,2],
+      [76,4],[79,2],[76,4],[72,2],
+      [81,6],[74,4],[77,2],
+      [76,6],[72,6] ] },
+  { name: 'The Entertainer', icon: '🎹', bpm: 104, lead: 'piano',
+    chords: [[48,0],[48,0],[48,0],[48,0],[43,0],[43,0],[48,0],[48,0], [48,0],[48,0],[48,0],[38,0],[38,0],[38,0],[43,0],[43,0]],
+    mel: [
+      [76,2],[84,4],[76,2],[84,4],[76,2],[84,10],[0,2],[84,2],[86,2],[87,2],
+      [88,2],[84,2],[86,2],[88,4],[83,2],[86,4],
+      [84,8],[0,4],[74,2],[75,2],
+      [76,2],[84,4],[76,2],[84,4],[76,2],[84,8],[81,2],[79,2],[78,2],[81,2],[84,2],
+      [88,4],[86,2],[84,2],[81,2],[86,6],
+      [86,8],[0,4],[74,2],[75,2] ] }
+];
+
+/* ---------- Grown-up-selectable voice ---------- */
+const Voice = (() => {
+  const KEY = 'mellyMoVoice';
+  let voices = [];
+  // Rank voices so the nicest-sounding one on this device is picked first
+  function score(v) {
+    const n = v.name; let sc = 0;
+    if (/natural|neural|premium|enhanced|online/i.test(n)) sc += 100;
+    if (/google us english|google uk english female|samantha|\bava\b|allison|susan|karen|moira|tessa|serena|aria|jenny|michelle|emma|ana\b|zoe|nicky/i.test(n)) sc += 60;
+    if (/en[-_]US/i.test(v.lang)) sc += 15;
+    if (v.localService === false) sc += 10;
+    if (/compact|eloquence|espeak|grandma|grandpa|bad news|good news|bells|boing|bubbles|cellos|jester|organ|superstar|trinoids|whisper|wobble|zarvox|albert|fred|junior|ralph|kathy|bahh|hysterical|deranged|pipe|rocko|shelley|flo|reed|sandy/i.test(n)) sc -= 80;
+    return sc;
+  }
+  const sel = () => document.getElementById('voiceSel');
+  const saved = () => { try { return localStorage.getItem(KEY) || ''; } catch (e) { return ''; } };
+  function load() {
+    if (!('speechSynthesis' in window)) return;
+    const all = speechSynthesis.getVoices() || [];
+    voices = all.filter(v => /^en/i.test(v.lang));
+    if (!voices.length) voices = all;
+    voices = voices.filter(v => score(v) > -40).sort((a, b) => score(b) - score(a));
+    const s = sel(); if (!s) return;
+    const keep = s.value || saved();
+    s.innerHTML = '';
+    voices.forEach(v => { const o = document.createElement('option'); o.value = v.voiceURI; o.textContent = (score(v) >= 60 ? '★ ' : '') + `${v.name} (${v.lang})`; s.appendChild(o); });
+    s.value = voices.some(v => v.voiceURI === keep) ? keep : (voices[0] ? voices[0].voiceURI : '');
+  }
+  function init() {
+    if (!('speechSynthesis' in window)) { const s = sel(); if (s) { s.innerHTML = '<option>Voice not available on this device</option>'; s.disabled = true; } return; }
+    load();
+    speechSynthesis.addEventListener ? speechSynthesis.addEventListener('voiceschanged', load) : (speechSynthesis.onvoiceschanged = load);
+    const st = document.getElementById('voiceStyle');
+    if (st) { try { st.value = localStorage.getItem(KEY + 'Style') || 'natural'; } catch (e) {}
+      st.addEventListener('change', () => { try { localStorage.setItem(KEY + 'Style', st.value); } catch (e) {} say('Hi! I am kitty!'); }); }
+    sel().addEventListener('change', () => { try { localStorage.setItem(KEY, sel().value); } catch (e) {} say('Hi! I am kitty!'); });
+  }
+  function say(text, onend) {
+    if (!('speechSynthesis' in window)) { if (onend) setTimeout(onend, 800); return; }
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    const v = voices.find(v => v.voiceURI === (sel() && sel().value));
+    if (v) { u.voice = v; u.lang = v.lang; }
+    const style = document.getElementById('voiceStyle');
+    const kitty = style && style.value === 'kitty';
+    u.rate = 0.95; u.pitch = kitty ? 1.3 : 1.05;
+    Music.duck(true);
+    let done = false;
+    const finish = () => { if (done) return; done = true; Music.duck(false); if (onend) onend(); };
+    u.onend = finish; u.onerror = finish;
+    setTimeout(finish, 4500); // safety if onend never fires
+    speechSynthesis.speak(u);
+  }
+  return { init, say };
+})();
+
+/* ---------- Grown-up settings panel ---------- */
+function setupPanel() {
+  const panel = document.getElementById('settings');
+  document.getElementById('gear').addEventListener('click', () => { panel.hidden = false; });
+  panel.querySelectorAll('[data-close]').forEach(b => b.addEventListener('click', () => { panel.hidden = true; }));
+  panel.addEventListener('click', e => { if (e.target === panel) panel.hidden = true; });
+  document.getElementById('testVoice').addEventListener('click', () => { Music.init(); Voice.say('Hi! Let\'s dance!'); });
+}
+function pref(key, fallback) { try { const v = localStorage.getItem(key); return v == null ? fallback : JSON.parse(v); } catch (e) { return fallback; } }
+function savePref(key, val) { try { localStorage.setItem(key, JSON.stringify(val)); } catch (e) {} }
+
+/* ---------- Floating notes + stars ---------- */
+const NOTE_COLORS = ['var(--sun)', 'var(--pink)', 'var(--mint)', 'var(--sky)', 'var(--cream)'];
+function spawnNote(layer, glyphs) {
+  const n = document.createElement('span');
+  n.className = 'note';
+  n.textContent = glyphs[Math.floor(Math.random() * glyphs.length)];
+  n.style.left = (5 + Math.random() * 85) + '%';
+  n.style.color = NOTE_COLORS[Math.floor(Math.random() * NOTE_COLORS.length)];
+  layer.appendChild(n);
+  setTimeout(() => n.remove(), 3100);
+}
+function pokeCat(poker) {
+  poker.classList.remove('poke'); void poker.offsetWidth; poker.classList.add('poke');
+  Music.sfx.meow();
+}
+
+
+const DANCE_SONGS = SONGS;
+const MOVES = [
+  { id: 'clap',   icon: '👏', word: 'Clap!',      say: 'Clap your hands!',   sfx: 'clap',   every: 4 },
+  { id: 'wave',   icon: '👋', word: 'Wave!',      say: 'Wave hello!',        sfx: 'chime',  every: 8 },
+  { id: 'jump',   icon: '🦘', word: 'Jump!',      say: 'Jump, jump, jump!',  sfx: 'boing',  every: 8 },
+  { id: 'spin',   icon: '🌀', word: 'Spin!',      say: 'Spin around!',       sfx: 'whoosh', every: 16 },
+  { id: 'stomp',  icon: '🐾', word: 'Stomp!',     say: 'Stomp your feet!',   sfx: 'thud',   every: 4 },
+  { id: 'reach',  icon: '🙌', word: 'Reach up!',  say: 'Reach up high!',     sfx: 'slide',  every: 16 },
+  { id: 'wiggle', icon: '💃', word: 'Wiggle!',    say: 'Wiggle, wiggle!',    sfx: 'shaker', every: 2 },
+  { id: 'nod',    icon: '🙂', word: 'Nod!',       say: 'Nod your head!',     sfx: 'block',  every: 4 }
+];
+const PRAISE = ['Yay! Great dancing!', 'Wow! Good job!', 'Hooray! What a dancer!', 'Meow! You are a dancing kitty!'];
+
+const cat = document.getElementById('cat'), stage = document.getElementById('stage'), poker = document.getElementById('poker');
+const notes = document.getElementById('notes'), promptEl = document.getElementById('prompt');
+const timerEl = document.getElementById('timer'), timerBar = document.getElementById('timerBar');
+const tray = document.getElementById('tray'), stopBtn = document.getElementById('stopBtn');
+const startOv = document.getElementById('start');
+const songBtns = [...document.querySelectorAll('.song')];
+const moveLen = document.getElementById('moveLen');
+moveLen.value = String(pref('dlmLen', 10));
+if (!moveLen.value) moveLen.value = '10';
+moveLen.addEventListener('change', () => savePref('dlmLen', +moveLen.value));
+
+let songIdx = 0, playing = false, current = null, lastMoveAt = 0;
+
+MOVES.forEach(m => {
+  const b = document.createElement('button');
+  b.className = 'mv'; b.textContent = m.icon; b.setAttribute('aria-label', m.word); b.dataset.id = m.id;
+  b.addEventListener('click', () => { if (!playing) play(); setMove(m); });
+  tray.appendChild(b);
+});
+
+Music.onSchedule = (s, t) => {
+  if (!playing || !current) return;
+  const every = Math.max(1, Math.round(current.every / 4 * Music.song().beatSteps));
+  if (s % every === 0) Music.sfx[current.sfx](t);
+};
+
+function setCat(cls) { cat.className.baseVal = 'cat ' + cls; }
+function showSong() {
+  songBtns.forEach((b, i) => b.classList.toggle('on', playing && i === songIdx));
+  cat.style.setProperty('--beat', (60 / DANCE_SONGS[songIdx].bpm) + 's'); lastBeat = 0;
+}
+let lastBeat = 0;
+function onStep(s) {
+  if (s % Music.song().beatSteps === 0) {
+    spawnNote(notes, ['♪', '♫']);
+    timerBar.style.width = (100 - Music.progress() * 100) + '%';
+    const b = Music.beatSec(); if (b !== lastBeat) { lastBeat = b; cat.style.setProperty('--beat', b + 's'); }
+  }
+  if (Music.isPop(s)) { poker.classList.remove('poke'); void poker.offsetWidth; poker.classList.add('poke'); }
+  // change moves at the start of a musical phrase, once the current move has had its turn
+  if (Music.isPhrase(s) && (Date.now() - lastMoveAt) / 1000 >= (+moveLen.value || 10) * 0.6) setMove(randomMove());
+}
+
+function play() {
+  Music.init();
+  playing = true; startOv.hidden = true; stopBtn.disabled = false;
+  stage.classList.add('playing');
+  showSong();
+  Music.start(DANCE_SONGS[songIdx], onStep);
+  timerEl.hidden = false; timerBar.style.width = '100%';
+  setMove(randomMove());
+}
+function randomMove() {
+  const pool = MOVES.filter(m => !current || m.id !== current.id);
+  return pool[Math.floor(Math.random() * pool.length)];
+}
+function setMove(m) {
+  current = m;
+  setCat('mv-' + m.id);
+  [...tray.children].forEach(b => b.classList.toggle('on', b.dataset.id === m.id));
+  document.getElementById('pIcon').textContent = m.icon;
+  document.getElementById('pWord').textContent = m.word;
+  promptEl.hidden = false; promptEl.classList.remove('pop'); void promptEl.offsetWidth; promptEl.classList.add('pop');
+  Voice.say(m.say);
+  lastMoveAt = Date.now();
+}
+function stop(msg) {
+  if (!playing) return;
+  playing = false; current = null;
+  Music.stop();
+  stage.classList.remove('playing'); timerEl.hidden = true; promptEl.hidden = true;
+  setCat('idle'); stopBtn.disabled = true;
+  [...tray.children].forEach(b => b.classList.remove('on'));
+  showSong();
+  Music.sfx.sparkle();
+  for (let i = 0; i < 14; i++) {
+    const s = document.createElement('span'); s.className = 'star'; s.textContent = '★';
+    const a = (i / 14) * Math.PI * 2, r = 120 + Math.random() * 80;
+    s.style.setProperty('--dx', Math.cos(a) * r + 'px'); s.style.setProperty('--dy', Math.sin(a) * r + 'px');
+    s.style.color = NOTE_COLORS[i % NOTE_COLORS.length];
+    stage.appendChild(s); setTimeout(() => s.remove(), 1400);
+  }
+  Voice.say(PRAISE[Math.floor(Math.random() * PRAISE.length)]);
+  document.getElementById('startMsg').textContent = msg || 'Pick a song to dance again!';
+  setTimeout(() => { if (!playing) startOv.hidden = false; }, 1500);
+}
+
+songBtns.forEach((b, i) => b.addEventListener('click', () => {
+  songIdx = i;
+  if (!playing) { play(); return; }
+  Music.start(DANCE_SONGS[songIdx], onStep); showSong();
+  timerBar.style.width = '100%';
+  setMove(randomMove());   // new song, new move
+}));
+document.getElementById('startBtn').addEventListener('click', play);
+stopBtn.addEventListener('click', () => stop());
+Music.onEnd = () => stop('That song is done! Pick another one.');
+promptEl.addEventListener('click', () => { if (current) Voice.say(current.say); });
+poker.addEventListener('click', () => { if (playing) pokeCat(poker); });
+setupPanel(); Voice.init();
+</script>
+
+</body>
+</html>

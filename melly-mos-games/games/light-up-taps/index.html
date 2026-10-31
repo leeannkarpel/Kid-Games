@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<title>Melly Mo’s Light-Up Taps</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --plum:#5b2a6e; --plum-deep:#3d1a4b; --sun:#ffc93c; --night:#1b0f3a; --night-2:#2d1660;
+  --panel-bg:#fff8ee; --panel-text:#3d1a4b; --panel-muted:#7a5a86; --panel-line:#e6d4ea;
+  --font:"Baloo 2", "Arial Rounded MT Bold", "Trebuchet MS", system-ui, sans-serif;
+  color-scheme: light;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){ --panel-bg:#2a1533; --panel-text:#fdf0ff; --panel-muted:#cbb1d4; --panel-line:#4d2f59; color-scheme:dark; }
+}
+:root[data-theme="dark"]{ --panel-bg:#2a1533; --panel-text:#fdf0ff; --panel-muted:#cbb1d4; --panel-line:#4d2f59; color-scheme:dark; }
+*,*::before,*::after{ box-sizing:border-box; }
+[hidden]{ display:none !important; }
+html,body{ height:100%; margin:0; }
+html{ scroll-padding-top:env(safe-area-inset-top,0px); background:var(--night); }
+body{
+  font-family:var(--font); color:#fff; overflow:hidden; background:radial-gradient(120% 90% at 50% 100%, var(--night-2), var(--night));
+  -webkit-user-select:none; user-select:none; -webkit-touch-callout:none;
+  touch-action:none; overscroll-behavior:none; -webkit-tap-highlight-color:transparent;
+}
+canvas{ position:fixed; inset:0; width:100vw; height:100%; display:block; touch-action:none; }
+.top{ position:fixed; z-index:5; top:calc(env(safe-area-inset-top,0px) + 8px); left:max(12px, env(safe-area-inset-left,0px)); right:max(12px, env(safe-area-inset-right,0px));
+  display:flex; justify-content:space-between; align-items:center; pointer-events:none; }
+.title{ margin:0; font-weight:800; font-size:clamp(1rem, 3.4vw, 1.4rem); line-height:1.1; opacity:.75; display:flex; align-items:center; gap:.35em; }
+.top > *{ pointer-events:auto; }
+.title{ pointer-events:none; }
+
+.modes{ position:fixed; z-index:5; left:50%; transform:translateX(-50%); bottom:calc(env(safe-area-inset-bottom,0px) + 10px);
+  display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:10px; width:min(94vw, 520px); }
+.mode-btn{ all:unset; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:.35em; min-height:60px; border-radius:20px;
+  background:rgba(255,255,255,.12); color:#fff; font-weight:800; font-size:clamp(.95rem, 3.4vw, 1.2rem); line-height:1;
+  box-shadow:inset 0 0 0 2px rgba(255,255,255,.18); }
+.mode-btn .em{ font-size:1.8em; }
+.mode-btn small{ display:block; font-weight:600; font-size:.75em; opacity:.85; margin-top:.15em; }
+.mode-btn[aria-pressed="true"]{ background:var(--sun); color:var(--plum-deep); box-shadow:0 0 24px rgba(255,201,60,.55); }
+.mode-btn:focus-visible, .gear:focus-visible, .btn:focus-visible, select:focus-visible{ outline:4px solid #fff; outline-offset:3px; }
+
+.hint{ position:fixed; z-index:3; left:50%; top:46%; transform:translate(-50%,-50%); text-align:center; pointer-events:none; transition:opacity .6s; }
+.hint .hand{ font-size:clamp(3.5rem, 16vw, 6rem); display:inline-block; animation:tapme 1.4s ease-in-out infinite; }
+.hint .txt{ display:block; font-size:clamp(1.3rem, 5vw, 2rem); font-weight:800; opacity:.9; }
+.hint.off{ opacity:0; }
+@keyframes tapme{ 0%,100%{ transform:translateY(0) scale(1); } 45%{ transform:translateY(14px) scale(.92); } }
+
+/* grown-up gear */
+.gear{ all:unset; position:relative; width:48px; height:48px; flex:none; border-radius:50%; display:grid; place-items:center; cursor:pointer;
+  background:rgba(255,255,255,.14); color:#fff; font-size:24px; }
+.gear::after{ content:""; position:absolute; inset:-4px; border-radius:50%; background:conic-gradient(var(--sun) calc(var(--p,0) * 1turn), transparent 0);
+  -webkit-mask:radial-gradient(circle, transparent 25px, #000 26px); mask:radial-gradient(circle, transparent 25px, #000 26px); }
+.gear-tip{ position:absolute; right:0; top:54px; white-space:nowrap; background:#fff; color:var(--plum-deep); font-size:.95rem; font-weight:600; padding:6px 12px; border-radius:12px; }
+
+/* start */
+.start{ position:fixed; inset:0; z-index:20; display:grid; place-items:center; padding:24px; background:radial-gradient(circle at 50% 40%, rgba(255,201,60,.25), transparent 60%), rgba(27,15,58,.88); }
+.start-card{ text-align:center; max-width:30rem; }
+.start-card .big{ font-size:clamp(3rem, 14vw, 5.5rem); line-height:1; letter-spacing:.05em; }
+.start-card h2{ margin:.2em 0 .1em; font-size:clamp(1.8rem, 7vw, 2.8rem); line-height:1.05; font-weight:800; }
+.start-card p{ margin:0 0 1.1em; font-size:1.15rem; font-weight:600; opacity:.9; }
+.play{ all:unset; cursor:pointer; display:inline-grid; place-items:center; width:min(52vw, 220px); aspect-ratio:1; border-radius:50%;
+  background:var(--sun); color:var(--plum-deep); font-size:clamp(2rem, 9vw, 3rem); font-weight:800; box-shadow:0 8px 0 #c98f00, 0 0 0 10px rgba(255,201,60,.3);
+  animation:breathe 1.8s ease-in-out infinite; }
+.play:focus-visible{ outline:5px solid #fff; outline-offset:8px; }
+@keyframes breathe{ 50%{ transform:scale(1.06); } }
+@media (max-height:520px){ .start-card .big{ font-size:2.6rem; } .start-card h2{ font-size:1.6rem; } .start-card p{ margin-bottom:.5em; } .play{ width:120px; font-size:1.8rem; }
+  .mode-btn{ min-height:48px; } .gear{ width:44px; height:44px; } }
+
+/* grown-up panel */
+.sheet-wrap{ position:fixed; inset:0; z-index:30; display:grid; place-items:center; padding:16px; background:rgba(10,4,20,.6); touch-action:auto; }
+.sheet{ width:min(100%, 30rem); max-height:100%; overflow:auto; background:var(--panel-bg); color:var(--panel-text); border-radius:24px; padding:20px 20px 18px;
+  box-shadow:0 20px 50px rgba(0,0,0,.4); -webkit-user-select:text; user-select:text; touch-action:pan-y; }
+.sheet h2{ margin:0 0 4px; font-size:1.5rem; line-height:1.1; }
+.sheet .note{ margin:0 0 14px; color:var(--panel-muted); font-size:1rem; line-height:1.35; font-weight:600; }
+.field{ margin:0 0 14px; border:0; padding:0; }
+.field > legend, .field > label{ display:block; font-weight:800; font-size:1.05rem; margin-bottom:6px; padding:0; }
+.seg{ display:grid; grid-template-columns:repeat(3,1fr); gap:6px; }
+.seg button, .btn{ all:unset; cursor:pointer; text-align:center; min-height:46px; border-radius:14px; padding:4px 10px; display:grid; place-items:center;
+  border:2px solid var(--panel-line); font-weight:800; font-size:1rem; color:var(--panel-text); }
+.seg button[aria-pressed="true"]{ background:var(--plum); border-color:var(--plum); color:#fff; }
+.row{ display:flex; gap:8px; align-items:center; }
+select{ flex:1; min-width:0; font:600 16px/1.2 var(--font); min-height:46px; border-radius:14px; border:2px solid var(--panel-line); background:var(--panel-bg); color:var(--panel-text); padding:4px 10px; }
+.btn.primary{ background:var(--sun); border-color:var(--sun); color:#3d1a4b; width:100%; box-sizing:border-box; margin-top:4px; font-size:1.15rem; }
+.toggle{ display:flex; align-items:center; gap:10px; font-weight:800; font-size:1.05rem; min-height:46px; cursor:pointer; }
+.toggle input{ width:26px; height:26px; accent-color:var(--plum); }
+.nosound{ position:fixed; left:50%; top:calc(env(safe-area-inset-top,0px) + 64px); transform:translateX(-50%); z-index:15; width:min(92vw, 28rem);
+  background:#fff; color:var(--plum-deep); border-radius:16px; padding:10px 14px; font-weight:600; font-size:1rem; line-height:1.35; text-align:center; }
+@media (prefers-reduced-motion: reduce){ .hint .hand, .play{ animation:none !important; } }
+</style>
+</head>
+<body>
+<canvas id="cv" aria-label="Tap anywhere to make lights and music" role="img"></canvas>
+
+<header class="top">
+  <h1 class="title"><span aria-hidden="true">🐱</span><span>Melly Mo’s Light-Up Taps</span></h1>
+  <div style="position:relative">
+    <button class="gear" id="gear" aria-label="Grown-up settings (press and hold)">⚙︎</button>
+    <div class="gear-tip" id="gearTip" hidden>Grown-ups: press and hold</div>
+  </div>
+</header>
+
+<div class="hint" id="hint" aria-hidden="true"><span class="hand">👆</span><span class="txt" id="hintTxt">Tap anywhere!</span></div>
+
+<nav class="modes" id="modes" aria-label="Pick what lights up"></nav>
+
+<div class="start" id="start">
+  <div class="start-card">
+    <div class="big" aria-hidden="true">⭐🫧🎵</div>
+    <h2>Melly Mo’s Light-Up Taps</h2>
+    <p>Tap or swipe to make lights and music.</p>
+    <button class="play" id="play" aria-label="Play">Play</button>
+  </div>
+</div>
+
+<div class="nosound" id="nosound" role="status" hidden>No sound came out. Check that the phone isn’t on silent and the volume is up, then tap again.</div>
+
+<div class="sheet-wrap" id="sheetWrap" hidden>
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+    <h2 id="sheetTitle">Grown-up settings</h2>
+    <p class="note">Pick the language and voices. Changes are saved on this device.</p>
+    <fieldset class="field">
+      <legend>Language</legend>
+      <div class="seg" id="langSeg">
+        <button type="button" data-lang="en">English</button>
+        <button type="button" data-lang="es">Español</button>
+        <button type="button" data-lang="both">Both</button>
+      </div>
+    </fieldset>
+    <div class="field">
+      <label for="enVoice">English voice</label>
+      <div class="row"><select id="enVoice"></select><button class="btn" type="button" data-test="en" aria-label="Test English voice">▶︎ Test</button></div>
+    </div>
+    <div class="field">
+      <label for="esVoice">Spanish voice</label>
+      <div class="row"><select id="esVoice"></select><button class="btn" type="button" data-test="es" aria-label="Test Spanish voice">▶︎ Test</button></div>
+    </div>
+    <label class="toggle"><input type="checkbox" id="sayColors"> Say the colors out loud</label>
+    <label class="toggle"><input type="checkbox" id="sfx"> Music and sound effects</label>
+    <a class="btn" href="/" style="width:100%;margin-bottom:8px">Back to all games</a>
+    <button class="btn primary" type="button" id="done">Done</button>
+  </div>
+</div>
+
+<script>
+(() => {
+"use strict";
+/* ================= settings ================= */
+const LS_KEY = "mellymo-settings";
+function loadSettings(){ try{ return JSON.parse(localStorage.getItem(LS_KEY) || "{}") || {}; }catch(e){ return {}; } }
+const settings = Object.assign({ lang:"en", enVoice:"", esVoice:"", sfx:true, sayColors:true }, loadSettings());
+function saveSettings(){ try{ localStorage.setItem(LS_KEY, JSON.stringify(settings)); }catch(e){} }
+const reduceMotion = (() => { try{ return matchMedia("(prefers-reduced-motion: reduce)").matches; }catch(e){ return false; } })();
+
+/* ================= speech ================= */
+let voices = [];
+const langOf = v => (v.lang || "").replace("_","-").toLowerCase();
+function loadVoices(){ try{ voices = (window.speechSynthesis && speechSynthesis.getVoices()) || []; }catch(e){ voices = []; } fillVoiceSelects(); }
+function voiceFor(lang){
+  const pref = settings[lang === "en" ? "enVoice" : "esVoice"];
+  let v = voices.find(x => x.voiceURI === pref);
+  if (v) return v;
+  const list = voices.filter(x => langOf(x).startsWith(lang));
+  const first = lang === "en" ? "en-us" : "es-es", second = lang === "en" ? "en-gb" : "es-mx";
+  return list.find(x => langOf(x) === first) || list.find(x => langOf(x) === second) || list[0] || null;
+}
+let speakToken = 0, spokeOnce = false, silentTimer = null, speaking = false;
+function speak(parts){
+  if (!parts.length) return;
+  const tok = ++speakToken;
+  try{ if (!window.speechSynthesis) { showNoSound(); return; } speechSynthesis.cancel(); }catch(e){ return; }
+  let i = 0; speaking = true;
+  const next = () => {
+    if (tok !== speakToken) return;
+    if (i >= parts.length){ speaking = false; return; }
+    const p = parts[i++];
+    try{
+      const u = new SpeechSynthesisUtterance(p.text);
+      const v = voiceFor(p.lang);
+      if (v){ u.voice = v; u.lang = v.lang; } else { u.lang = p.lang === "en" ? "en-US" : "es-ES"; }
+      u.rate = 0.85; u.pitch = 1.1;
+      let done = false;
+      const fin = () => { if (done) return; done = true; clearTimeout(safety); setTimeout(next, 200); };
+      const safety = setTimeout(fin, 6000);
+      u.onstart = () => { spokeOnce = true; hideNoSound(); };
+      u.onend = fin; u.onerror = fin;
+      speechSynthesis.speak(u);
+    }catch(e){ speaking = false; }
+  };
+  next();
+  if (!spokeOnce){ clearTimeout(silentTimer); silentTimer = setTimeout(() => { if (!spokeOnce) showNoSound(); }, 1800); }
+}
+function lines(en, es){
+  const m = settings.lang, out = [];
+  if (m !== "es" && en) out.push({ lang:"en", text:en });
+  if (m !== "en" && es) out.push({ lang:"es", text:es });
+  return out;
+}
+const noSoundEl = document.getElementById("nosound");
+let noSoundHide = null;
+function showNoSound(){ noSoundEl.hidden = false; clearTimeout(noSoundHide); noSoundHide = setTimeout(hideNoSound, 7000); }
+function hideNoSound(){ noSoundEl.hidden = true; }
+try{ if (window.speechSynthesis) speechSynthesis.onvoiceschanged = loadVoices; }catch(e){}
+
+/* ================= music ================= */
+let ac = null, master = null;
+function audio(){
+  if (!settings.sfx) return null;
+  try{
+    if (!ac){
+      ac = new (window.AudioContext || window.webkitAudioContext)();
+      master = ac.createDynamicsCompressor(); master.connect(ac.destination);
+    }
+    if (ac.state === "suspended") ac.resume();
+    return ac;
+  }catch(e){ return null; }
+}
+function osc(f, type, vol, attack, decay, when = 0, slideTo = 0){
+  const a = audio(); if (!a) return;
+  try{
+    const t = a.currentTime + when, o = a.createOscillator(), g = a.createGain();
+    o.type = type; o.frequency.setValueAtTime(f, t);
+    if (slideTo) o.frequency.exponentialRampToValueAtTime(slideTo, t + Math.min(decay, .2));
+    g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(vol, t + attack); g.gain.exponentialRampToValueAtTime(.0001, t + attack + decay);
+    o.connect(g).connect(master); o.start(t); o.stop(t + attack + decay + .05);
+  }catch(e){}
+}
+// C major pentatonic, two octaves — every note sounds nice together
+const SCALE = [261.63, 293.66, 329.63, 392.00, 440.00, 523.25, 587.33, 659.25, 783.99, 880.00, 1046.5];
+const voicesFor = {
+  stars(f){ [[1,.16,1.4],[2.76,.05,.7],[5.4,.025,.4]].forEach(([r,v,d]) => osc(f*r, "sine", v, .005, d)); },
+  bubbles(f){ osc(f*.55, "sine", .22, .005, .18, 0, f*1.3); },
+  music(f){ osc(f, "triangle", .2, .01, .55); osc(f*4, "sine", .04, .005, .12); }
+};
+let lastNoteAt = 0;
+function playNote(x, force){
+  const now = performance.now();
+  if (!force && now - lastNoteAt < 70) return;
+  lastNoteAt = now;
+  const idx = Math.max(0, Math.min(SCALE.length - 1, Math.floor(x / W * SCALE.length)));
+  voicesFor[mode](SCALE[idx]);
+}
+function popSound(){ osc(900, "sine", .18, .003, .08, 0, 1600); }
+
+/* ================= colors ================= */
+const COLORS = [
+  { en:"Red", es:"Rojo", c:"#ff4d5e" }, { en:"Orange", es:"Naranja", c:"#ff9f1c" }, { en:"Yellow", es:"Amarillo", c:"#ffe14d" },
+  { en:"Green", es:"Verde", c:"#4ee06a" }, { en:"Blue", es:"Azul", c:"#4da6ff" }, { en:"Purple", es:"Morado", c:"#b56bff" }, { en:"Pink", es:"Rosa", c:"#ff7ad9" }
+];
+let lastColor = -1, lastSay = 0;
+function nextColor(){
+  let i; do { i = Math.floor(Math.random() * COLORS.length); } while (i === lastColor);
+  lastColor = i; return COLORS[i];
+}
+function sayColor(col){
+  if (!settings.sayColors) return;
+  const now = performance.now();
+  if (speaking || now - lastSay < 1500) return;
+  lastSay = now;
+  speak(lines(col.en + "!", "¡" + col.es + "!"));
+}
+
+/* ================= canvas ================= */
+const cv = document.getElementById("cv"), ctx = cv.getContext("2d");
+let W = 0, H = 0, DPR = 1;
+const sky = [];
+function resize(){
+  DPR = Math.min(2, window.devicePixelRatio || 1);
+  W = window.innerWidth; H = window.innerHeight;
+  cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR);
+  ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  sky.length = 0;
+  const n = Math.round(W * H / 9000);
+  for (let i = 0; i < n; i++) sky.push({ x:Math.random()*W, y:Math.random()*H, r:Math.random()*1.4+.4, ph:Math.random()*6.28 });
+}
+window.addEventListener("resize", resize);
+
+const parts = [];
+const MAX = reduceMotion ? 180 : 650;
+let mode = "stars";
+function add(p){ if (parts.length >= MAX) parts.shift(); parts.push(p); }
+const rnd = (a, b) => a + Math.random() * (b - a);
+
+function burst(x, y, col, big){
+  const n = reduceMotion ? 5 : (big ? 16 : 3);
+  if (mode === "stars"){
+    add({ k:"ring", x, y, r:6, vr:big ? 260 : 140, life:0, max:.7, c:col.c, w:big ? 6 : 3 });
+    if (big) add({ k:"star", x, y, vx:0, vy:0, g:0, s:big ? 46 : 20, life:0, max:.9, c:col.c, rot:0, vrot:2, grow:true });
+    for (let i = 0; i < n; i++){
+      const a = rnd(0, Math.PI*2), sp = big ? rnd(140, 420) : rnd(40, 120);
+      add({ k:"star", x, y, vx:Math.cos(a)*sp, vy:Math.sin(a)*sp - (big ? 80 : 20), g:big ? 420 : 160, s:big ? rnd(8, 18) : rnd(5, 9), life:0, max:rnd(.9, 1.6), c:Math.random() < .25 ? "#fff" : col.c, rot:rnd(0,6), vrot:rnd(-6,6) });
+    }
+  } else if (mode === "bubbles"){
+    const m = big ? (reduceMotion ? 3 : 7) : 1;
+    for (let i = 0; i < m; i++) add({ k:"bubble", x:x + rnd(-24, 24), y:y + rnd(-20, 20), vx:rnd(-30, 30), vy:rnd(-140, -60), r:big ? rnd(16, 40) : rnd(8, 16), life:0, max:rnd(2.4, 4), c:col.c, ph:rnd(0,6), tappable:big });
+  } else {
+    add({ k:"ring", x, y, r:6, vr:big ? 220 : 110, life:0, max:.8, c:col.c, w:big ? 5 : 3 });
+    const m = big ? (reduceMotion ? 2 : 5) : 1;
+    for (let i = 0; i < m; i++) add({ k:"note", x:x + rnd(-30, 30), y, vx:rnd(-40, 40), vy:rnd(-160, -70), s:big ? rnd(34, 58) : rnd(20, 30), life:0, max:rnd(1.6, 2.4), c:col.c, ch:Math.random() < .5 ? "♪" : "♫", ph:rnd(0,6) });
+  }
+}
+function sparks(x, y, col, n){
+  for (let i = 0; i < n; i++){
+    const a = rnd(0, Math.PI*2), sp = rnd(60, 220);
+    add({ k:"spark", x, y, vx:Math.cos(a)*sp, vy:Math.sin(a)*sp, g:120, s:rnd(2, 4), life:0, max:rnd(.4, .8), c:col.c });
+  }
+}
+
+/* ambient bubbles in bubble mode: pop them! */
+let ambientTimer = 0;
+function spawnAmbient(){
+  const col = COLORS[Math.floor(Math.random() * COLORS.length)];
+  add({ k:"bubble", x:rnd(W*.08, W*.92), y:H + 40, vx:rnd(-12, 12), vy:rnd(-70, -40), r:rnd(28, 48), life:0, max:30, c:col.c, col, ph:rnd(0,6), tappable:true, ambient:true });
+}
+function tryPop(x, y){
+  for (let i = parts.length - 1; i >= 0; i--){
+    const p = parts[i];
+    if (p.k === "bubble" && p.tappable && Math.hypot(p.x - x, p.y - y) < p.r + 16){
+      parts.splice(i, 1);
+      const col = p.col || COLORS.find(c => c.c === p.c) || COLORS[0];
+      popSound(); sparks(p.x, p.y, col, reduceMotion ? 4 : 14);
+      add({ k:"ring", x:p.x, y:p.y, r:p.r, vr:160, life:0, max:.4, c:p.c, w:3 });
+      return col;
+    }
+  }
+  return null;
+}
+
+function starPath(r){
+  ctx.beginPath();
+  for (let i = 0; i < 10; i++){
+    const rr = i % 2 ? r * .45 : r, a = -Math.PI/2 + i * Math.PI / 5;
+    ctx.lineTo(Math.cos(a) * rr, Math.sin(a) * rr);
+  }
+  ctx.closePath();
+}
+let last = performance.now(), t = 0;
+function frame(now){
+  const dt = Math.min(.05, (now - last) / 1000); last = now; t += dt;
+  ctx.clearRect(0, 0, W, H);
+  // twinkling sky
+  for (const s of sky){
+    const a = reduceMotion ? .5 : .35 + .35 * Math.sin(t * 1.3 + s.ph);
+    ctx.globalAlpha = a; ctx.fillStyle = "#fff"; ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, 6.283); ctx.fill();
+  }
+  ctx.globalAlpha = 1;
+  if (mode === "bubbles" && started){
+    ambientTimer -= dt;
+    const count = parts.filter(p => p.ambient).length;
+    if (ambientTimer <= 0 && count < 6){ spawnAmbient(); ambientTimer = rnd(.9, 1.8); }
+  }
+  for (let i = parts.length - 1; i >= 0; i--){
+    const p = parts[i];
+    p.life += dt;
+    if (p.life >= p.max || (p.k === "bubble" && p.y < -60)){ parts.splice(i, 1); continue; }
+    const f = 1 - p.life / p.max;
+    if (p.vx !== undefined){ p.x += p.vx * dt; p.y += p.vy * dt; }
+    if (p.g) p.vy += p.g * dt;
+    ctx.save();
+    if (p.k === "ring"){
+      p.r += p.vr * dt;
+      ctx.globalAlpha = f; ctx.strokeStyle = p.c; ctx.lineWidth = p.w; ctx.shadowColor = p.c; ctx.shadowBlur = 18;
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, 6.283); ctx.stroke();
+    } else if (p.k === "star"){
+      p.rot += p.vrot * dt;
+      const s = p.grow ? p.s * (0.4 + Math.min(1, p.life * 5) * .6 + p.life * .3) : p.s;
+      ctx.translate(p.x, p.y); ctx.rotate(p.rot);
+      ctx.globalAlpha = Math.min(1, f * 1.4); ctx.fillStyle = p.c; ctx.shadowColor = p.c; ctx.shadowBlur = 20;
+      starPath(s); ctx.fill();
+    } else if (p.k === "spark"){
+      ctx.globalAlpha = f; ctx.fillStyle = p.c; ctx.shadowColor = p.c; ctx.shadowBlur = 12;
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.s, 0, 6.283); ctx.fill();
+    } else if (p.k === "bubble"){
+      p.x += Math.sin(t * 2 + p.ph) * 18 * dt;
+      const fade = p.ambient ? 1 : Math.min(1, f * 2);
+      ctx.globalAlpha = .9 * fade;
+      const gr = ctx.createRadialGradient(p.x - p.r*.35, p.y - p.r*.35, p.r*.1, p.x, p.y, p.r);
+      gr.addColorStop(0, "rgba(255,255,255,.85)"); gr.addColorStop(.35, p.c + "66"); gr.addColorStop(1, p.c + "cc");
+      ctx.fillStyle = gr; ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, 6.283); ctx.fill();
+      ctx.lineWidth = 2; ctx.strokeStyle = "rgba(255,255,255,.7)"; ctx.stroke();
+    } else if (p.k === "note"){
+      p.x += Math.sin(t * 3 + p.ph) * 30 * dt;
+      ctx.globalAlpha = Math.min(1, f * 1.5); ctx.fillStyle = p.c; ctx.shadowColor = p.c; ctx.shadowBlur = 16;
+      ctx.font = "800 " + p.s + "px " + getComputedStyle(document.body).fontFamily;
+      ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.fillText(p.ch, p.x, p.y);
+    }
+    ctx.restore();
+  }
+  requestAnimationFrame(frame);
+}
+
+/* ================= input ================= */
+let started = false;
+const pointers = new Map();
+const hint = document.getElementById("hint");
+let idleTimer = null;
+function poke(){
+  hint.classList.add("off");
+  clearTimeout(idleTimer);
+  idleTimer = setTimeout(() => hint.classList.remove("off"), 7000);
+}
+cv.addEventListener("pointerdown", e => {
+  if (!started) return;
+  e.preventDefault(); poke(); audio();
+  let col = null;
+  if (mode === "bubbles") col = tryPop(e.clientX, e.clientY);
+  if (!col){ col = nextColor(); burst(e.clientX, e.clientY, col, true); }
+  playNote(e.clientX, true);
+  sayColor(col);
+  pointers.set(e.pointerId, { x:e.clientX, y:e.clientY, col, zone:-1 });
+  try{ cv.setPointerCapture(e.pointerId); }catch(err){}
+});
+cv.addEventListener("pointermove", e => {
+  const pt = pointers.get(e.pointerId); if (!pt) return;
+  e.preventDefault();
+  const d = Math.hypot(e.clientX - pt.x, e.clientY - pt.y);
+  if (d < 26) return;
+  pt.x = e.clientX; pt.y = e.clientY;
+  if (mode === "bubbles"){ const c = tryPop(pt.x, pt.y); if (c) return; }
+  burst(pt.x, pt.y, pt.col, false);
+  if (mode !== "bubbles") sparks(pt.x, pt.y, pt.col, reduceMotion ? 0 : 2);
+  const zone = Math.floor(pt.x / W * SCALE.length);
+  if (zone !== pt.zone){ pt.zone = zone; playNote(pt.x, false); }
+});
+["pointerup","pointercancel","lostpointercapture"].forEach(type => cv.addEventListener(type, e => pointers.delete(e.pointerId)));
+
+/* ================= modes ================= */
+const MODES = {
+  stars:   { emoji:"⭐", en:"Stars", es:"Estrellas" },
+  bubbles: { emoji:"🫧", en:"Bubbles", es:"Burbujas" },
+  music:   { emoji:"🎵", en:"Music", es:"Música" }
+};
+const modesNav = document.getElementById("modes");
+function buildModes(){
+  modesNav.innerHTML = "";
+  for (const key of Object.keys(MODES)){
+    const m = MODES[key];
+    const b = document.createElement("button");
+    b.type = "button"; b.className = "mode-btn"; b.dataset.mode = key;
+    b.setAttribute("aria-pressed", String(key === mode));
+    const label = settings.lang === "es" ? m.es : settings.lang === "both" ? m.en + "<small>" + m.es + "</small>" : m.en;
+    b.innerHTML = '<span class="em" aria-hidden="true">' + m.emoji + "</span><span>" + label + "</span>";
+    b.addEventListener("click", () => setMode(key));
+    modesNav.appendChild(b);
+  }
+  document.getElementById("hintTxt").textContent = settings.lang === "es" ? "¡Toca donde quieras!" : "Tap anywhere!";
+}
+function setMode(key){
+  mode = key; audio();
+  for (const b of modesNav.children) b.setAttribute("aria-pressed", String(b.dataset.mode === key));
+  for (let i = parts.length - 1; i >= 0; i--) if (parts[i].ambient) parts.splice(i, 1);
+  ambientTimer = 0;
+  const m = MODES[key];
+  speak(lines(m.en + "!", "¡" + m.es + "!"));
+  const col = COLORS[Math.floor(Math.random() * COLORS.length)];
+  burst(W / 2, H * .45, col, true); playNote(W / 2, true);
+}
+
+/* ================= start ================= */
+document.getElementById("play").addEventListener("click", () => {
+  started = true; audio();
+  document.getElementById("start").hidden = true;
+  speak(lines("Tap anywhere to make lights!", "¡Toca para hacer luces!"));
+  const col = nextColor(); burst(W / 2, H * .45, col, true); playNote(W / 2, true);
+  idleTimer = setTimeout(() => {}, 0);
+});
+
+/* ================= grown-up panel ================= */
+const gear = document.getElementById("gear"), gearTip = document.getElementById("gearTip");
+const sheetWrap = document.getElementById("sheetWrap");
+let holdRaf = 0, holdStart = 0, tipTimer = null;
+function holdTick(){
+  const p = Math.min(1, (performance.now() - holdStart) / 900);
+  gear.style.setProperty("--p", p);
+  if (p >= 1){ endHold(); openSheet(); return; }
+  holdRaf = requestAnimationFrame(holdTick);
+}
+function endHold(){ cancelAnimationFrame(holdRaf); holdRaf = 0; gear.style.setProperty("--p", 0); }
+gear.addEventListener("pointerdown", e => { e.preventDefault(); holdStart = performance.now(); cancelAnimationFrame(holdRaf); holdRaf = requestAnimationFrame(holdTick); });
+["pointerup","pointerleave","pointercancel"].forEach(t => gear.addEventListener(t, () => {
+  if (holdRaf){ endHold(); gearTip.hidden = false; clearTimeout(tipTimer); tipTimer = setTimeout(() => gearTip.hidden = true, 2200); }
+}));
+gear.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " "){ e.preventDefault(); openSheet(); } });
+function openSheet(){ gearTip.hidden = true; loadVoices(); syncSheet(); sheetWrap.hidden = false; document.getElementById("done").focus(); }
+function closeSheet(){ sheetWrap.hidden = true; gear.focus(); }
+document.getElementById("done").addEventListener("click", closeSheet);
+sheetWrap.addEventListener("click", e => { if (e.target === sheetWrap) closeSheet(); });
+document.addEventListener("keydown", e => { if (e.key === "Escape" && !sheetWrap.hidden) closeSheet(); });
+function syncSheet(){
+  for (const b of document.querySelectorAll("#langSeg button")) b.setAttribute("aria-pressed", String(b.dataset.lang === settings.lang));
+  document.getElementById("sfx").checked = !!settings.sfx;
+  document.getElementById("sayColors").checked = !!settings.sayColors;
+}
+document.getElementById("langSeg").addEventListener("click", e => {
+  const b = e.target.closest("button"); if (!b) return;
+  settings.lang = b.dataset.lang; saveSettings(); syncSheet(); buildModes();
+  speak(lines("English", "Español"));
+});
+document.getElementById("sfx").addEventListener("change", e => { settings.sfx = e.target.checked; saveSettings(); if (settings.sfx) popSound(); });
+document.getElementById("sayColors").addEventListener("change", e => { settings.sayColors = e.target.checked; saveSettings(); });
+function fillVoiceSelects(){
+  for (const lang of ["en","es"]){
+    const sel = document.getElementById(lang + "Voice"); if (!sel) continue;
+    const list = voices.filter(v => langOf(v).startsWith(lang));
+    const key = lang + "Voice";
+    sel.innerHTML = "";
+    const auto = document.createElement("option"); auto.value = ""; auto.textContent = list.length ? "Automatic" : "No " + (lang === "en" ? "English" : "Spanish") + " voices on this device";
+    sel.appendChild(auto);
+    for (const v of list){ const o = document.createElement("option"); o.value = v.voiceURI; o.textContent = v.name + " (" + v.lang + ")"; sel.appendChild(o); }
+    sel.value = list.some(v => v.voiceURI === settings[key]) ? settings[key] : "";
+  }
+}
+for (const lang of ["en","es"]){
+  document.getElementById(lang + "Voice").addEventListener("change", e => { settings[lang + "Voice"] = e.target.value; saveSettings(); testVoice(lang); });
+}
+function testVoice(lang){ speak([ lang === "en" ? { lang:"en", text:"Blue! Red! Yellow!" } : { lang:"es", text:"¡Azul! ¡Rojo! ¡Amarillo!" } ]); }
+document.querySelectorAll("[data-test]").forEach(b => b.addEventListener("click", () => testVoice(b.dataset.test)));
+
+/* ================= init ================= */
+document.addEventListener("contextmenu", e => { if (!e.target.closest(".sheet")) e.preventDefault(); });
+document.addEventListener("gesturestart", e => e.preventDefault());
+document.addEventListener("touchmove", e => { if (!e.target.closest(".sheet")) e.preventDefault(); }, { passive:false });
+resize(); buildModes(); loadVoices();
+requestAnimationFrame(t0 => { last = t0; requestAnimationFrame(frame); });
+})();
+</script>
+</body>
+</html>
