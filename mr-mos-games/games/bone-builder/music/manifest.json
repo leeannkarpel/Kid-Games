@@ -1,0 +1,7 @@
+{
+  "game": "bone-builder",
+  "tracks": [
+    { "name": "Friendly Skeleton", "file": "friendly-skeleton.mp3", "seconds": 90,
+      "prompt": "Light, curious kids' learning game music with a friendly, silly skeleton feel. Soft xylophone and marimba, plucky pizzicato strings, gentle bouncy bass, about 100 BPM. Calm and playful, never spooky, good for thinking. Even and steady so it loops smoothly. Instrumental." }
+  ]
+}

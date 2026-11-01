@@ -36,7 +36,7 @@ Voices used:
 
 | Games | Voice | Voice ID |
 |---|---|---|
-| Math Race, Ramp Rally | Mister Mouse | `iHiL14jSTiWXy4nzDtbq` |
+| Math Race, Ramp Rally | Cody | `9XfYMbJVZqPHaQtYnTAO` |
 | Bone Builder and Bingo English lines | Emma | `oClOrzqamOXmtcB8iqTj` |
 | All Spanish lines | Kate 7 | `U9tZtg3uJtVgXPkvosWR` |
 | Animal Peekaboo, Light-Up Taps and Kitty Taps English lines | Tilly | `4gnXtzQIIeGuC5hxActn` |
@@ -47,5 +47,14 @@ The clips use the `eleven_v4` model.
 ## Sound effects
 
 Some games also have real sound effects made with ElevenLabs sound generation, such as the meows in Kitty Taps. They live in `<site>/games/<slug>/sounds/` with a `manifest.json` that lists each file and the prompt that made it. Run `python3 tools/generate_sounds.py` to make any that are missing (delete an mp3 to redo it).
+
+## Background music
+
+Mr. Mo's games each loop one instrumental ElevenLabs Music track, from `mr-mos-games/games/<slug>/music/`. The track's `manifest.json` lists each file and the prompt that made it.
+
+- `mr-mos-games/bg-music.js` is the shared player. A game turns it on with `<script src="/bg-music.js" data-src="/games/<slug>/music/<file>.mp3"></script>`, placed after `voice-clips.js`.
+- The music starts on the first tap. It gets quieter while the voice talks, and pauses when the page is hidden.
+- A 🎵 button in the bottom-left corner turns the music off or on, and each device remembers the choice.
+- Run `python3 tools/generate_music.py` to make any tracks that are missing (delete an mp3 to redo it).
 
 `tools/` sits outside both site folders, so it is never deployed.

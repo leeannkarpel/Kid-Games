@@ -196,6 +196,8 @@
 
   window.VoiceClips = {
     create: create,
+    // True while a recorded clip is playing (background music uses this to get quieter).
+    isPlaying: function () { return !!(el && !el.paused && !el.ended && el.src !== SILENT); },
     RECORDED: "recorded",              // value used for the "Recorded voice" picker option
     LABEL: "Recorded voice",
     LABEL_ES: "Voz grabada"

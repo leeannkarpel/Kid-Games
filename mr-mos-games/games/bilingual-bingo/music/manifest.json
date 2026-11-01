@@ -1,0 +1,7 @@
+{
+  "game": "bilingual-bingo",
+  "tracks": [
+    { "name": "Fiesta Bingo", "file": "fiesta-bingo.mp3", "seconds": 90,
+      "prompt": "Cheerful, relaxed kids' game music with a light Latin flavor. Nylon-string guitar, marimba, soft shakers and bongos, about 105 BPM. Sunny and playful but calm enough to stay in the background while a caller reads out bingo words. Even and steady so it loops smoothly. Instrumental." }
+  ]
+}

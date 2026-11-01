@@ -1,0 +1,7 @@
+{
+  "game": "ramp-rally",
+  "tracks": [
+    { "name": "Stunt Park", "file": "stunt-park.mp3", "seconds": 90,
+      "prompt": "Bouncy, playful kids' toy-car stunt game music. Funky bass, hand claps, cheerful brass stabs and a happy whistle-like synth melody, about 125 BPM, goofy and energetic. Steady groove all the way through so it loops smoothly. Instrumental." }
+  ]
+}

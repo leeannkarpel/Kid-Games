@@ -1,0 +1,7 @@
+{
+  "game": "math-race",
+  "tracks": [
+    { "name": "Turbo Track", "file": "turbo-track.mp3", "seconds": 90,
+      "prompt": "Fast, exciting kids' racing video game music. Driving drums, punchy electric guitar riffs and bright synths, about 150 BPM, upbeat and fun, never scary. Steady energy all the way through so it loops smoothly. Instrumental." }
+  ]
+}
