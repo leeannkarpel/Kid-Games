@@ -77,16 +77,18 @@ legend{float:left; width:100%; padding:0; margin:0 0 10px; font-weight:600; font
 .warn{color:#ffb3c0; min-height:1.3em; text-align:center; margin:8px 0 0}
 
 /* ---------- Game ---------- */
-#game{height:100vh; height:100dvh; display:grid; grid-template-rows:auto minmax(0,1fr)}
-.bar{display:flex; align-items:center; gap:6px; padding:6px 10px; padding-left:max(10px,env(safe-area-inset-left)); padding-right:max(10px,env(safe-area-inset-right))}
+#game{height:100vh; height:100dvh; display:grid; grid-template-rows:auto minmax(0,1fr); grid-template-columns:minmax(0,1fr)}
+.bar{display:flex; align-items:center; gap:6px; min-width:0; padding:6px 10px; padding-left:max(10px,env(safe-area-inset-left)); padding-right:max(10px,env(safe-area-inset-right))}
 .bar .spacer{flex:1}
-.bar .ttl{font-family:var(--spooky); color:var(--pumpkin); font-size:26px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.bar .ttl{font-family:var(--spooky); color:var(--pumpkin); font-size:26px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; min-width:0}
+.bar .ibtn{flex:none}
 .ibtn{min-height:44px; min-width:44px; padding:4px 10px; border-radius:12px; border:2px solid #5a3a8a; background:#1c0f33cc; font-weight:600; font-size:15px; display:inline-flex; align-items:center; justify-content:center; gap:6px}
 .ibtn[aria-pressed="true"]{background:var(--mint); color:#062a20; border-color:#c8fff0}
-.play{display:grid; grid-template-rows:minmax(0,1fr) auto; gap:8px; padding:0 10px 10px; min-height:0;
+.play{display:grid; grid-template-rows:minmax(0,1fr) auto; grid-template-columns:minmax(0,1fr); gap:8px; padding:0 10px 10px; min-height:0;
   padding-left:max(10px,env(safe-area-inset-left)); padding-right:max(10px,env(safe-area-inset-right))}
-.boardwrap{position:relative; min-height:0; display:flex; justify-content:center; align-items:center}
-.boardwrap svg{height:100%; width:auto; max-width:100%; aspect-ratio:600/934; display:block; border-radius:18px; filter:drop-shadow(0 8px 20px #0008); background:#120824}
+/* the board fits whichever runs out first, the width or the height of its space */
+.boardwrap{position:relative; min-height:0; min-width:0; display:flex; justify-content:center; align-items:center; container-type:size}
+.boardwrap svg{height:auto; width:min(100cqw, calc(100cqh * 600 / 934)); aspect-ratio:600/934; display:block; border-radius:18px; filter:drop-shadow(0 8px 20px #0008); background:#120824}
 .panel{display:flex; flex-direction:column; gap:8px; min-width:0}
 .loadwrap{display:flex; align-items:center; gap:10px; font-size:15px; font-weight:600; color:var(--muted)}
 .loadbar{flex:1; height:10px; border-radius:999px; background:#1c0f33; border:2px solid #5a3a8a; overflow:hidden}
@@ -161,7 +163,8 @@ legend{float:left; width:100%; padding:0; margin:0 0 10px; font-weight:600; font
 .zoomwrap{display:none}
 @media (orientation:landscape) and (min-width:600px){
   .play{grid-template-rows:minmax(0,1fr); grid-template-columns:auto minmax(0,1fr) minmax(280px,36%); align-items:stretch}
-  .boardwrap svg{height:100%; max-width:30vw}
+  .boardwrap{container-type:normal}
+  .boardwrap svg{height:100%; width:auto; max-width:30vw}
   .zoomwrap{display:block; position:relative; min-width:0; min-height:0; border-radius:18px; overflow:hidden; border:3px solid var(--zc,#6b45a0);
     box-shadow:0 8px 20px #0008, inset 0 0 0 2px #12081f; background:#120824; transition:border-color .3s}
   .zoomwrap svg{position:absolute; inset:0; width:100%; height:100%; display:block}
@@ -182,6 +185,9 @@ legend{float:left; width:100%; padding:0; margin:0 0 10px; font-weight:600; font
   .opt{max-height:86px; border-radius:14px}
   .feedback{font-size:16px}
   .movecard .sw i{width:72px; height:34px}
+}
+@media (max-width:499px){
+  .ibtn .lbl{display:none}
 }
 @media (max-width:420px){
   .prompt{font-size:19px}
