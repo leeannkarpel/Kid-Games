@@ -83,6 +83,9 @@ function slug(s) {
   console.log(`total: ${out.length} lines, ${chars(out)} characters`);
   if (process.argv.includes("--count")) return;
   fs.mkdirSync(path.dirname(OUT), { recursive: true });
-  fs.writeFileSync(OUT, JSON.stringify({ voices: { en: "Clara - Children's Storyteller", es: "Jade" }, model: "eleven_v4", lines: out }, null, 1) + "\n");
+  fs.writeFileSync(OUT, JSON.stringify({ voices: { en: "Clara - Children's Storyteller", es: "Jade" }, model: "eleven_v4",
+    music: { file: "music.mp3", source: "ElevenLabs Music, flow 2Rc7rDYaC2UtIvOpdE4w, generation u0yv4XM2hjiK5boWPpVU (take A)",
+             loop: "first 48.0 s (20 bars at 100 BPM), 0.3 s crossfade at the seam, loudness -18 LUFS" },
+    lines: out }, null, 1) + "\n");
   console.log("wrote", path.relative(process.cwd(), OUT));
 })();
