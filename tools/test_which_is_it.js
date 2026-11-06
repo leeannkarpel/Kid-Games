@@ -1,11 +1,13 @@
 // Headless test for "Which Is It? Haunted House".
 // Usage: node tools/test_which_is_it.js [--quick]
 //
-//  1. Manifest: every line the game can speak (from the game's own allLines()) has a clip, and every clip file loads.
+//  1. Manifest: every line the game can speak (from the game's own allLines()) has a clip for both narrators
+//     (storyteller and spooky), and every clip file exists.
 //  2. Real play at phone portrait and landscape, in English and Spanish, 2 players and vs the robot, one category at a
 //     time plus "all": taps answers (right and wrong), checks each spoken line played its own clip
 //     (the clip mapped to that exact text), never fell back to the device voice, music started and ducked,
-//     and then plays to the win screen. Fails on any console error.
+//     and then plays to the win screen. Runs use the spooky narrator (the default) except a few with the storyteller,
+//     and the default "Extra spooky" extras, so the Monster groove counts as the music. Fails on any console error.
 const { chromium } = require("playwright");
 const http = require("http"), fs = require("fs"), path = require("path");
 
@@ -39,7 +41,8 @@ async function until(page, fn, arg, ms = 20000) {
   const base = `http://localhost:8811${GAME}`;
   const browser = await chromium.launch({ args: ["--autoplay-policy=no-user-gesture-required"] });
   const manifest = JSON.parse(fs.readFileSync(path.join(SITE, GAME, "audio/manifest.json"), "utf8"));
-  const byKey = {}; manifest.lines.forEach(l => { byKey[l.lang + "|" + l.text] = l.file; });
+  const SETS = ["story", "spooky"];
+  const byKey = {}; manifest.lines.forEach(l => { byKey[(l.set || "story") + "|" + l.lang + "|" + l.text] = l.file; });
   let bad = 0; const fail = m => { bad++; console.log("   FAIL " + m); };
 
   // ---------- 1. manifest coverage ----------
@@ -48,16 +51,16 @@ async function until(page, fn, arg, ms = 20000) {
     await page.goto(base);
     const all = await page.evaluate(() => ({ en: window.__wii.allLines("en"), es: window.__wii.allLines("es") }));
     let n = 0, missing = 0, files = 0;
-    for (const lang of ["en", "es"]) for (const l of all[lang]) {
+    for (const set of SETS) for (const lang of ["en", "es"]) for (const l of all[lang]) {
       n++;
-      const f = byKey[lang + "|" + l.text];
-      if (!f) { missing++; fail(`no clip in manifest for ${lang}: ${l.text}`); continue; }
+      const f = byKey[set + "|" + lang + "|" + l.text];
+      if (!f) { missing++; fail(`no ${set} clip in manifest for ${lang}: ${l.text}`); continue; }
       if (!fs.existsSync(path.join(SITE, GAME, "audio", f))) { missing++; fail(`clip file missing: ${f}`); }
       else files++;
     }
     const extra = manifest.lines.filter(l => !all[l.lang].some(x => x.text === l.text));
     extra.forEach(l => fail(`manifest line the game never says: ${l.lang} ${l.text}`));
-    console.log(`${missing || extra.length ? "FAIL" : "PASS"} manifest: ${n} spoken lines, ${files} clips on disk, ${missing} missing, ${extra.length} unused`);
+    console.log(`${missing || extra.length ? "FAIL" : "PASS"} manifest: ${n} spoken lines (both narrators), ${files} clips on disk, ${missing} missing, ${extra.length} unused`);
     await page.close();
   }
 
@@ -70,6 +73,10 @@ async function until(page, fn, arg, ms = 20000) {
     if (!QUICK) for (const c of ["shapes", "letters", "sounds", "numbers", "colors"])
       RUNS.push({ label, w, h, lang, mode: label === "portrait" ? "solo" : "two", cats: [c], turns: 8, win: false });
   }
+
+  // the storyteller narrator (Clara / Jade), picked in the Voice menu
+  for (const lang of ["en", "es"])
+    RUNS.push({ label: "portrait", w: 390, h: 844, lang, mode: "two", cats: ["shapes", "letters", "sounds", "numbers", "colors"], turns: 4, win: true, voice: "ai" });
 
   // one complete game, start to the Ghost Party, no shortcuts (2 players, every answer right)
   RUNS.push({ label: "portrait", w: 390, h: 844, lang: "en", mode: "two", cats: ["shapes", "letters", "sounds", "numbers", "colors"], turns: 80, realWin: true, win: true });
@@ -85,13 +92,15 @@ async function until(page, fn, arg, ms = 20000) {
     await page.addInitScript(cfg => {
       localStorage.setItem("wii-lang", JSON.stringify(cfg.lang)); localStorage.setItem("wii-mode", JSON.stringify(cfg.mode));
       localStorage.setItem("wii-cats", JSON.stringify(cfg.cats)); localStorage.setItem("wii-names", JSON.stringify(["Ana", "Leo"]));
+      if (cfg.voice) localStorage.setItem("wii-voice-" + cfg.lang, JSON.stringify(cfg.voice));
       window.__device = [];
       if (window.speechSynthesis) { const os = speechSynthesis.speak.bind(speechSynthesis); speechSynthesis.speak = u => { window.__device.push(u.text); return os(u); }; }
     }, r);
     await page.goto(base, { waitUntil: "load" });
     await wait(400);
     await page.tap("#startBtn");
-    const name = `${r.label} ${r.lang} ${r.mode} [${r.cats.length > 1 ? "all" : r.cats[0]}]`;
+    const set = r.voice === "ai" ? "story" : "spooky";
+    const name = `${r.label} ${r.lang} ${r.mode} [${r.cats.length > 1 ? "all" : r.cats[0]}] ${set}`;
     const sawLoader = await until(page, () => !document.getElementById("loadWrap").hidden, null, 3000);
     if (!(await until(page, () => window.__wii.G && window.__wii.G.q, null, 20000))) { fail(name + ": first turn never started"); }
     const seen = { normal: new Set(), hard: new Set() };
@@ -115,7 +124,7 @@ async function until(page, fn, arg, ms = 20000) {
       await until(page, () => window.__wii.G.answered && !document.getElementById("hearBtn").classList.contains("on"), null, 3000);
     }
     // music should be running and ducked at some point
-    const mu = await page.evaluate(() => ({ playing: !!window.__wii.music.src, on: window.__wii.music.on }));
+    const mu = await page.evaluate(() => ({ playing: !!window.__wii.music.src || !!(window.__spkGroove && window.__spkGroove.playing()), on: window.__wii.music.on }));
     if (r.win) {
       // jump the current player close to the end and win with a right answer
       if (!r.realWin) {
@@ -139,7 +148,7 @@ async function until(page, fn, arg, ms = 20000) {
     for (const e of res.log) {
       if (!e.file) { fallback++; fail(`${name}: device voice used for "${e.text}"`); continue; }
       if (e.lang !== r.lang) { wrongClip++; fail(`${name}: ${e.lang} line in ${r.lang} game: ${e.text}`); }
-      if (byKey[e.lang + "|" + e.text] !== e.file) { wrongClip++; fail(`${name}: "${e.text}" played ${e.file}`); }
+      if (byKey[set + "|" + e.lang + "|" + e.text] !== e.file) { wrongClip++; fail(`${name}: "${e.text}" played ${e.file}, not the ${set} clip`); }
     }
     const turnLines = res.log.filter(e => /turn!|¡Turno/.test(e.text)).map(e => e.text);
     if (r.mode !== "solo" && !turnLines.length) fail(name + ": no character turn announcement");

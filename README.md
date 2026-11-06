@@ -41,8 +41,10 @@ Voices used:
 | All Spanish lines | Kate 7 | `U9tZtg3uJtVgXPkvosWR` |
 | Animal Peekaboo, Light-Up Taps and Kitty Taps English lines | Tilly | `4gnXtzQIIeGuC5hxActn` |
 | Dance Like Me, Kitty Says | Lulu Lollipop | `ocZQ262SsZb9RIxcQBOj` |
-| Which Is It? English lines | Clara (Children's Storyteller) | `2OEeJcYw2f3bWMzzjVMU` |
-| Which Is It? Spanish lines | Jade | `lP1VZ61RLnDtOoz41b3D` |
+| Which Is It? English lines (Storyteller) | Clara (Children's Storyteller) | `2OEeJcYw2f3bWMzzjVMU` |
+| Which Is It? Spanish lines (Storyteller) | Jade | `lP1VZ61RLnDtOoz41b3D` |
+| Which Is It? English lines (Spooky narrator) | Daria (Funny Scary Witch) | `DUhzmIGFwXJ752SvgcCj` |
+| Which Is It? Spanish lines (Spooky narrator) | Óscar | `3mmJ2Z5SLZ9OkeZZcv5p` |
 
 The clips use the `eleven_v4` model.
 
@@ -61,7 +63,16 @@ Mr. Mo's games each loop one instrumental ElevenLabs Music track, from `mr-mos-g
 
 ### Which Is It? Haunted House
 
-This game is self-contained (it doesn't load `voice-clips.js` or `bg-music.js`). Its audio lives in `mr-mos-games/games/which-is-it/audio/`: `en/`, `es/`, `music.mp3` and `manifest.json`. The 🎵 music button is in the game's top bar.
+This game is self-contained (it doesn't load `voice-clips.js` or `bg-music.js`). Its audio lives in `mr-mos-games/games/which-is-it/audio/`: `en/` and `es/` (the Storyteller), `spooky/en/` and `spooky/es/` (the Spooky narrator), `music.mp3` and `manifest.json`. The 🎵 music button is in the game's top bar.
+
+The Voice menu on the setup screen picks the narrator: Spooky narrator (the default) or Storyteller. Every line is recorded in both. If a spooky clip is missing, the game plays the Storyteller's clip instead. The spooky takes start with a short delivery direction, `[spooky, slow, clear]` or `[misterioso, lento, claro]`. The model doesn't read it aloud.
+
+"How spooky?" on the setup screen controls the spooky extras:
+- **Scare level:** Cozy, Spooky or Extra spooky.
+- **Walk on:** the board's spaces, as candy, tombstones, pumpkins or skulls. The colors and the rules stay the same.
+- **Spooky things:** one button per effect.
+
+The choices are saved on the device in `localStorage` under `wii-spooky`. The extras live at the end of `index.html`, in the "SPOOKY EXTRAS" block. They hear about the game through window events (`spooky:board`, `spooky:right`, `spooky:passage`, `spooky:win`). Their sounds are made in the browser with Web Audio, so there are no extra files. That includes the "Monster groove" music, which plays in place of `music.mp3` when it's switched on.
 
 1. `node tools/which_is_it_lines.js` rebuilds the manifest from the game's own code. It lists every line the game can say, in both languages.
 2. `python3 tools/which_is_it_audio.py --count`, then `python3 tools/which_is_it_audio.py`, makes any missing clips. Each clip is trimmed, loudness-matched (-16 LUFS) and saved as mono 64 kbps MP3.

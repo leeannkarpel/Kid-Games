@@ -327,6 +327,42 @@ legend{float:left; width:100%; padding:0; margin:0 0 10px; font-weight:600; font
     </div>
   </fieldset>
 
+  <fieldset id="spk-fs">
+    <legend data-spk="legend">How spooky?</legend>
+    <div class="spk-sec">
+      <p class="spk-sub" id="spk-lvl-l" data-spk="level">Scare level</p>
+      <div class="seg" role="group" aria-labelledby="spk-lvl-l">
+        <button class="pill" id="spk-l0" data-lvl="0" aria-pressed="false"><span data-spk="l0">😊 Cozy</span></button>
+        <button class="pill" id="spk-l1" data-lvl="1" aria-pressed="false"><span data-spk="l1">👻 Spooky</span></button>
+        <button class="pill" id="spk-l2" data-lvl="2" aria-pressed="true"><span data-spk="l2">💀 Extra spooky</span></button>
+      </div>
+    </div>
+    <div class="spk-sec">
+      <p class="spk-sub" id="spk-walk-l" data-spk="walk">Walk on</p>
+      <div class="seg" role="group" aria-labelledby="spk-walk-l">
+        <button class="pill" id="spk-w-candy" data-walk="candy" aria-pressed="false"><span data-spk="wc">🍬 Candy</span></button>
+        <button class="pill" id="spk-w-tombs" data-walk="tombs" aria-pressed="true"><span data-spk="wt">🪦 Tombstones</span></button>
+        <button class="pill" id="spk-w-jacks" data-walk="jacks" aria-pressed="false"><span data-spk="wj">🎃 Pumpkins</span></button>
+        <button class="pill" id="spk-w-skulls" data-walk="skulls" aria-pressed="false"><span data-spk="ws">💀 Skulls</span></button>
+      </div>
+    </div>
+    <div class="spk-sec">
+      <p class="spk-sub" id="spk-things-l" data-spk="things">Spooky things</p>
+      <div class="seg" id="spk-list" role="group" aria-labelledby="spk-things-l"></div>
+      <details class="spk-what"><summary data-spk="what">What does each one do?</summary><ul id="spk-desc"></ul></details>
+    </div>
+    <div class="spk-sec">
+      <p class="spk-sub" data-spk="try">Try one now</p>
+      <div class="seg spk-try">
+        <button class="btn" id="spk-t-light"><span data-spk="t1">⚡ Lightning</span></button>
+        <button class="btn" id="spk-t-boo"><span data-spk="t2">👻 Boo!</span></button>
+        <button class="btn" id="spk-t-bats"><span data-spk="t3">🦇 Bats</span></button>
+        <button class="btn" id="spk-t-howl"><span data-spk="t4">🐺 Howl</span></button>
+        <button class="btn" id="spk-t-win"><span data-spk="t5">🕛 Midnight</span></button>
+      </div>
+    </div>
+  </fieldset>
+
   <fieldset>
     <legend data-t="voiceL">Voice</legend>
     <div class="vrow">
@@ -404,11 +440,11 @@ const PIECE_SAY = {
  es:{ghost:['el','fantasma'],witch:['la','bruja'],skeleton:['el','esqueleto'],pumpkin:['la','calabaza'],cat:['el','gato negro'],mummy:['la','momia'],bat:['el','murciélago'],robot:['el','robot']}
 };
 const T = {
- en:{ title:'Which Is It?', sub:'Haunted House', tag:'Answer right to draw a candy card and climb the haunted house.',
+ en:{ title:'Which Is It?', sub:'Haunted House', get tag(){ return (window.SPK_WALK||'candy')==='candy' ? 'Answer right to draw a candy card and climb the haunted house.' : 'Answer right to draw a color card and climb the haunted house.'; },
   langL:'Language', whatL:'What should we play?', all:'All of them',
   c_shapes:'Shapes', c_letters:'Letters', c_sounds:'Letter sounds', c_numbers:'Numbers', c_colors:'Colors',
   whoL:"Who's playing?", m_solo:'Just me', m_two:'2 players', m_robot:'Play the robot', robot:'Robot', pickL:'Pick your player',
-  p1:'Player 1', p2:'Player 2', voiceL:'Voice', aiVoice:'AI Storyteller', defVoice:'Device voice', test:'Test voice', testSay:'Which one is the pumpkin?',
+  p1:'Player 1', p2:'Player 2', voiceL:'Voice', aiVoice:'Storyteller (Clara)', spookyVoice:'Spooky narrator (Daria)', laugh:'Mwa-ha-ha!', defVoice:'Device voice', test:'Test voice', testSay:'Which one is the pumpkin?',
   start:'Open the door', needCat:'Pick at least one thing to play.', menu:'Menu', listen:'Listen only', loading:'Loading voices…',
   musicOn:'Music on', musicOff:'Music off', soundOn:'Voice and sounds on', soundOff:'Voice and sounds off',
   turn:n=>`${n}'s turn`, easy:'🍬 1 candy', hard:'👻 Tricky! Double', hear:'Hear it again', thinking:'Robot is thinking…',
@@ -423,11 +459,11 @@ const T = {
   pieces:{ghost:'Ghost',witch:'Witch',skeleton:'Skeleton',pumpkin:'Pumpkin',cat:'Black cat',mummy:'Mummy',bat:'Bat'},
   candy:{red:'red',purple:'purple',yellow:'yellow',blue:'blue',orange:'orange',green:'green'},
   hiddenChip:'hidden, listen' },
- es:{ title:'¿Cuál es?', sub:'La casa embrujada', tag:'Contesta bien para sacar una carta de dulce y subir por la casa embrujada.',
+ es:{ title:'¿Cuál es?', sub:'La casa embrujada', get tag(){ return (window.SPK_WALK||'candy')==='candy' ? 'Contesta bien para sacar una carta de dulce y subir por la casa embrujada.' : 'Contesta bien para sacar una carta de color y subir por la casa embrujada.'; },
   langL:'Idioma', whatL:'¿Qué vamos a jugar?', all:'Todos',
   c_shapes:'Figuras', c_letters:'Letras', c_sounds:'Sonidos de letras', c_numbers:'Números', c_colors:'Colores',
   whoL:'¿Quién juega?', m_solo:'Solo yo', m_two:'2 jugadores', m_robot:'Contra el robot', robot:'Robot', pickL:'Elige tu personaje',
-  p1:'Jugador 1', p2:'Jugador 2', voiceL:'Voz', aiVoice:'AI Storyteller (cuentacuentos)', defVoice:'Voz del dispositivo', test:'Probar voz', testSay:'¿Cuál es la calabaza?',
+  p1:'Jugador 1', p2:'Jugador 2', voiceL:'Voz', aiVoice:'Cuentacuentos (Jade)', spookyVoice:'Narrador de miedo (Óscar)', laugh:'¡Muajajá!', defVoice:'Voz del dispositivo', test:'Probar voz', testSay:'¿Cuál es la calabaza?',
   start:'Abre la puerta', needCat:'Elige al menos una cosa para jugar.', menu:'Menú', listen:'Solo escuchar', loading:'Cargando voces…',
   musicOn:'Música encendida', musicOff:'Música apagada', soundOn:'Voz y sonidos encendidos', soundOff:'Voz y sonidos apagados',
   turn:n=>`Turno de ${n}`, easy:'🍬 1 dulce', hard:'👻 ¡Difícil! Doble', hear:'Escuchar otra vez', thinking:'El robot está pensando…',
@@ -554,6 +590,7 @@ function musicLoad(a){
 }
 function musicPlay(){
   if(!MU.on) return; const a=ac(); if(!a) return;
+  if(window.__spkGroove && window.__spkGroove.wanted()){ window.__spkGroove.start(a); return; }   // Monster groove instead of the track
   if(!MU.gain){ MU.gain=a.createGain(); MU.gain.gain.value=0; MU.gain.connect(a.destination); }
   if(MU.src) return;
   musicLoad(a).then(b=>{
@@ -566,6 +603,7 @@ function musicPlay(){
   });
 }
 function musicStop(){
+  if(window.__spkGroove) window.__spkGroove.stop();
   if(!MU.src) return; const a=ac(), s=MU.src, t=a.currentTime; MU.src=null;
   MU.gain.gain.cancelScheduledValues(t); MU.gain.gain.setValueAtTime(MU.gain.gain.value,t); MU.gain.gain.linearRampToValueAtTime(0,t+.3);
   try{ s.stop(t+.35); }catch(e){}
@@ -579,6 +617,7 @@ function renderMusicBtn(){
   const b=$('musicBtn'); b.setAttribute('aria-pressed',String(MU.on)); b.textContent = MU.on?'🎵':'🔇';
   b.setAttribute('aria-label', MU.on?T[lang].musicOn:T[lang].musicOff); b.title=b.getAttribute('aria-label');
 }
+window.__spkMusic={MU, play:()=>musicPlay(), stop:()=>musicStop()};
 function firstGesture(){ if(MU.started) return; MU.started=true; voUnlock(); ac(); musicPlay(); }
 ['pointerdown','touchend','keydown'].forEach(ev=>{ try{ addEventListener(ev, firstGesture, {capture:true, passive:true}); }catch(e){} });
 document.addEventListener('visibilitychange',()=>{
@@ -591,10 +630,12 @@ document.addEventListener('visibilitychange',()=>{
    Every spoken line has a clip in audio/<lang>/, mapped by its exact text in audio/manifest.json.
    One shared <audio> element plays them, so it works on iPhone/iPad once a tap has unlocked it.
    Any line without a clip (or one that fails to load or play) is spoken by the device voice instead. */
-const AI='ai';
+const AI='ai', SPOOKY='ai-spooky';           // the two recorded narrators: storyteller and spooky
+const isAI = v => v===AI || v===SPOOKY;
+const voSet = () => voiceMode()===SPOOKY ? 'spooky' : 'story';
 const VO={ base:'audio/', map:null, groups:{}, blobs:{}, el:null, finish:null, log:[] };
 const VO_READY = fetch(VO.base+'manifest.json',{cache:'no-cache'}).then(r=>r.ok?r.json():null).then(m=>{
-  VO.map={}; ((m&&m.lines)||[]).forEach(l=>{ VO.map[l.lang+'|'+l.text]=l.file; (VO.groups[l.lang+'|'+(l.group||'common')] ||= []).push(l.file); });
+  VO.map={}; ((m&&m.lines)||[]).forEach(l=>{ const s=l.set||'story'; VO.map[s+'|'+l.lang+'|'+l.text]=l.file; (VO.groups[s+'|'+l.lang+'|'+(l.group||'common')] ||= []).push(l.file); });
 }).catch(()=>{ VO.map={}; });
 function voEl(){ if(!VO.el){ VO.el=new Audio(); VO.el.preload='auto'; VO.el.setAttribute('playsinline',''); } return VO.el; }
 function silentWav(){ // 0.05 s of silence, used to unlock the audio element on the first tap
@@ -621,9 +662,12 @@ function loadClip(file){
   return VO.blobs[file];
 }
 async function clipFor(text){
-  await VO_READY; const file=VO.map[lang+'|'+text];
-  if(!file) return null;
-  const url=await loadClip(file); return url ? {file,url} : null;
+  await VO_READY;
+  for(const s of [...new Set([voSet(),'story'])]){   // spooky narrator first if chosen, the storyteller if a clip is missing
+    const file=VO.map[s+'|'+lang+'|'+text]; if(!file) continue;
+    const url=await loadClip(file); if(url) return {file,url};
+  }
+  return null;
 }
 function playClip(url, tok){
   return new Promise(resolve=>{
@@ -640,9 +684,9 @@ function playClip(url, tok){
 let preloadTok=0;
 function preloadLang(l){
   const tok=++preloadTok, wrap=$('loadWrap'), fill=$('loadFill');
-  if(voiceMode()!==AI) { wrap.hidden=true; return Promise.resolve(); }
+  if(!isAI(voiceMode())) { wrap.hidden=true; return Promise.resolve(); }
   return VO_READY.then(()=>{
-    const files=[...new Set(['common'].concat(cats).flatMap(g=>VO.groups[l+'|'+g]||[]))];
+    const set=voSet(); const files=[...new Set(['common'].concat(cats).flatMap(g=>VO.groups[set+'|'+l+'|'+g]||[]))];
     if(!files.length){ wrap.hidden=true; return; }
     let n=0; const step=()=>{ if(tok!==preloadTok) return; n++; const pct=Math.round(n*100/files.length); fill.style.width=pct+'%'; wrap.setAttribute('aria-valuenow',pct); };
     fill.style.width='0%'; wrap.hidden=false;
@@ -657,10 +701,10 @@ const synth = ('speechSynthesis' in window) ? window.speechSynthesis : null;
 let voices=[]; let speakTok=0;
 function loadVoices(){ try{ voices = synth ? synth.getVoices() : []; }catch(e){ voices=[]; } fillVoiceSel(); }
 function langVoices(){ return voices.filter(v=>(v.lang||'').toLowerCase().replace('_','-').startsWith(lang)); }
-function voiceMode(){ const v=store.get('voice-'+lang, AI); return v==null ? AI : v; }
+function voiceMode(){ const v=store.get('voice-'+lang, SPOOKY); return v==null ? SPOOKY : v; }
 function currentVoice(){
   const list=langVoices(); const saved=voiceMode();
-  if(saved && saved!==AI){ const v=list.find(v=>v.voiceURI===saved); if(v) return v; }
+  if(saved && !isAI(saved)){ const v=list.find(v=>v.voiceURI===saved); if(v) return v; }
   const pref = lang==='es' ? ['es-mx','es-us','es-es'] : ['en-us','en-gb'];
   for(const p of pref){ const v=list.find(v=>v.lang.toLowerCase().replace('_','-')===p && v.localService!==false); if(v) return v; }
   return list[0]||null;
@@ -691,7 +735,7 @@ function speak(parts){
     for(const text of parts){
       if(tok!==speakTok) return;
       let ok=false;
-      if(voiceMode()===AI){
+      if(isAI(voiceMode())){
         const c=await clipFor(text); if(tok!==speakTok) return;
         if(c){ setTalking(true); VO.log.push({lang, text, file:c.file}); ok=await playClip(c.url, tok); }
       }
@@ -852,7 +896,7 @@ function allLines(l){
     add(t.its(q.desc), s.cat, Object.assign({kind:'reveal'},info));
   }
   ORDER.forEach(c=>[false,true].forEach(d=>add(t.yes+' '+t.card(t.candy[c],d),'common',{kind:'card',color:c,dbl:d})));
-  add(t.boo,'common',{kind:'boo'}); add(t.passage,'common',{kind:'passage'}); add(t.testSay,'common',{kind:'test'});
+  add(t.boo,'common',{kind:'boo'}); add(t.laugh,'common',{kind:'laugh'}); add(t.passage,'common',{kind:'passage'}); add(t.testSay,'common',{kind:'test'});
   PIECES.concat('robot').forEach(k=>{ add(t.turnSay(k),'common',{kind:'turn',piece:k}); add(t.winSay(k),'common',{kind:'win',piece:k}); });
   lang=keep; return out;
 }
@@ -987,7 +1031,7 @@ function roomArt(f,s,x0,top){
   return a;
 }
 
-function candy(i){
+function candy(i){ if(window.SPK_SPACE){ const _p=posOf(i), _s=window.SPK_SPACE(_p.x,_p.y,CC[colorKey(i)],i); if(_s) return _s; }
   const p=posOf(i), c=CC[colorKey(i)], x=p.x, y=p.y, st='stroke="#12081f" stroke-width="3" stroke-linejoin="round"';
   const kind=i%3; let s=`<ellipse cx="${x}" cy="${y+16}" rx="18" ry="5" fill="#000" opacity=".35"/>`;
   if(kind===0){
@@ -1026,6 +1070,8 @@ function patternDefs(){
   <marker id="arr" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#6ff0c8"/></marker>`;
 }
 
+/* the spooky walkway picker redraws the board in place */
+window.__spkRedraw=()=>{ const kb=CAMS.board.vb.slice(), kz=CAMS.zoom.vb.slice(); drawBoard(); setVB(kb,'board'); setVB(kz,'zoom'); };
 function drawBoard(){
   const t=T[lang]; const svg=$('board');
   const F='font-family="Fredoka, system-ui, sans-serif"';
@@ -1089,8 +1135,8 @@ function drawBoard(){
   /* trail: red carpet runner with stairs between rows */
   let d=''; for(let i=0;i<=LAST;i++){ const p=posOf(i); d += (i?'L':'M')+p.x.toFixed(1)+' '+p.y+' '; }
   h += `<path d="${d}" fill="none" stroke="#12081f" stroke-width="32" stroke-linejoin="round" stroke-linecap="round"/>`;
-  h += `<path d="${d}" fill="none" stroke="#6a1f3c" stroke-width="22" stroke-linejoin="round" stroke-linecap="round"/>`;
-  h += `<path d="${d}" fill="none" stroke="#d9a82e" stroke-width="1.6" stroke-dasharray="5 6" stroke-linejoin="round" opacity=".6"/>`;
+  h += `<path d="${d}" fill="none" stroke="${window.SPK_RUNNER?window.SPK_RUNNER[0]:'#6a1f3c'}" stroke-width="22" stroke-linejoin="round" stroke-linecap="round"/>`;
+  h += `<path d="${d}" fill="none" stroke="${window.SPK_RUNNER?window.SPK_RUNNER[1]:'#d9a82e'}" stroke-width="1.6" stroke-dasharray="5 6" stroke-linejoin="round" opacity=".6"/>`;
   for(let i=0;i<LAST;i++){ const a=posOf(i), b=posOf(i+1); if(Math.abs(a.x-b.x)>1) continue;
     const y0=Math.min(a.y,b.y)+22, y1=Math.max(a.y,b.y)-22;
     for(let y=y0;y<=y1;y+=8) h += `<rect x="${a.x-15}" y="${y}" width="30" height="5" rx="1" fill="#8a5a34" stroke="#140a1f" stroke-width="1.5"/>`; }
@@ -1117,7 +1163,7 @@ function drawBoard(){
         <polygon points="${sp.join(' ')}" fill="#ff5fa2" stroke="#12081f" stroke-width="2.5" stroke-linejoin="round"/>`;
   h += `<g class="pvl"></g><g class="pwl"></g>`;
   svg.innerHTML = `<defs>${patternDefs()}</defs>` + h;
-  $('zoom').innerHTML = h;
+  $('zoom').innerHTML = h; window.dispatchEvent(new Event('spooky:board'));
   if(G){ drawPawns(); showPreview(); }
 }
 
@@ -1226,10 +1272,10 @@ function renderPieces(){
 function fillVoiceSel(){
   const sel=$('voiceSel'); if(!sel) return;
   const list=langVoices(), t=T[lang];
-  sel.innerHTML = `<option value="${AI}">${t.aiVoice}</option>` + (synth ? `<option value="">${t.defVoice}</option>` : '') +
+  sel.innerHTML = `<option value="${SPOOKY}">${t.spookyVoice}</option><option value="${AI}">${t.aiVoice}</option>` + (synth ? `<option value="">${t.defVoice}</option>` : '') +
     list.map(v=>`<option value="${v.voiceURI.replace(/"/g,'&quot;')}">${v.name} (${v.lang})</option>`).join('');
   const saved=voiceMode();
-  sel.value = saved===AI || (saved==='' && synth) || list.some(v=>v.voiceURI===saved) ? saved : AI;
+  sel.value = isAI(saved) || (saved==='' && synth) || list.some(v=>v.voiceURI===saved) ? saved : SPOOKY;
 }
 function syncSetup(){
   document.querySelectorAll('#catSeg .pill').forEach(b=>{ const c=b.dataset.cat; b.setAttribute('aria-pressed', String(c==='all' ? cats.length===5 : cats.includes(c))); });
@@ -1332,7 +1378,7 @@ async function answer(i){
   const q=G.q, t=T[lang], btns=$('opts').children;
   renderPrompt(true);
   if(i===q.answer){
-    btns[i].classList.add('right'); sfx.right();
+    btns[i].classList.add('right'); sfx.right(); window.dispatchEvent(new Event('spooky:right'));
     const c=G.card, cardTxt=t.card(t.candy[c.color], c.dbl);
     setFeedback(t.yes+' '+cardTxt,'good'); showPreview();
     await say([t.yes+' '+cardTxt], 3500); if(id!==gameId) return;
@@ -1364,7 +1410,7 @@ async function movePawn(pi, dest, id){
   }
   await sleep(250);
   if(PASS[p.pos]!==undefined){
-    setFeedback(T[lang].passage,'good'); sfx.whoosh(); say([T[lang].passage], 4000);
+    setFeedback(T[lang].passage,'good'); sfx.whoosh(); window.dispatchEvent(new Event('spooky:passage')); say([T[lang].passage], 4000);
     await sleep(500); if(id!==gameId) return;
     p.pos = PASS[p.pos]; els.forEach(el=>el.classList.add('glide')); placePawns();
     await camTo(box(p.pos), 900, cam); if(id!==gameId) return;
@@ -1381,7 +1427,7 @@ async function win(pi){
   $('winPc').innerHTML=`<use href="#pc-${G.players[pi].piece}"/>`;
   $('winTitle').textContent=t.win(nm);
   $('win').hidden=false; $('againBtn').focus();
-  sfx.win(); startFx();
+  sfx.win(); startFx(); window.dispatchEvent(new Event('spooky:win'));
   await sleep(900); say([t.winSay(G.players[pi].piece)], 8000);
 }
 $('againBtn').addEventListener('click',()=>{ stopFx(); startGame(); });
@@ -1426,8 +1472,617 @@ function startFx(){
 
 /* ================= INIT ================= */
 if(synth){ loadVoices(); try{ synth.addEventListener('voiceschanged', loadVoices); }catch(e){ synth.onvoiceschanged=loadVoices; } }
+window.__wiiApplyText = applyText;
+window.__wiiLaugh = () => { if(soundOn) say([T[lang].laugh], 4000); };
+window.__wiiNarrator = v => { ['en','es'].forEach(l=>{ const cur=store.get('voice-'+l, SPOOKY); if(cur==null || isAI(cur)) store.set('voice-'+l, v); }); fillVoiceSel(); };
 applyText(); syncSetup();
 window.__wii = { get G(){return G;}, makeQuestion, setLang:l=>{lang=l;}, destination, colorKey, allLines, voiceLog:VO.log, music:MU, answer:i=>answer(i) };
+})();
+</script>
+
+<!-- ================= SPOOKY EXTRAS =================
+     Optional effects chosen in "How spooky?" on the setup screen. They draw on top of the board and the page,
+     and talk to the game only through window events (spooky:board, :right, :passage, :win) and a few window.__ hooks. -->
+<style>
+:root{ --spk-slime:#9dff6a; --spk-eye:#ffe14a; --spk-warm:#ffb04a; }
+/* spookier page background when the lights are out */
+:root.spk-dark body{
+  background:
+    radial-gradient(circle at 85% 8%, #2a1a4a 0, transparent 38%),
+    linear-gradient(180deg, #07030f 0%, #10081d 55%, #170b26 100%);
+  background-attachment:fixed; background-color:#07030f;
+}
+:root.spk-dark .qcard{ background:#1d0f33ee; box-shadow:0 0 40px #6ff0c818 inset }
+/* drippy, glowing title */
+:root.spk-title .hero h1 [data-t="title"], :root.spk-title .bar .ttl{
+  color:var(--spk-slime); text-shadow:0 3px 0 #1f4a10, 0 0 22px #9dff6a77; animation:spkGlow 3.2s ease-in-out infinite }
+:root.spk-title .hero h1 .sub{ color:var(--pumpkin); text-shadow:0 2px 0 #7a2c00, 0 0 18px #ff8a1f66 }
+@keyframes spkGlow{ 0%,100%{filter:none} 45%{filter:brightness(1.25)} 50%{filter:brightness(.7)} 55%{filter:brightness(1.2)} }
+:root.spk-title .hero h1 [data-t="title"]{position:relative; display:inline-block}
+:root.spk-title .hero h1 [data-t="title"]::after{content:""; position:absolute; left:4%; right:6%; bottom:-.2em; height:.3em; pointer-events:none;
+  background:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 24' preserveAspectRatio='none'><g fill='%239dff6a'><path d='M20 0h12v9q0 8-6 8t-6-8z'/><path d='M70 0h10v15q0 7-5 7t-5-7z'/><path d='M118 0h9v6q0 6-4.5 6T118 6z'/><path d='M160 0h12v13q0 8-6 8t-6-8z'/><path d='M214 0h9v8q0 6-4.5 6T214 8z'/><path d='M262 0h11v12q0 7-5.5 7T262 12z'/></g></svg>") center/100% 100% no-repeat; filter:drop-shadow(0 0 6px #9dff6a88)}
+:root.spk-ghosts .floaty{ filter:drop-shadow(0 0 14px #c8fff0aa) }
+
+/* spooky choices on the setup screen */
+.spk-sec{clear:both; display:flex; flex-direction:column; gap:8px; margin-top:12px}
+.spk-sec:first-of-type{margin-top:0}
+.spk-sub{margin:0; font-weight:600; font-size:15px; color:var(--muted)}
+#spk-list .pill{font-size:15px; min-height:44px; padding:6px 13px}
+.spk-what{font-size:14px; color:var(--muted)}
+.spk-what summary{cursor:pointer; font-weight:600; color:var(--mint); min-height:32px; display:flex; align-items:center}
+.spk-what ul{margin:6px 0 0; padding-left:18px; display:grid; gap:6px; line-height:1.4}
+.spk-what b{color:var(--text)}
+.spk-try .btn{min-height:44px; font-size:15px; padding:6px 12px}
+/* full-page night sky behind everything */
+#spk-night{position:fixed; inset:0; z-index:-1; pointer-events:none; overflow:hidden; display:none;
+  background:radial-gradient(120% 60% at 50% 105%, #2b5a4a55 0, transparent 60%), linear-gradient(180deg,#05020d 0%,#120728 45%,#2a1146 80%,#1a0b2c 100%)}
+:root.spk-sky #spk-night{display:block}
+:root.spk-sky body{background:#05020d}
+#spk-stars{position:absolute; inset:0; width:100%; height:100%}
+.spk-moon{position:absolute; right:7vw; top:9vh; width:clamp(70px,11vw,150px); aspect-ratio:1; border-radius:50%;
+  background:radial-gradient(circle at 38% 36%, #fffbe6 0, #fff1b8 45%, #e8d48a 100%);
+  box-shadow:0 0 50px 18px #fff4c240, 0 0 140px 60px #c8b6ff22}
+.spk-moon i{position:absolute; border-radius:50%; background:#d9c47a99}
+.spk-cloud{position:absolute; left:0; height:auto; opacity:.5; filter:blur(3px); will-change:transform}
+.spk-hills{position:absolute; left:0; right:0; bottom:0; width:100%; height:26vh; min-height:140px}
+.spk-mist{position:absolute; left:-10%; right:-10%; bottom:-4vh; height:16vh; background:radial-gradient(60% 100% at 50% 100%, #cfc4ff33, transparent 70%); filter:blur(8px); animation:spkMist 14s ease-in-out infinite alternate}
+@keyframes spkMist{to{transform:translateX(6%)}}
+/* let the sky show through the setup page */
+:root.spk-sky fieldset{background:#1d0f33c4}
+
+/* board layers */
+.spk-fl{ animation:spkFl 1.7s infinite steps(1,end) }
+@keyframes spkFl{ 0%{opacity:.22} 12%{opacity:.34} 20%{opacity:.16} 33%{opacity:.3} 48%{opacity:.2} 61%{opacity:.36} 77%{opacity:.18} 88%{opacity:.28} }
+.spk-wing{ animation:spkFlap .22s ease-in-out infinite alternate; transform-box:fill-box; transform-origin:center }
+@keyframes spkFlap{ to{ transform:scaleY(.35) } }
+
+/* page-level effects */
+#spk-flash{position:fixed; inset:0; background:#e8e4ff; opacity:0; pointer-events:none; z-index:25; mix-blend-mode:screen}
+#spk-sky{position:fixed; inset:0; pointer-events:none; z-index:24; overflow:hidden}
+#spk-sky svg{position:absolute; left:0; top:0; overflow:visible}
+#spk-boo{position:fixed; left:0; top:0; width:min(46vw,260px); pointer-events:none; z-index:26; opacity:0}
+#spk-boo b{position:absolute; right:-18%; top:-6%; background:#fff; color:#24123d; font:700 clamp(24px,6vw,40px)/1 var(--spooky); padding:8px 14px 6px; border-radius:18px; border:3px solid #24123d; transform:rotate(8deg)}
+#spk-boo b::after{content:""; position:absolute; left:10px; bottom:-12px; border:8px solid transparent; border-top-color:#24123d}
+
+@media (prefers-reduced-motion:reduce){ #spk-flash{display:none} }
+</style>
+
+<div id="spk-night" aria-hidden="true">
+  <canvas id="spk-stars"></canvas>
+  <div class="spk-moon"><i style="left:22%;top:30%;width:16%;height:16%"></i><i style="left:55%;top:52%;width:22%;height:22%"></i><i style="left:58%;top:22%;width:10%;height:10%"></i></div>
+  <svg class="spk-hills" id="spk-hills" viewBox="0 0 1600 300" preserveAspectRatio="xMidYMax slice"></svg>
+  <div class="spk-mist"></div>
+</div>
+<div id="spk-flash" aria-hidden="true"></div>
+<div id="spk-sky" aria-hidden="true"></div>
+<div id="spk-boo" aria-hidden="true">
+  <svg viewBox="-30 -64 60 70"><g opacity=".93"><use href="#pc-ghost"/></g></svg><b>BOO!</b>
+</div>
+
+
+
+
+
+<script>
+(function(){
+"use strict";
+const NS='http://www.w3.org/2000/svg';
+const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const BW=600, ROOF=150, FH=180, BH=934, HB=ROOF+FH*4;
+const floorTop = f => ROOF+(3-f)*FH;
+const R = (a,b)=>a+Math.random()*(b-a);
+
+const FEAT=[
+ {k:'dark',     lvl:1, en:['Lights out','The house goes dim. Each player carries a warm lantern glow, and candles and windows light up the rooms.'],
+                       es:['Luces apagadas','La casa se oscurece. Cada jugador lleva una linterna, y las velas y ventanas iluminan los cuartos.']},
+ {k:'flicker',  lvl:1, en:['Flickering candles','Candles, the chandelier and the windows flicker like there is a draft.'],
+                       es:['Velas que parpadean','Las velas, el candelabro y las ventanas parpadean como si hubiera viento.']},
+ {k:'eyes',     lvl:1, en:['Eyes in the dark','Yellow eyes blink from dark corners and watch whoever’s turn it is.'],
+                       es:['Ojos en la oscuridad','Ojos amarillos parpadean en los rincones y miran a quien le toca.']},
+ {k:'skeletons',lvl:1, en:['Walking skeletons','Skeletons stroll through the rooms. After a right answer they stop and dance.'],
+                       es:['Esqueletos caminantes','Esqueletos pasean por los cuartos. Con cada respuesta correcta, se ponen a bailar.']},
+ {k:'ghosts',   lvl:1, en:['Wandering ghosts','See-through ghosts drift through the rooms, then fade away.'],
+                       es:['Fantasmas flotantes','Fantasmas transparentes flotan por los cuartos y desaparecen.']},
+ {k:'fog',      lvl:1, en:['Creeping fog','Mist rolls across the graveyard and along the floors.'],
+                       es:['Niebla','La niebla cubre el cementerio y los pisos.']},
+ {k:'sky',      lvl:1, en:['Night sky','A starry night all around: a big moon, drifting clouds, shooting stars and a graveyard.'],
+                       es:['Cielo de noche','Una noche estrellada alrededor: luna llena, nubes, estrellas fugaces y un cementerio.']},
+ {k:'title',    lvl:1, en:['Slimy title','The title turns slime-green, drips and flickers.'],
+                       es:['Título baboso','El título se pone verde baba, gotea y parpadea.']},
+ {k:'bats',     lvl:2, en:['Bat swarms','Now and then a flock of flapping bats flies across the screen.'],
+                       es:['Murciélagos','De vez en cuando, murciélagos cruzan volando la pantalla.']},
+ {k:'lightning',lvl:2, en:['Lightning','Now and then the sky flashes and thunder rumbles. Gentle and not too often.'],
+                       es:['Relámpagos','A veces el cielo brilla y suena un trueno. Suave y no muy seguido.']},
+ {k:'spider',   lvl:2, en:['Dropping spiders','A spider drops down on its thread, wiggles, then climbs back up.'],
+                       es:['Arañas','Una araña baja por su hilo, se mueve y vuelve a subir.']},
+ {k:'boo',      lvl:2, en:['Boo! swoop','On a secret passage, a big ghost swoops across the screen.'],
+                       es:['¡Bu!','En un pasadizo secreto, un fantasma grande cruza volando la pantalla.']},
+ {k:'sounds',   lvl:2, en:['Spooky sounds','Howling wind, owl hoots, and a creaky door with footsteps when you start.'],
+                       es:['Sonidos de miedo','Viento, búhos, y una puerta que cruje con pasos al empezar.']},
+ {k:'howl',     lvl:2, en:['Wolf howls','A wolf howls when the door opens, and again now and then.'],
+                       es:['Aullidos','Un lobo aúlla al abrir la puerta, y otra vez de vez en cuando.']},
+ {k:'groove',   lvl:2, en:['Monster groove','A spooky 80s dance beat with a wobbly theremin, in place of the usual music. Uses the 🎵 button.'],
+                       es:['Ritmo monstruoso','Un ritmo bailable de miedo de los 80, en lugar de la música de siempre. Usa el botón 🎵.']},
+ {k:'laugh',    lvl:2, en:['Midnight win','When someone wins, the clock strikes midnight and the narrator laughs.'],
+                       es:['Victoria de medianoche','Al ganar, el reloj da la medianoche y el narrador se ríe.']},
+];
+const SPK_T={
+ en:{legend:'How spooky?', level:'Scare level', l0:'😊 Cozy', l1:'👻 Spooky', l2:'💀 Extra spooky', walk:'Walk on', wc:'🍬 Candy', wt:'🪦 Tombstones',
+     wj:'🎃 Pumpkins', ws:'💀 Skulls', things:'Spooky things', what:'What does each one do?', try:'Try one now', t1:'⚡ Lightning', t2:'👻 Boo!',
+     t3:'🦇 Bats', t4:'🐺 Howl', t5:'🕛 Midnight'},
+ es:{legend:'¿Cuánto miedo?', level:'Nivel de miedo', l0:'😊 Tranquilo', l1:'👻 De miedo', l2:'💀 Mucho miedo', walk:'Caminar sobre', wc:'🍬 Dulces', wt:'🪦 Lápidas',
+     wj:'🎃 Calabazas', ws:'💀 Calaveras', things:'Cosas de miedo', what:'¿Qué hace cada una?', try:'Pruébalo', t1:'⚡ Relámpago', t2:'👻 ¡Bu!',
+     t3:'🦇 Murciélagos', t4:'🐺 Aullido', t5:'🕛 Medianoche'}
+};
+const spkLang=()=>document.documentElement.lang==='es'?'es':'en';
+const ON={};
+FEAT.forEach(f=>ON[f.k]=true);
+const $=id=>document.getElementById(id);
+
+/* ---------- panel ---------- */
+const list=$('spk-list');
+const EMO={"dark": "🕯️", "flicker": "🔥", "eyes": "👀", "skeletons": "💀", "ghosts": "👻", "fog": "🌫️", "sky": "🌙", "title": "🟢", "bats": "🦇", "lightning": "⚡", "spider": "🕷️", "boo": "😱", "sounds": "🌬️", "howl": "🐺", "groove": "🎶", "laugh": "🕛"};
+const desc=$('spk-desc');
+FEAT.forEach(f=>{
+  const c=document.createElement('button'); c.className='pill spk-chip'; c.id='spk-sw-'+f.k; c.setAttribute('aria-pressed','true'); list.appendChild(c);
+  const li=document.createElement('li'); li.id='spk-d-'+f.k; desc.appendChild(li);
+});
+function spkText(){
+  const L=spkLang(), t=SPK_T[L];
+  document.querySelectorAll('[data-spk]').forEach(el=>{ const v=t[el.dataset.spk]; if(v) el.textContent=v; });
+  FEAT.forEach(f=>{ const [n,d]=f[L]; const c=$('spk-sw-'+f.k); c.textContent=(EMO[f.k]||'')+' '+n; c.title=d;
+    $('spk-d-'+f.k).innerHTML=`<b>${EMO[f.k]||''} ${n}:</b> ${d}`; });
+}
+spkText();
+new MutationObserver(spkText).observe(document.documentElement,{attributes:true, attributeFilter:['lang']});
+let WALK='tombs';
+const OUTL='stroke="#12081f" stroke-width="3" stroke-linejoin="round"';
+const SPACES={
+  tombs:(x,y,c)=>`<ellipse cx="${x}" cy="${y+18}" rx="20" ry="5" fill="#000" opacity=".45"/>
+    <path d="M${x-15} ${y+17} V${y-5} A15 15 0 0 1 ${x+15} ${y-5} V${y+17} Z" fill="${c}" ${OUTL}/>
+    <path d="M${x-15} ${y+11} H${x+15} V${y+17} H${x-15} Z" fill="#00000030"/>
+    <path d="M${x} ${y-13} V${y+5} M${x-6} ${y-7} H${x+6}" stroke="#12081fb8" stroke-width="3.2" stroke-linecap="round"/>
+    <path d="M${x+9} ${y-12} l-3 5 l3 3 l-2 5" stroke="#12081f70" stroke-width="1.5" fill="none"/>
+    <path d="M${x-10} ${y-5} A10 10 0 0 1 ${x-4} ${y-14}" stroke="#ffffff80" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <path d="M${x-19} ${y+18} l3 -7 l2 7 l3 -5 l2 5 Z M${x+12} ${y+18} l3 -6 l2 6 l3 -8 l1 8 Z" fill="#3f8a3a" stroke="#12081f" stroke-width="1.2"/>`,
+  jacks:(x,y,c)=>`<ellipse cx="${x}" cy="${y+16}" rx="20" ry="5" fill="#000" opacity=".45"/>
+    <path d="M${x} ${y-14} q2 -7 7 -9" stroke="#2f7a2f" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <ellipse cx="${x-9}" cy="${y+1}" rx="11" ry="14" fill="${c}" ${OUTL}/><ellipse cx="${x+9}" cy="${y+1}" rx="11" ry="14" fill="${c}" ${OUTL}/>
+    <ellipse cx="${x}" cy="${y+1}" rx="10" ry="15" fill="${c}" ${OUTL}/><ellipse cx="${x}" cy="${y+1}" rx="10" ry="15" fill="#fff" opacity=".14"/>
+    <path d="M${x-11} ${y-1} L${x-6} ${y-8} L${x-2} ${y-1} Z M${x+11} ${y-1} L${x+6} ${y-8} L${x+2} ${y-1} Z" fill="#1a0b06"/>
+    <path d="M${x-11} ${y+4} L${x-7} ${y+7} L${x-3} ${y+4} L${x} ${y+8} L${x+3} ${y+4} L${x+7} ${y+7} L${x+11} ${y+4} Q${x} ${y+16} ${x-11} ${y+4} Z" fill="#1a0b06"/>`,
+  skulls:(x,y,c)=>`<ellipse cx="${x}" cy="${y+18}" rx="18" ry="5" fill="#000" opacity=".45"/>
+    <path d="M${x-16} ${y+1} Q${x-18} ${y-20} ${x} ${y-20} Q${x+18} ${y-20} ${x+16} ${y+1} Q${x+16} ${y+8} ${x+9} ${y+9} V${y+16} H${x-9} V${y+9} Q${x-16} ${y+8} ${x-16} ${y+1} Z" fill="${c}" ${OUTL}/>
+    <ellipse cx="${x-6.5}" cy="${y-3}" rx="5" ry="5.5" fill="#12081f"/><ellipse cx="${x+6.5}" cy="${y-3}" rx="5" ry="5.5" fill="#12081f"/>
+    <circle cx="${x-6}" cy="${y-3}" r="1.7" fill="#fff"/><circle cx="${x+7}" cy="${y-3}" r="1.7" fill="#fff"/>
+    <path d="M${x} ${y+3} L${x-2.5} ${y+7} H${x+2.5} Z" fill="#12081f"/>
+    <path d="M${x-4} ${y+10} V${y+15} M${x} ${y+10} V${y+15} M${x+4} ${y+10} V${y+15}" stroke="#12081f" stroke-width="1.6"/>
+    <ellipse cx="${x-7}" cy="${y-13}" rx="5" ry="2.5" fill="#fff" opacity=".4"/>`
+};
+function setWalk(w){
+  WALK=w; save(); window.SPK_WALK=w; window.SPK_SPACE = SPACES[w] || null;
+  window.SPK_RUNNER = w==='candy' ? null : ['#2b2633','#8a8299'];
+  document.querySelectorAll('[data-walk]').forEach(b=>b.setAttribute('aria-pressed', b.dataset.walk===w));
+  if(window.__spkRedraw) window.__spkRedraw();
+  if(window.__wiiApplyText) window.__wiiApplyText();
+}
+document.querySelectorAll('[data-walk]').forEach(b=>b.addEventListener('click',()=>setWalk(b.dataset.walk)));
+let grooveWas=null;
+const SAVE_KEY='wii-spooky';
+function save(){ try{ localStorage.setItem(SAVE_KEY, JSON.stringify({on:ON, walk:WALK})); }catch(e){} }
+function sync(){
+  FEAT.forEach(f=>{ $('spk-sw-'+f.k).setAttribute('aria-pressed', ON[f.k]); document.documentElement.classList.toggle('spk-'+f.k, ON[f.k]); });
+  let lvl=-1; for(let l=0;l<=2;l++){ if(FEAT.every(f=>ON[f.k]===(f.lvl<=l))) lvl=l; }
+  for(let l=0;l<=2;l++) $('spk-l'+l).setAttribute('aria-pressed', l===lvl);
+  applyBoard(); sound.update();
+  if(grooveWas!==null && grooveWas!==ON.groove){ const M=window.__spkMusic; if(M && M.MU.started && M.MU.on){ M.stop(); setTimeout(()=>M.play(),400); } }
+  grooveWas=ON.groove; save();
+}
+list.addEventListener('click',e=>{ const b=e.target.closest('.spk-chip'); if(!b) return; const k=b.id.slice(7); ON[k]=!ON[k]; sync(); });
+document.querySelectorAll('button[data-lvl]').forEach(b=>b.addEventListener('click',()=>{ const l=+b.dataset.lvl; FEAT.forEach(f=>ON[f.k]=f.lvl<=l); if(window.__wiiNarrator) window.__wiiNarrator(l===0?'ai':'ai-spooky'); if(l===0) setWalk('candy'); else if(WALK==='candy') setWalk('tombs'); sync(); }));
+$('startBtn').addEventListener('click',()=>{ sound.door(); if(ON.howl) setTimeout(()=>sound.howl(true),2300); });
+$('spk-t-howl').addEventListener('click',()=>sound.howl(true));
+$('spk-t-win').addEventListener('click',()=>midnight(true));
+$('spk-t-light').addEventListener('click',()=>lightning(true));
+$('spk-t-boo').addEventListener('click',()=>booSwoop(true));
+$('spk-t-bats').addEventListener('click',()=>bats(true));
+
+/* ---------- board layers ---------- */
+const el=(tag,attrs,parent)=>{ const n=document.createElementNS(NS,tag); for(const k in attrs) n.setAttribute(k,attrs[k]); if(parent) parent.appendChild(n); return n; };
+// where an element's local point lands in board coordinates, without needing layout
+function toBoard(n,x,y){ while(n && n.tagName.toLowerCase()!=='svg'){ const tl=n.transform&&n.transform.baseVal; if(tl&&tl.numberOfItems){ const m=tl.consolidate().matrix; const nx=m.a*x+m.c*y+m.e, ny=m.b*x+m.d*y+m.f; x=nx; y=ny; } n=n.parentNode; } return {x,y}; }
+
+const EYES=[ // dark corners: [x, y, size]
+  [272,707,1],[578,706,1],[24,530,.9],[586,560,.9],[290,352,.8],[24,348,.9],[372,172,.9],[226,172,.8],[250,906,1.1],[592,896,1]];
+let L=null; // live layer refs
+function applyBoard(){
+  const board=$('board'), zoom=$('zoom'); if(!board || !board.querySelector('.pwl')) return;
+  const defs=board.querySelector('defs');
+  if(!defs.querySelector('#spk-mask')){
+    defs.insertAdjacentHTML('beforeend',`
+      <radialGradient id="spk-hole"><stop offset=".25" stop-color="#000"/><stop offset="1" stop-color="#fff"/></radialGradient>
+      <radialGradient id="spk-warmG"><stop offset="0" stop-color="#ffb04a" stop-opacity=".38"/><stop offset="1" stop-color="#ffb04a" stop-opacity="0"/></radialGradient>
+      <radialGradient id="spk-eyeG"><stop offset="0" stop-color="#ffe14a" stop-opacity=".45"/><stop offset="1" stop-color="#ffe14a" stop-opacity="0"/></radialGradient>
+      <filter id="spk-blur" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="9"/></filter>
+      <mask id="spk-mask" maskUnits="userSpaceOnUse" x="0" y="0" width="${BW}" height="${BH}"><rect width="${BW}" height="${BH}" fill="#fff"/><g id="spk-holes"></g></mask>`);
+  }
+  // find the light sources the game already draws
+  const lights=[];
+  board.querySelectorAll('circle').forEach(c=>{
+    const f=c.getAttribute('fill'), op=c.getAttribute('opacity');
+    const glow = (f==='#ffd23f' && op==='.22') || f==='url(#lampGlow)' || f==='url(#moonGlow)';
+    if(!glow) return;
+    const p=toBoard(c, +(c.getAttribute('cx')||0), +(c.getAttribute('cy')||0));
+    const sc=toBoard(c, +(c.getAttribute('cx')||0)+1, +(c.getAttribute('cy')||0)); const s=Math.hypot(sc.x-p.x, sc.y-p.y);
+    const r=(+c.getAttribute('r')||10)*s;
+    lights.push({x:p.x, y:p.y, r: f==='url(#moonGlow)' ? 90 : Math.max(46, r*2.6), moon: f==='url(#moonGlow)'});
+  });
+  [board, zoom].forEach(svg=>svg.querySelectorAll('circle').forEach(c=>{
+    if(c.getAttribute('fill')==='#ffd23f' && c.getAttribute('opacity')==='.22') c.classList.toggle('spk-fl', ON.flicker && !reduced);
+  }));
+  const holes=board.querySelector('#spk-holes'); holes.innerHTML='';
+  lights.forEach(l=>{ l.el=el('circle',{cx:l.x.toFixed(1), cy:l.y.toFixed(1), r:l.r.toFixed(1), fill:'url(#spk-hole)'},holes); });
+  const lanterns=[0,1,2].map(()=>el('circle',{cx:-200, cy:-200, r:95, fill:'url(#spk-hole)'},holes));
+
+  const layers=[];
+  [board, zoom].forEach(svg=>{
+    svg.querySelectorAll('.spk-under').forEach(n=>n.remove());
+    const pvl=svg.querySelector('.pvl'); if(!pvl) return;
+    const g=el('g',{class:'spk-under','pointer-events':'none'}); svg.insertBefore(g, pvl);
+    const dark=el('rect',{width:BW, height:BH, fill:'#06020e', opacity: ON.dark ? .63 : 0, mask:'url(#spk-mask)'}, g);
+    const warm=[0,1,2].map(()=>el('circle',{cx:-200, cy:-200, r:70, fill:'url(#spk-warmG)', opacity: ON.dark?1:0}, g));
+    const fog=el('g',{filter:'url(#spk-blur)', opacity: ON.fog ? 1 : 0}, g);
+    const fogs=[];
+    for(let i=0;i<7;i++) fogs.push({n:el('ellipse',{cx:0, cy:0, rx:R(90,150), ry:R(14,22), fill:'#d9ceff', opacity:R(.16,.26)}, fog), x:R(0,BW), y:HB+R(20,58), v:R(6,14)*(i%2?1:-1)});
+    for(let f=0;f<4;f++) for(let i=0;i<2;i++) fogs.push({n:el('ellipse',{cx:0, cy:0, rx:R(70,120), ry:R(8,12), fill:'#d9ceff', opacity:R(.08,.13)}, fog), x:R(0,BW), y:floorTop(f)+FH-8, v:R(4,9)*(i?1:-1)});
+    const eyesG=el('g',{opacity: ON.eyes ? 1 : 0}, g);
+    const eyes=EYES.map(([x,y,s])=>{ const e=el('g',{transform:`translate(${x} ${y}) scale(${s})`}, eyesG);
+      el('circle',{r:16, fill:'url(#spk-eyeG)'}, e);
+      const whites=[-5,5].map(dx=>el('ellipse',{cx:dx, cy:0, rx:3.4, ry:2.6, fill:'#ffe14a'}, e));
+      const pupils=[-5,5].map(dx=>el('ellipse',{cx:dx, cy:0, rx:1.1, ry:2, fill:'#140a1f'}, e));
+      return {x,y,whites,pupils,next:performance.now()+R(500,5000),shut:0};
+    });
+    const ghostsG=el('g',{}, g);
+    const ghosts=[0,1,2].map(()=>{ const n=el('g',{opacity:0}, ghostsG);
+      el('circle',{cx:0, cy:-14, r:30, fill:'#c8fff0', opacity:.12}, n);
+      el('path',{d:'M-14 0 V-24 A14 14 0 0 1 14 -24 V0 L9 -5 L4.5 0 L0 -5 L-4.5 0 L-9 -5 Z', fill:'#eafff7'}, n);
+      el('ellipse',{cx:-5, cy:-25, rx:2.6, ry:3.4, fill:'#1a3a30'}, n); el('ellipse',{cx:5, cy:-25, rx:2.6, ry:3.4, fill:'#1a3a30'}, n);
+      el('ellipse',{cx:0, cy:-15, rx:3.2, ry:4.4, fill:'#1a3a30'}, n);
+      return {n, t0:-1, dur:1, x0:0, x1:0, y:0}; });
+    const spiderG=el('g',{opacity:0}, g);
+    const thread=el('path',{stroke:'#ffffffaa', 'stroke-width':1.3}, spiderG);
+    const bug=el('g',{}, spiderG);
+    bug.innerHTML=`<path d="M-7 -3 L-16 -11 M-7 0 L-18 -1 M-7 3 L-16 11 M-6 6 L-12 15 M7 -3 L16 -11 M7 0 L18 -1 M7 3 L16 11 M6 6 L12 15" stroke="#b9a6e0" stroke-width="2" stroke-linecap="round"/>
+      <ellipse rx="9" ry="10" fill="#140a1f" stroke="#b9a6e0" stroke-width="2"/><circle cx="-3" cy="-3" r="2.2" fill="#ff5d73"/><circle cx="3" cy="-3" r="2.2" fill="#ff5d73"/>`;
+    const skG=el('g',{}, g);
+    const sks=[0,1].map(()=>{ const n=el('g',{opacity:0}, skG);
+      const bone=(d,parent)=>{ el('path',{d, stroke:'#140a1f','stroke-width':6.5,'stroke-linecap':'round',fill:'none'},parent); el('path',{d, stroke:'#f4f0e6','stroke-width':3.2,'stroke-linecap':'round',fill:'none'},parent); };
+      const legs=[0,1].map(()=>{ const lg=el('g',{}, n); bone('M0 -22 L0 -3 L5 -1', lg); return lg; });
+      bone('M0 -22 V-40 M-7 -36 H7 M-6 -31 H6 M-5 -26 H5 M-6 -22 H6', n);
+      const arms=[0,1].map(()=>{ const a=el('g',{}, n); bone('M0 -38 L0 -24', a); return a; });
+      const head=el('g',{}, n);
+      el('rect',{x:-5, y:-46, width:10, height:6, rx:2, fill:'#f4f0e6', stroke:'#140a1f','stroke-width':2.5}, head);
+      el('circle',{cx:0, cy:-52, r:9.5, fill:'#f4f0e6', stroke:'#140a1f','stroke-width':2.5}, head);
+      el('ellipse',{cx:-3.6, cy:-53, rx:2.8, ry:3.3, fill:'#140a1f'}, head); el('ellipse',{cx:3.6, cy:-53, rx:2.8, ry:3.3, fill:'#140a1f'}, head);
+      el('circle',{cx:-3.2, cy:-53, r:1, fill:'#9dff6a'}, head); el('circle',{cx:4, cy:-53, r:1, fill:'#9dff6a'}, head);
+      return {n,legs,arms,head}; });
+    const bolt=el('path',{d:'M250 0 L232 46 L252 46 L226 102 L270 38 L248 38 L266 0 Z', fill:'#fffbe0', opacity:0, stroke:'#c8b6ff', 'stroke-width':2}, g);
+    layers.push({dark,warm,fog,fogs,eyesG,eyes,ghosts,spiderG,thread,bug,bolt,sks});
+  });
+  L={lights,lanterns,layers};
+}
+window.addEventListener('spooky:board', applyBoard);
+window.addEventListener('spooky:passage', ()=>{ if(ON.boo) booSwoop(); });
+window.addEventListener('spooky:right', ()=>{ if(ON.skeletons) danceNow(); });
+window.addEventListener('spooky:win', ()=>{ if(ON.laugh) midnight(); });
+
+/* ---------- walking skeletons ---------- */
+const SK=[0,1].map(()=>({on:false, f:0, x:0, dir:1, v:30, ph:0, dance:0, a:0}));
+const skQ={next:performance.now()+2500};
+function floorOfY(y){ return Math.max(0,Math.min(3, 3-Math.floor((y-ROOF)/FH))); }
+function spawnSkel(f, x, dir){ const s=SK.find(k=>!k.on); if(!s) return null;
+  Object.assign(s,{on:true, f, dir, x, v:R(26,38), ph:R(0,6), dance:0, a:0}); return s; }
+function danceNow(){
+  const now=performance.now();
+  if(!SK.some(k=>k.on)){ const p=pawnPositions().find(q=>q.active)||pawnPositions()[0];
+    const f=p?floorOfY(p.y):0, x=p?Math.max(60,Math.min(540,p.x+(p.x<300?110:-110))):300; const s=spawnSkel(f,x,p&&p.x<300?-1:1); if(s) s.a=.6; }
+  SK.forEach(k=>{ if(k.on) k.dance=now; });
+  sound.rattle();
+}
+
+/* ---------- animation loop ---------- */
+const spider={next:performance.now()+6000, t0:-1, x:0, top:0, force:false};
+const ghostQ={next:performance.now()+1500};
+let lastT=performance.now();
+function pawnPositions(){
+  const out=[]; const board=$('board'); if(!board) return out;
+  board.querySelectorAll('.pawn').forEach(p=>{ const m=getComputedStyle(p).transform; const mm=/matrix\(([^)]+)\)/.exec(m);
+    if(mm){ const v=mm[1].split(',').map(Number); out.push({x:v[4], y:v[5]-18, active:p.classList.contains('active')}); } });
+  return out;
+}
+function tick(now){
+  const dt=Math.min(.1,(now-lastT)/1000); lastT=now;
+  if(L){
+    const pawns=pawnPositions(), act=pawns.find(p=>p.active)||pawns[0];
+    L.lanterns.forEach((c,i)=>{ const p=pawns[i]; c.setAttribute('cx', p?p.x.toFixed(1):-300); c.setAttribute('cy', p?p.y.toFixed(1):-300);
+      if(p && ON.flicker && !reduced) c.setAttribute('r', (92+Math.sin(now/130+i*2)*3+Math.sin(now/57+i)*2).toFixed(1)); });
+    if(ON.flicker && !reduced) L.lights.forEach((l,i)=>{ if(!l.moon) l.el.setAttribute('r',(l.r*(0.88+0.1*Math.sin(now/90+i*1.7)+0.06*Math.sin(now/37+i))).toFixed(1)); });
+    // skeletons: walk, fade in and out at the ends
+    if(ON.skeletons && now>skQ.next){ skQ.next=now+R(6000,12000); const d=Math.random()<.5?1:-1; spawnSkel(Math.floor(R(0,4)), d>0?-30:630, d); }
+    SK.forEach(k=>{ if(!k.on) return; const dancing=now-k.dance<2800;
+      if(!dancing){ k.x+=k.dir*k.v*dt; k.ph+=dt*k.v/7; }
+      const edge=Math.min(k.x+30, 630-k.x); k.a=Math.min(1, Math.max(k.a, Math.min(1, edge/60)));
+      if(!dancing && (k.x<-40 || k.x>640)) k.on=false;
+      else if(edge<60 && ((k.dir>0&&k.x>300)||(k.dir<0&&k.x<300))) k.a=Math.max(0,edge/60); });
+    // ghosts: start a new one now and then
+    if(ON.ghosts && now>ghostQ.next){ ghostQ.next=now+R(2500,6000);
+      const idle=L.layers[0] && L.layers[0].ghosts.findIndex(g=>g.t0<0);
+      if(idle>=0){ const f=Math.floor(R(0,4)), s=Math.random()<.5?0:1, dir=Math.random()<.5?1:-1, x0=s*300+(dir>0?20:280), x1=s*300+(dir>0?280:20);
+        const spec={t0:now, dur:R(7000,11000), x0, x1, y:floorTop(f)+R(36,70), dir};
+        L.layers.forEach(ly=>Object.assign(ly.ghosts[idle], spec)); } }
+    // spider
+    if(ON.spider && spider.t0<0 && (now>spider.next || spider.force)){ spider.force=false; spider.t0=now;
+      const f=Math.floor(R(0,4)), s=Math.random()<.5?0:1; spider.x=s*300+(Math.random()<.5?R(30,90):R(210,270)); spider.top=floorTop(f)+4; }
+    const sp = spider.t0<0 ? null : (now-spider.t0)/6000;
+    if(sp!==null && sp>=1){ spider.t0=-1; spider.next=now+R(12000,20000); }
+    let drop=0; if(sp!==null){ drop = sp<.3 ? sp/.3 : sp<.7 ? 1 : 1-(sp-.7)/.3; drop=drop*drop*(3-2*drop); }
+    L.layers.forEach(ly=>{
+      ly.dark.setAttribute('opacity', ON.dark ? .63 : 0);
+      ly.warm.forEach((c,i)=>{ const p=pawns[i]; c.setAttribute('opacity', ON.dark&&p?1:0); if(p){ c.setAttribute('cx',p.x.toFixed(1)); c.setAttribute('cy',(p.y+6).toFixed(1)); } });
+      ly.fog.setAttribute('opacity', ON.fog?1:0);
+      if(ON.fog && !reduced) ly.fogs.forEach(f=>{ f.x+=f.v*dt; if(f.x>BW+160) f.x=-160; if(f.x<-160) f.x=BW+160; f.n.setAttribute('cx',f.x.toFixed(1)); f.n.setAttribute('cy',f.y.toFixed(1)); });
+      else ly.fogs.forEach(f=>{ f.n.setAttribute('cx',f.x.toFixed(1)); f.n.setAttribute('cy',f.y.toFixed(1)); });
+      ly.eyesG.setAttribute('opacity', ON.eyes?1:0);
+      if(ON.eyes) ly.eyes.forEach((e,j)=>{
+        const host=L.layers[0].eyes[j];
+        if(ly===L.layers[0] && now>e.next){ e.shut=now; e.next=now+R(2500,7000); }
+        const closed = now-host.shut<160;
+        e.whites.forEach(w=>w.setAttribute('ry', closed?.4:2.6)); e.pupils.forEach(p=>p.setAttribute('opacity', closed?0:1));
+        if(act){ const dx=act.x-e.x, dy=act.y-e.y, d=Math.hypot(dx,dy)||1; e.pupils.forEach((p,k)=>{ p.setAttribute('cx',((k?5:-5)+dx/d*1.8).toFixed(2)); p.setAttribute('cy',(dy/d*1.1).toFixed(2)); }); }
+      });
+      ly.sks.forEach((e,j)=>{ const k=SK[j];
+        if(!k.on || !ON.skeletons){ e.n.setAttribute('opacity',0); return; }
+        const dancing = now-k.dance < 2800, t=now/1000;
+        let legA=0, legB=0, armA=0, armB=0, bob=0, sway=0, head=0;
+        if(dancing){ const q=t*Math.PI*2*2.2; legA=Math.sin(q)*28; legB=-Math.sin(q)*12; armA=-100+Math.sin(q*2)*14; armB=-100+Math.sin(q*2+1)*14; bob=-Math.abs(Math.sin(q))*5; sway=Math.sin(q)*7; head=Math.sin(q)*10; }
+        else { const q=k.ph; legA=Math.sin(q)*24; legB=-legA; armA=-legA*.8; armB=legA*.8; bob=-Math.abs(Math.cos(q))*2.5; head=Math.sin(q*.5)*4; }
+        e.legs[0].setAttribute('transform',`rotate(${legA.toFixed(1)} 0 -22)`); e.legs[1].setAttribute('transform',`rotate(${legB.toFixed(1)} 0 -22)`);
+        e.arms[0].setAttribute('transform',`rotate(${armA.toFixed(1)} 0 -38)`); e.arms[1].setAttribute('transform',`rotate(${armB.toFixed(1)} 0 -38)`);
+        e.head.setAttribute('transform',`rotate(${head.toFixed(1)} 0 -44)`);
+        e.n.setAttribute('opacity',(k.a*.95).toFixed(2));
+        e.n.setAttribute('transform',`translate(${(k.x+sway).toFixed(1)} ${(floorTop(k.f)+FH-7+bob).toFixed(1)}) scale(${(k.dir*.85).toFixed(2)} .85)`);
+      });
+      ly.ghosts.forEach(gh=>{
+        if(gh.t0<0 || !ON.ghosts){ gh.n.setAttribute('opacity',0); if(!ON.ghosts) gh.t0=-1; return; }
+        const k=(now-gh.t0)/gh.dur; if(k>=1){ gh.t0=-1; gh.n.setAttribute('opacity',0); return; }
+        const x=gh.x0+(gh.x1-gh.x0)*k, y=gh.y+Math.sin(now/600)*6;
+        gh.n.setAttribute('opacity',(Math.sin(Math.PI*k)*.6).toFixed(3));
+        gh.n.setAttribute('transform',`translate(${x.toFixed(1)} ${y.toFixed(1)}) scale(${gh.dir<0?-1:1} 1) rotate(${(Math.sin(now/700)*6).toFixed(1)})`);
+      });
+      ly.spiderG.setAttribute('opacity', sp!==null&&ON.spider ? 1 : 0);
+      if(sp!==null){ const yy=spider.top+drop*78, wig=sp>.3&&sp<.7?Math.sin(now/90)*4:0;
+        ly.thread.setAttribute('d',`M${spider.x} ${spider.top} V${yy}`);
+        ly.bug.setAttribute('transform',`translate(${(spider.x+wig*.3).toFixed(1)} ${(yy+9).toFixed(1)}) rotate(${wig.toFixed(1)})`); }
+    });
+  }
+  // occasional sky events
+  if(ON.lightning && now>auto.light){ auto.light=now+R(18000,30000); lightning(); }
+  if(ON.bats && now>auto.bats){ auto.bats=now+R(14000,24000); bats(); }
+  if(ON.sounds && now>auto.owl){ auto.owl=now+R(16000,30000); sound.owl(); }
+  if(ON.howl && now>auto.howl){ auto.howl=now+R(30000,45000); sound.howl(); }
+  requestAnimationFrame(tick);
+}
+const auto={light:performance.now()+7000, bats:performance.now()+4000, owl:performance.now()+9000, howl:performance.now()+25000};
+requestAnimationFrame(tick);
+
+/* ---------- full-page night sky ---------- */
+(function(){
+  let seed=7; const rnd=()=>{ seed=(seed*16807)%2147483647; return (seed-1)/2147483646; };
+  // graveyard skyline: two hill layers, bare trees, tombstones, a fence and a far-off tower
+  let h='';
+  const hill=(base,amp,ph,fill)=>{ let d=`M0 300 L0 ${base}`; for(let x=0;x<=1600;x+=20){ const y=base-amp*Math.sin(x/260+ph)-amp*.5*Math.sin(x/97+ph*2); d+=` L${x} ${y.toFixed(1)}`; } return `<path d="${d} L1600 300 Z" fill="${fill}"/>`; };
+  h+=hill(190,22,1,'#1a0d2e');
+  // distant tower on the back hill
+  h+=`<g fill="#1a0d2e"><rect x="1180" y="120" width="34" height="80"/><polygon points="1172,122 1197,78 1222,122"/><rect x="1150" y="150" width="30" height="50"/><polygon points="1145,152 1165,124 1185,152"/></g><rect x="1191" y="134" width="8" height="12" fill="#ffd27a" opacity=".8"/>`;
+  h+=hill(235,18,3,'#0c0617');
+  function tree(x,y,len,ang,depth){ if(depth===0) return ''; const x2=x+Math.cos(ang)*len, y2=y+Math.sin(ang)*len;
+    let d=`<path d="M${x.toFixed(1)} ${y.toFixed(1)} Q${((x+x2)/2+(rnd()-.5)*len*.3).toFixed(1)} ${((y+y2)/2).toFixed(1)} ${x2.toFixed(1)} ${y2.toFixed(1)}" stroke="#0c0617" stroke-width="${(depth*1.7).toFixed(1)}" stroke-linecap="round" fill="none"/>`;
+    const n=depth>3?2:2+Math.floor(rnd()*2);
+    for(let i=0;i<n;i++) d+=tree(x2,y2,len*(.62+rnd()*.15),ang+(rnd()-.5)*1.3+(i-(n-1)/2)*.5,depth-1);
+    return d; }
+  [[140,250,58],[470,262,42],[1010,256,50],[1450,250,64]].forEach(([x,y,l])=>{ h+=tree(x,y,l,-Math.PI/2+(rnd()-.5)*.2,6); });
+  for(let i=0;i<16;i++){ const x=60+i*98+rnd()*40, y=268+rnd()*14, w=14+rnd()*10, ht=18+rnd()*16;
+    h+= rnd()<.3 ? `<path d="M${x} ${y} v-${ht} M${x-7} ${y-ht*.7} h14" stroke="#0c0617" stroke-width="5"/>`
+                 : `<path d="M${x-w/2} ${y} v-${ht} a${w/2} ${w/2} 0 0 1 ${w} 0 v${ht} Z" fill="#0c0617" transform="rotate(${((rnd()-.5)*12).toFixed(1)} ${x} ${y})"/>`; }
+  let f=''; for(let x=0;x<1600;x+=18) f+=`M${x} 300 V276 l4 -7 l4 7 V300 `; h+=`<path d="${f}" fill="#07030c"/><path d="M0 283 H1600 M0 293 H1600" stroke="#07030c" stroke-width="3"/>`;
+  h+=`<rect y="292" width="1600" height="10" fill="#07030c"/>`;
+  $('spk-hills').innerHTML=h;
+  // eyes peeking from the graveyard
+  $('spk-hills').insertAdjacentHTML('beforeend','<g id="spk-geyes"><g transform="translate(330 262)"><ellipse cx="-5" rx="3" ry="2.3" fill="#ffe14a"/><ellipse cx="5" rx="3" ry="2.3" fill="#ffe14a"/></g><g transform="translate(1290 258)"><ellipse cx="-5" rx="3" ry="2.3" fill="#9dff6a"/><ellipse cx="5" rx="3" ry="2.3" fill="#9dff6a"/></g></g>');
+
+  // clouds
+  const night=$('spk-night'), clouds=[];
+  for(let i=0;i<4;i++){ const c=document.createElementNS(NS,'svg'); c.setAttribute('class','spk-cloud'); c.setAttribute('viewBox','0 0 300 80');
+    c.innerHTML='<g fill="#8a78b8"><ellipse cx="80" cy="50" rx="70" ry="18"/><ellipse cx="150" cy="40" rx="80" ry="24"/><ellipse cx="225" cy="52" rx="60" ry="16"/></g>';
+    c.style.width=(220+i*70)+'px'; c.style.top=(6+i*11)+'vh'; c.style.opacity=(.18+i*.06).toFixed(2); night.insertBefore(c, night.querySelector('.spk-hills'));
+    clouds.push({el:c, x:Math.random()*innerWidth, v:6+i*3}); }
+
+  // stars on a canvas, with twinkling and the odd shooting star
+  const cv=$('spk-stars'), cx=cv.getContext('2d'); let stars=[], W=0, H=0, dpr=1, shoot=null, nextShoot=performance.now()+4000, last=performance.now();
+  function size(){ dpr=Math.min(2,devicePixelRatio||1); W=innerWidth; H=innerHeight; cv.width=W*dpr; cv.height=H*dpr; cx.setTransform(dpr,0,0,dpr,0,0);
+    const n=Math.round(W*H/5200); stars=[]; for(let i=0;i<n;i++) stars.push({x:Math.random()*W, y:Math.random()*H*.8, r:Math.random()<.08?1.8:Math.random()*1.1+.3, ph:Math.random()*6.3, sp:.6+Math.random()*2.2}); }
+  size(); addEventListener('resize', size);
+  function frame(now){
+    const dt=Math.min(.1,(now-last)/1000); last=now;
+    if(ON.sky && !document.hidden){
+      cx.clearRect(0,0,W,H);
+      for(const s of stars){ const a=reduced?.75:.45+.55*Math.abs(Math.sin(now/1000*s.sp+s.ph)); cx.globalAlpha=a*(1-s.y/(H*.95));
+        cx.fillStyle=s.r>1.5?'#fff4c2':'#ffffff'; cx.beginPath(); cx.arc(s.x,s.y,s.r,0,6.283); cx.fill();
+        if(s.r>1.5){ cx.globalAlpha=a*.35; cx.fillRect(s.x-4,s.y-.4,8,.8); cx.fillRect(s.x-.4,s.y-4,.8,8); } }
+      if(!reduced){
+        if(!shoot && now>nextShoot){ shoot={x:Math.random()*W*.7, y:Math.random()*H*.3, t:0}; nextShoot=now+R(7000,15000); }
+        if(shoot){ shoot.t+=dt; const k=shoot.t/0.9, x=shoot.x+k*W*.35, y=shoot.y+k*H*.18;
+          const g=cx.createLinearGradient(x-90,y-46,x,y); g.addColorStop(0,'rgba(255,255,255,0)'); g.addColorStop(1,'rgba(255,250,220,.95)');
+          cx.globalAlpha=Math.sin(Math.PI*Math.min(1,k)); cx.strokeStyle=g; cx.lineWidth=2; cx.beginPath(); cx.moveTo(x-90,y-46); cx.lineTo(x,y); cx.stroke();
+          if(k>=1) shoot=null; }
+        clouds.forEach(c=>{ c.x+=c.v*dt; if(c.x>innerWidth+40) c.x=-c.el.clientWidth-40; c.el.style.transform=`translateX(${c.x.toFixed(1)}px)`; });
+        const ge=$('spk-geyes'); if(ge) ge.setAttribute('opacity', (now%5200)<180 ? 0 : 1);
+      }
+      cx.globalAlpha=1;
+    }
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+
+/* ---------- lightning ---------- */
+function lightning(force){
+  if(!ON.lightning && !force) return;
+  if(!reduced){
+    $('spk-flash').animate([{opacity:0},{opacity:.42,offset:.08},{opacity:.05,offset:.2},{opacity:.3,offset:.3},{opacity:0}],{duration:700,easing:'ease-out'});
+    if(L) L.layers.forEach(ly=>{ ly.bolt.setAttribute('transform',`translate(${R(-120,140).toFixed(0)} 0)`);
+      ly.bolt.animate([{opacity:0},{opacity:1,offset:.08},{opacity:.1,offset:.2},{opacity:.9,offset:.3},{opacity:0}],{duration:700}); });
+  }
+  setTimeout(()=>sound.thunder(), 450);
+}
+
+/* ---------- bats ---------- */
+const BAT='<path class="spk-wing" d="M0 0 Q-9 -10 -22 -5 Q-15 -2 -15 5 Q-8 0 0 4 Q8 0 15 5 Q15 -2 22 -5 Q9 -10 0 0 Z" fill="#0b0618" stroke="#b9a6e0" stroke-width="1.2"/><circle cx="-2" cy="-1" r="1" fill="#ffe14a"/><circle cx="2" cy="-1" r="1" fill="#ffe14a"/>';
+function bats(force){
+  if((!ON.bats && !force) || reduced) return;
+  const sky=$('spk-sky'), W=innerWidth, H=innerHeight, dir=Math.random()<.5?1:-1, n=5+Math.floor(R(0,4)), y0=R(.08,.45)*H;
+  for(let i=0;i<n;i++){
+    const s=document.createElementNS(NS,'svg'); s.setAttribute('width',48); s.setAttribute('height',30); s.setAttribute('viewBox','-24 -15 48 30');
+    s.innerHTML=BAT; s.querySelector('.spk-wing').style.animationDuration=R(.16,.26).toFixed(2)+'s'; sky.appendChild(s);
+    const sc=R(.8,1.6), dy=R(-60,60), delay=i*R(90,180), dur=R(3200,4600), amp=R(16,40);
+    const frames=[]; for(let k=0;k<=12;k++){ const t=k/12; const x = dir>0 ? -60+t*(W+120) : W+60-t*(W+120);
+      frames.push({transform:`translate(${x}px, ${y0+dy+Math.sin(t*Math.PI*4+i)*amp-t*80}px) scale(${sc})`}); }
+    const a=s.animate(frames,{duration:dur, delay, easing:'linear', fill:'both'}); a.onfinish=()=>s.remove();
+  }
+  sound.flutter();
+}
+
+/* ---------- boo swoop ---------- */
+function booSwoop(force){
+  if(!ON.boo && !force) return;
+  const b=$('spk-boo'), W=innerWidth, H=innerHeight, w=b.offsetWidth||220;
+  if(reduced){ b.animate([{opacity:0, transform:`translate(${W/2-w/2}px,${H/3}px)`},{opacity:1,offset:.2},{opacity:1,offset:.8},{opacity:0, transform:`translate(${W/2-w/2}px,${H/3}px)`}],{duration:1400}); return; }
+  b.animate([
+    {opacity:0, transform:`translate(${-w}px, ${H*.7}px) rotate(-20deg) scale(.5)`},
+    {opacity:1, transform:`translate(${W*.3-w/2}px, ${H*.35}px) rotate(-6deg) scale(1.15)`, offset:.35},
+    {opacity:1, transform:`translate(${W*.55-w/2}px, ${H*.3}px) rotate(4deg) scale(1.2)`, offset:.6},
+    {opacity:0, transform:`translate(${W+w}px, ${-w}px) rotate(20deg) scale(.6)`}
+  ],{duration:1700, easing:'cubic-bezier(.3,0,.5,1)'});
+  sound.moan();
+}
+
+/* ---------- sounds (made on the fly with Web Audio) ---------- */
+const sound=(function(){
+  let A=null, wind=null;
+  const allowed=()=>{ const s=document.getElementById('soundBtn'); return !s || s.getAttribute('aria-pressed')!=='false'; };
+  function ctx(){ try{ if(!A){ const C=window.AudioContext||window.webkitAudioContext; if(C) A=new C(); } if(A&&A.state==='suspended') A.resume(); }catch(e){} return A; }
+  function noise(sec){ const b=A.createBuffer(1, Math.floor(A.sampleRate*sec), A.sampleRate), d=b.getChannelData(0); for(let i=0;i<d.length;i++) d[i]=Math.random()*2-1; return b; }
+  function ok(){ return ON.sounds && allowed() && ctx(); }
+  function startWind(){
+    if(wind || !ok()) return;
+    const src=A.createBufferSource(); src.buffer=noise(4); src.loop=true;
+    const f=A.createBiquadFilter(); f.type='bandpass'; f.frequency.value=420; f.Q.value=6;
+    const lfo=A.createOscillator(), lg=A.createGain(); lfo.frequency.value=.09; lg.gain.value=260; lfo.connect(lg).connect(f.frequency);
+    const g=A.createGain(); g.gain.value=0; g.gain.linearRampToValueAtTime(.09, A.currentTime+3);
+    src.connect(f).connect(g).connect(A.destination); src.start(); lfo.start(); wind={src,lfo,g};
+  }
+  function stopWind(){ if(!wind) return; const w=wind; wind=null; try{ w.g.gain.linearRampToValueAtTime(0, A.currentTime+.6); setTimeout(()=>{ try{w.src.stop(); w.lfo.stop();}catch(e){} },800); }catch(e){} }
+  function update(){ if(ON.sounds && allowed() && A && !document.hidden) startWind(); else stopWind(); }
+  function tone(fr,t,dur,type,vol,fr2){ const o=A.createOscillator(), g=A.createGain(); o.type=type; o.frequency.setValueAtTime(fr,A.currentTime+t);
+    if(fr2) o.frequency.exponentialRampToValueAtTime(fr2,A.currentTime+t+dur);
+    g.gain.setValueAtTime(.0001,A.currentTime+t); g.gain.exponentialRampToValueAtTime(vol,A.currentTime+t+dur*.25); g.gain.exponentialRampToValueAtTime(.0001,A.currentTime+t+dur);
+    o.connect(g).connect(A.destination); o.start(A.currentTime+t); o.stop(A.currentTime+t+dur+.05); return o; }
+  return {
+    update,
+    thunder(){ if(!ok()) return; const s=A.createBufferSource(); s.buffer=noise(3); const f=A.createBiquadFilter(); f.type='lowpass'; f.frequency.value=160;
+      const g=A.createGain(); const t=A.currentTime; g.gain.setValueAtTime(.0001,t); g.gain.exponentialRampToValueAtTime(.8,t+.08); g.gain.exponentialRampToValueAtTime(.25,t+.6); g.gain.exponentialRampToValueAtTime(.0001,t+2.8);
+      s.connect(f).connect(g).connect(A.destination); s.start(); },
+    owl(){ if(!ok()) return; tone(410,0,.35,'sine',.12,380); tone(400,.5,.6,'sine',.12,350); },
+    moan(){ if(!ok()) return; const o=tone(330,0,1.4,'sine',.14,220); const l=A.createOscillator(), lg=A.createGain(); l.frequency.value=6; lg.gain.value=14; l.connect(lg).connect(o.frequency); l.start(); l.stop(A.currentTime+1.5); },
+    howl(force){ if(!(force?(allowed()&&ctx()):ok())) return; const t=A.currentTime;
+      const o=A.createOscillator(); o.type='triangle';
+      o.frequency.setValueAtTime(260,t); o.frequency.exponentialRampToValueAtTime(640,t+.7); o.frequency.linearRampToValueAtTime(600,t+1.6); o.frequency.exponentialRampToValueAtTime(300,t+2.6);
+      const l=A.createOscillator(), lg=A.createGain(); l.frequency.value=5.5; lg.gain.setValueAtTime(0,t); lg.gain.linearRampToValueAtTime(14,t+1); l.connect(lg).connect(o.frequency);
+      const f=A.createBiquadFilter(); f.type='lowpass'; f.frequency.value=1500; const g=A.createGain();
+      g.gain.setValueAtTime(.0001,t); g.gain.exponentialRampToValueAtTime(.17,t+.35); g.gain.setValueAtTime(.15,t+1.9); g.gain.exponentialRampToValueAtTime(.0001,t+2.7);
+      o.connect(f).connect(g).connect(A.destination); o.start(t); l.start(t); o.stop(t+2.8); l.stop(t+2.8); },
+    rattle(){ if(!(allowed()&&ctx()) || !ON.sounds) return; for(let i=0;i<9;i++){ const s=A.createBufferSource(); s.buffer=noise(.03); const f=A.createBiquadFilter(); f.type='bandpass'; f.frequency.value=R(1800,3200); f.Q.value=5;
+      const g=A.createGain(); const t=A.currentTime+i*R(.05,.09); g.gain.setValueAtTime(.35,t); g.gain.exponentialRampToValueAtTime(.0001,t+.04); s.connect(f).connect(g).connect(A.destination); s.start(t); } },
+    steps(){ if(!ok()) return; for(let i=0;i<4;i++){ const t=A.currentTime+1.3+i*.45; const o=A.createOscillator(), g=A.createGain(); o.type='sine'; o.frequency.setValueAtTime(110,t); o.frequency.exponentialRampToValueAtTime(50,t+.1);
+      g.gain.setValueAtTime(.35,t); g.gain.exponentialRampToValueAtTime(.0001,t+.14); o.connect(g).connect(A.destination); o.start(t); o.stop(t+.16); } },
+    bong(i){ if(!(allowed()&&ctx())) return; const t=A.currentTime+i*1.15; [[196,.22],[392,.1],[523,.06],[784,.04]].forEach(([fr,v])=>{ const o=A.createOscillator(), g=A.createGain(); o.frequency.value=fr;
+      g.gain.setValueAtTime(.0001,t); g.gain.exponentialRampToValueAtTime(v,t+.01); g.gain.exponentialRampToValueAtTime(.0001,t+1.6); o.connect(g).connect(A.destination); o.start(t); o.stop(t+1.7); }); },
+    flutter(){ if(!ok()) return; for(let i=0;i<10;i++) tone(R(1800,2600),i*.07,.05,'triangle',.025); },
+    door(){ if(!ok()) return; startWind(); this.steps(); const o=A.createOscillator(); o.type='sawtooth'; const t=A.currentTime;
+      o.frequency.setValueAtTime(90,t); for(let k=1;k<12;k++) o.frequency.linearRampToValueAtTime(90+Math.random()*70+k*6, t+k*.1);
+      const f=A.createBiquadFilter(); f.type='bandpass'; f.frequency.value=900; f.Q.value=8; const g=A.createGain();
+      g.gain.setValueAtTime(.0001,t); g.gain.exponentialRampToValueAtTime(.25,t+.1); g.gain.exponentialRampToValueAtTime(.0001,t+1.3);
+      o.connect(f).connect(g).connect(A.destination); o.start(); o.stop(t+1.4); }
+  };
+})();
+/* ---------- midnight win: three clock bongs, then a spooky laugh ---------- */
+function midnight(force){
+  if(!ON.laugh && !force) return;
+  setTimeout(()=>{ for(let i=0;i<3;i++) sound.bong(i);
+    setTimeout(()=>{ if(window.__wiiLaugh) window.__wiiLaugh(); }, 3600);
+  }, force?0:1800);
+}
+
+/* ---------- Monster groove: an original spooky 80s dance loop, played through the game's music channel ---------- */
+window.__spkGroove=(function(){
+  let A=null, out=null, timer=null, step=0, nextT=0, nz=null;
+  const BPM=112, SX=60/BPM/4;                    // one 16th note
+  const mf=m=>440*Math.pow(2,(m-69)/12);
+  const ROOTS=[45,41,38,40];                      // Am, F, Dm, E  (one bar each)
+  const QUAL=[[0,3,7],[0,4,7],[0,3,7],[0,4,7]];
+  const BASS=[0,null,0,12, null,7,null,10, 0,null,null,0, 3,5,null,7];
+  function hit(freq,t,dur,type,vol,fr2,dest,fq){ const o=A.createOscillator(), g=A.createGain(); o.type=type; o.frequency.setValueAtTime(freq,t); if(fr2) o.frequency.exponentialRampToValueAtTime(fr2,t+dur);
+    g.gain.setValueAtTime(vol,t); g.gain.exponentialRampToValueAtTime(.0001,t+dur); let n=o;
+    if(fq){ const f=A.createBiquadFilter(); f.type='lowpass'; f.frequency.value=fq; o.connect(f); n=f; }
+    n.connect(g).connect(dest||out); o.start(t); o.stop(t+dur+.02); return o; }
+  function noiseHit(t,dur,vol,hp){ const s=A.createBufferSource(); s.buffer=nz; const f=A.createBiquadFilter(); f.type='highpass'; f.frequency.value=hp; const g=A.createGain();
+    g.gain.setValueAtTime(vol,t); g.gain.exponentialRampToValueAtTime(.0001,t+dur); s.connect(f).connect(g).connect(out); s.start(t); s.stop(t+dur+.02); }
+  function play(st,t){
+    const bar=Math.floor(st/16)%4, k=st%16, root=ROOTS[bar];
+    if(k===0||k===6||k===8) hit(150,t,.22,'sine',.9,42);                 // kick
+    if(k===4||k===12){ noiseHit(t,.16,.45,1300); hit(190,t,.08,'triangle',.25); }   // snare
+    if(k%2===0) noiseHit(t,k===14?.18:.035,k===14?.12:.09,7000);          // hats
+    const b=BASS[k]; if(b!==null) hit(mf(root+b),t,SX*1.6,'sawtooth',.28,null,null,850);   // bass
+    if(k===0||k===10) QUAL[bar].forEach((iv,j)=>{ hit(mf(root+24+iv),t,.28,'square',.035,null,null,1700); hit(mf(root+24+iv)*1.006,t,.28,'square',.025,null,null,1700); });
+    if(bar===3 && k===0 && Math.floor(st/64)%2===1){                       // theremin swoop every other time round
+      const o=A.createOscillator(), g=A.createGain(), l=A.createOscillator(), lg=A.createGain(); o.type='sine';
+      o.frequency.setValueAtTime(mf(69),t); o.frequency.exponentialRampToValueAtTime(mf(76),t+SX*6); o.frequency.exponentialRampToValueAtTime(mf(64),t+SX*15);
+      l.frequency.value=6; lg.gain.value=9; l.connect(lg).connect(o.frequency);
+      g.gain.setValueAtTime(.0001,t); g.gain.exponentialRampToValueAtTime(.09,t+.3); g.gain.exponentialRampToValueAtTime(.0001,t+SX*16);
+      o.connect(g).connect(out); o.start(t); l.start(t); o.stop(t+SX*16+.05); l.stop(t+SX*16+.05); }
+  }
+  function sched(){
+    if(!A) return; const M=window.__spkMusic; const target = M && M.MU.ducked ? .06 : .22;
+    out.gain.setTargetAtTime(target, A.currentTime, .15);
+    while(nextT < A.currentTime+.15){ play(step,nextT); nextT+=SX; step++; }
+  }
+  return {
+    wanted:()=>ON.groove,
+    playing:()=>!!timer,
+    start(a){ if(timer) return; A=a; if(!nz){ nz=A.createBuffer(1,A.sampleRate*.3,A.sampleRate); const d=nz.getChannelData(0); for(let i=0;i<d.length;i++) d[i]=Math.random()*2-1; }
+      out=A.createGain(); out.gain.value=0; out.connect(A.destination); step=0; nextT=A.currentTime+.1; timer=setInterval(sched,25); sched(); },
+    stop(){ if(!timer) return; clearInterval(timer); timer=null; const o=out; try{ o.gain.cancelScheduledValues(A.currentTime); o.gain.setTargetAtTime(0,A.currentTime,.1); setTimeout(()=>o.disconnect(),800); }catch(e){} }
+  };
+})();
+
+// first tap anywhere unlocks sound and starts the wind
+addEventListener('pointerdown', function first(){ removeEventListener('pointerdown', first); setTimeout(()=>sound.update(),50); }, {capture:true});
+document.addEventListener('click', e=>{ if(e.target.closest && e.target.closest('#soundBtn')) setTimeout(()=>sound.update(),30); });
+document.addEventListener('visibilitychange', ()=>sound.update());
+
+try{ const v=JSON.parse(localStorage.getItem(SAVE_KEY)||'null'); if(v&&v.on){ FEAT.forEach(f=>{ if(typeof v.on[f.k]==='boolean') ON[f.k]=v.on[f.k]; }); } if(v&&SPACES[v.walk]||v&&v.walk==='candy') WALK=v.walk; }catch(e){}
+setWalk(WALK);
+sync();
 })();
 </script>
 </body>
