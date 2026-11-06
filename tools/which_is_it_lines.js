@@ -36,6 +36,10 @@ function ttsText(l, lang) {
     if (l.kind === "question") return l.hard ? `Which one is little ${L}?` : `Which one is the letter ${L}?`;
     return l.hard ? `It's little ${L}!` : `It's the letter ${L}!`;
   }
+  if (lang === "es" && l.cat === "letters" && !l.hard && t === "D") {
+    // "...la letra de" at the end of a line came out sounding like "be"; a capital D is read as "de".
+    return l.text.replace(/letra de([?!])$/, "letra D$1");
+  }
   if (l.cat === "sounds") {
     const shown = SOUND_SHOWN[lang][t], spoken = SOUND_TTS[lang][t];
     if (!shown) throw new Error("no sound for " + t);

@@ -3408,6 +3408,7 @@
    "group": "letters",
    "file": "es/cual-es-la-letra-de-176260.mp3",
    "voice_id": "lP1VZ61RLnDtOoz41b3D",
+   "say": "¿Cuál es la letra D?",
    "kind": "question",
    "cat": "letters",
    "hard": false
@@ -3418,6 +3419,7 @@
    "group": "letters",
    "file": "es/es-la-letra-de-e2cf99.mp3",
    "voice_id": "lP1VZ61RLnDtOoz41b3D",
+   "say": "¡Es la letra D!",
    "kind": "reveal",
    "cat": "letters",
    "hard": false
