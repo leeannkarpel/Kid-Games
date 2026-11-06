@@ -1,5 +1,5 @@
 // Headless test for "Which Is It? Haunted House".
-// Usage: node tools/test_which_is_it.js [--quick]
+// Usage: node tools/test_which_is_it.js [--quick] [--only <regex>]   (--only runs just the plays whose name matches)
 //
 //  1. Manifest: every line the game can speak (from the game's own allLines()) has a clip for both narrators
 //     (storyteller and spooky), and every clip file exists.
@@ -15,6 +15,7 @@ const SITE = path.resolve(__dirname, "../mr-mos-games");
 const GAME = "/games/which-is-it/";
 const TYPES = { ".html": "text/html", ".js": "text/javascript", ".json": "application/json", ".mp3": "audio/mpeg" };
 const QUICK = process.argv.includes("--quick");
+const ONLY = process.argv.includes("--only") ? new RegExp(process.argv[process.argv.indexOf("--only") + 1]) : null;
 const wait = ms => new Promise(r => setTimeout(r, ms));
 
 function serve(dir, port) {
@@ -100,7 +101,8 @@ async function until(page, fn, arg, ms = 20000) {
     await wait(400);
     await page.tap("#startBtn");
     const set = r.voice === "ai" ? "story" : "spooky";
-    const name = `${r.label} ${r.lang} ${r.mode} [${r.cats.length > 1 ? "all" : r.cats[0]}] ${set}`;
+    const name = `${r.label} ${r.lang} ${r.mode} [${r.cats.length > 1 ? "all" : r.cats[0]}] ${set}${r.realWin ? " full game" : ""}`;
+    if (ONLY && !ONLY.test(name)) { await ctx.close(); continue; }
     const sawLoader = await until(page, () => !document.getElementById("loadWrap").hidden, null, 3000);
     if (!(await until(page, () => window.__wii.G && window.__wii.G.q, null, 20000))) { fail(name + ": first turn never started"); }
     const seen = { normal: new Set(), hard: new Set() };
