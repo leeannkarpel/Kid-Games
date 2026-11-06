@@ -41,6 +41,8 @@ Voices used:
 | All Spanish lines | Kate 7 | `U9tZtg3uJtVgXPkvosWR` |
 | Animal Peekaboo, Light-Up Taps and Kitty Taps English lines | Tilly | `4gnXtzQIIeGuC5hxActn` |
 | Dance Like Me, Kitty Says | Lulu Lollipop | `ocZQ262SsZb9RIxcQBOj` |
+| Which Is It? English lines | Clara (Children's Storyteller) | `2OEeJcYw2f3bWMzzjVMU` |
+| Which Is It? Spanish lines | Jade | `lP1VZ61RLnDtOoz41b3D` |
 
 The clips use the `eleven_v4` model.
 
@@ -56,5 +58,13 @@ Mr. Mo's games each loop one instrumental ElevenLabs Music track, from `mr-mos-g
 - The music starts on the first tap. It gets quieter while the voice talks, and pauses when the page is hidden.
 - A 🎵 button in the bottom-left corner turns the music off or on, and each device remembers the choice.
 - Run `python3 tools/generate_music.py` to make any tracks that are missing (delete an mp3 to redo it).
+
+### Which Is It? Haunted House
+
+This game is self-contained (it doesn't load `voice-clips.js` or `bg-music.js`). Its audio lives in `mr-mos-games/games/which-is-it/audio/`: `en/`, `es/`, `music.mp3` and `manifest.json`. The 🎵 music button is in the game's top bar.
+
+1. `node tools/which_is_it_lines.js` rebuilds the manifest from the game's own code. It lists every line the game can say, in both languages.
+2. `python3 tools/which_is_it_audio.py --count`, then `python3 tools/which_is_it_audio.py`, makes any missing clips. Each clip is trimmed, loudness-matched (-16 LUFS) and saved as mono 64 kbps MP3.
+3. `node tools/test_which_is_it.js` plays the game headlessly. It checks that every line plays its own clip, at phone portrait and landscape, in both languages.
 
 `tools/` sits outside both site folders, so it is never deployed.

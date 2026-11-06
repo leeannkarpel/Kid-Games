@@ -71,10 +71,14 @@ async function until(page, fn, arg, ms = 20000) {
       RUNS.push({ label, w, h, lang, mode: label === "portrait" ? "solo" : "two", cats: [c], turns: 8, win: false });
   }
 
+  // one complete game, start to the Ghost Party, no shortcuts (2 players, every answer right)
+  RUNS.push({ label: "portrait", w: 390, h: 844, lang: "en", mode: "two", cats: ["shapes", "letters", "sounds", "numbers", "colors"], turns: 80, realWin: true, win: true });
+  RUNS.push({ label: "landscape", w: 844, h: 390, lang: "es", mode: "robot", cats: ["shapes", "letters", "sounds", "numbers", "colors"], turns: 120, realWin: true, win: true });
+
   for (const r of RUNS) {
     const ctx = await browser.newContext({ viewport: { width: r.w, height: r.h }, isMobile: true, hasTouch: true, deviceScaleFactor: 1 });
     const page = await ctx.newPage();
-    const errors = [], clipBad = [];
+    const errors = [], clipBad = [], badBefore = bad;
     page.on("pageerror", e => errors.push("pageerror: " + e.message));
     page.on("console", m => { if (m.type() === "error") errors.push("console: " + m.text()); });
     page.on("response", x => { if (/\/audio\/.+\.mp3$/.test(x.url()) && x.status() !== 200) clipBad.push(x.status() + " " + x.url()); });
@@ -93,7 +97,9 @@ async function until(page, fn, arg, ms = 20000) {
     const seen = { normal: new Set(), hard: new Set() };
     let rights = 0, wrongs = 0;
     for (let k = 0; k < r.turns; k++) {
-      const ok = await until(page, () => { const G = window.__wii.G; return G && G.q && !G.answered && !G.busy; }, null, 25000);
+      if (r.realWin && await page.evaluate(() => !document.getElementById("win").hidden)) break;
+      const ok = await until(page, () => { const G = window.__wii.G; return (G && G.q && !G.answered && !G.busy) || !document.getElementById("win").hidden; }, null, 25000);
+      if (r.realWin && await page.evaluate(() => !document.getElementById("win").hidden)) break;
       if (!ok) { fail(name + ": turn " + k + " never became ready"); break; }
       const st = await page.evaluate(() => { const G = window.__wii.G; return { robot: !!G.players[G.turn].robot, cat: G.q.cat, hard: G.q.hard, answer: G.q.answer, n: G.q.items.length }; });
       seen[st.hard ? "hard" : "normal"].add(st.cat);
@@ -102,7 +108,7 @@ async function until(page, fn, arg, ms = 20000) {
       await until(page, () => document.getElementById("hearBtn").classList.contains("on"), null, 3000);
       await until(page, () => !document.getElementById("hearBtn").classList.contains("on"), null, 10000);
       if (st.robot) { await until(page, () => window.__wii.G.answered, null, 15000); continue; }
-      const right = k % 3 !== 1;
+      const right = r.realWin || k % 3 !== 1;
       const pickI = right ? st.answer : (st.answer + 1) % st.n;
       await page.tap(`#opts .opt[data-i="${pickI}"]`);
       right ? rights++ : wrongs++;
@@ -112,16 +118,19 @@ async function until(page, fn, arg, ms = 20000) {
     const mu = await page.evaluate(() => ({ playing: !!window.__wii.music.src, on: window.__wii.music.on }));
     if (r.win) {
       // jump the current player close to the end and win with a right answer
-      await until(page, () => { const G = window.__wii.G; return G && G.q && !G.answered && !G.busy && !G.players[G.turn].robot; }, null, 30000);
-      await page.evaluate(() => { const G = window.__wii.G; G.players[G.turn].pos = 62; });
-      await until(page, () => !document.getElementById("hearBtn").classList.contains("on"), null, 10000);
-      const a = await page.evaluate(() => window.__wii.G.q.answer);
-      await page.tap(`#opts .opt[data-i="${a}"]`);
+      if (!r.realWin) {
+        await until(page, () => { const G = window.__wii.G; return G && G.q && !G.answered && !G.busy && !G.players[G.turn].robot; }, null, 30000);
+        await page.evaluate(() => { const G = window.__wii.G; G.players[G.turn].pos = 62; G.card.dest = 63; });
+        await until(page, () => !document.getElementById("hearBtn").classList.contains("on"), null, 10000);
+        const a = await page.evaluate(() => window.__wii.G.q.answer);
+        await page.tap(`#opts .opt[data-i="${a}"]`);
+      }
       if (!(await until(page, () => !document.getElementById("win").hidden, null, 20000))) fail(name + ": win screen never showed");
       await wait(1200);
       await until(page, () => !document.getElementById("hearBtn").classList.contains("on") && window.__wii.voiceLog.some(x => /Party|fiesta/.test(x.text)), null, 9000);
       const title = await page.textContent("#winTitle");
-      if (!/Ana|Leo/.test(title)) fail(name + ": win title should show the typed name, got " + title);
+      if (r.realWin) console.log(`     full game: ${await page.evaluate(() => window.__wii.G.players.map(p => p.piece + "@" + p.pos).join(" "))}, title "${title}"`);
+      if (!(r.mode === "robot" ? /Ana|Robot/ : /Ana|Leo/).test(title)) fail(name + ": win title should show the typed name, got " + title);
     }
     const res = await page.evaluate(() => ({ log: window.__wii.voiceLog.slice(), device: window.__device.slice(),
       overflow: document.documentElement.scrollWidth > innerWidth + 1, lang: document.documentElement.lang }));
@@ -139,7 +148,7 @@ async function until(page, fn, arg, ms = 20000) {
     if (!mu.playing) fail(name + ": music not playing");
     if (res.overflow) fail(name + ": page scrolls sideways");
     errors.concat(clipBad).forEach(e => fail(name + ": " + e));
-    const okRun = !errors.length && !clipBad.length && !wrongClip && !fallback && !res.device.length && mu.playing;
+    const okRun = bad === badBefore && !errors.length && !clipBad.length && !wrongClip && !fallback && !res.device.length && mu.playing;
     console.log(`${okRun ? "PASS" : "FAIL"} ${name}: ${res.log.length} lines played from clips, ${rights} right / ${wrongs} wrong taps, ` +
       `normal ${[...seen.normal].join(",") || "-"} | tricky ${[...seen.hard].join(",") || "-"}; loader ${sawLoader ? "shown" : "not seen"}` +
       (turnLines.length ? `; e.g. ${JSON.stringify(turnLines[0])}` : ""));
